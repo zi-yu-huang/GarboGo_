@@ -27,7 +27,7 @@ export default {
     return {};
   },
   mounted () {
-    document.querySelector('body').setAttribute('style','background-color:#AAD869')
+    // document.querySelector('body').setAttribute('style','background-color:#AAD869')
     this.MountedActivated();
   },
   activated () {

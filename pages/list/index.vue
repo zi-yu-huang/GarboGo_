@@ -13,7 +13,10 @@ export default {
     return {};
   },
   mounted () {
+    console.log("fheihr")
+    
     this.MountedActivated();
+    
   },
   activated () {
     this.MountedActivated();

@@ -5,7 +5,7 @@
     aIcon.icon-content(type="unordered-list" @click="ListMenu")
     aIcon.icon-content(type="heart" @click="HeartMenu")
     aIcon.icon-content.main-icon(type="scan" @click="ScanMenu")
-    aIcon.icon-content(type="environment" @click="environment")
+    aIcon.icon-content(type="environment" @click="EnvironmentMenu")
     aIcon.icon-content(type="question-circle" @click="QuestionMenu")
 
 </template>
@@ -18,10 +18,12 @@ export default {
   },
   methods:{
     ListMenu(){
+      this.$router.push("/list");
       console.log("list")
       
     },
     HeartMenu(){
+      this.$router.push("/favorite");
       console.log("heart")
       
     },
@@ -29,7 +31,8 @@ export default {
       console.log("scan")
       
     },
-    DragMenu(){
+    EnvironmentMenu(){
+      this.$router.push("/");
       console.log("bell")
       
     },

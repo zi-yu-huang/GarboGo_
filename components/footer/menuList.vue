@@ -24,6 +24,11 @@
 <script>
 export default {
   name: "MenuList",
+  // props:{
+  //   type:{
+      
+  //   }
+  // },
   data() {
     return {
       visible: false,

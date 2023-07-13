@@ -1,5 +1,5 @@
 <template lang="pug">
-//- 請填寫功能描述👈
+//- 修改密碼👈
 #EditPassword
   .content
     aFormModel.form-area(
@@ -7,14 +7,26 @@
       :model="memberForm"
       :rules="rules"
       )
-      aFormModelItem(ref="memberPhone" prop="memberPhone")
+      aFormModelItem(ref="oldPassword" prop="oldPassword")
         aInput.input-font(
-          placeholder="請輸入手機號碼"
-          v-model="memberForm.memberPhone"
+          placeholder="請輸入原密碼"
+          v-model="memberForm.oldPassword"
+          :maxLength="9"
+          )
+      aFormModelItem(ref="newPassword" prop="newPassword")
+        aInput.input-font(
+          placeholder="請輸入新密碼"
+          v-model="memberForm.newPassword"
+          :maxLength="9"
+          )
+      aFormModelItem(ref="newPasswordAgain" prop="newPasswordAgain")
+        aInput.input-font(
+          placeholder="請再次輸入新密碼"
+          v-model="memberForm.newPasswordAgain"
           :maxLength="9"
           )
       aFormModelItem
-        aButton.btn-area(type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
+        aButton.btn-area(type="primary" @click="OnSubmit") {{"確認 "}}
 </template>
 
 <script>
@@ -23,15 +35,46 @@ export default {
   data () {
     return {
       memberForm:{
-        memberPhone: "",
+        oldPassword: "",
+        newPassword: "",
+        newPasswordAgain:""
       },
       rules: {
-        memberPhone: [
-          { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
+        oldPassword: [
+          { required: true,message: "不可為空"},
           { validator: this.rValidataPhoneFormat, trigger: "blur" }
+        ],
+        newPassword: [
+          { required: true,message: "不可為空"},
+          { validator: this.rValidataPhoneFormat, trigger: "blur" }
+        ],        
+        newPasswordAgain: [
+          { required: true,message: "不可為空"},
+          { validator: (rule, value, cbfn) => {
+              const form = this.memberForm;
+              if (value && value !== form.newPassword) {
+                cbfn("兩次密碼不一致!");
+              } else {
+                cbfn();
+              }
+            },
+            trigger: "blur"
+          }
         ]
       }
     };
+  },
+  methods:{
+    OnSubmit(){
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          console.log(this.memberForm.newPassword)
+          this.memberForm.oldPassword=""
+          this.memberForm.newPassword=""
+          this.memberForm.newPasswordAgain=""
+        }
+      })
+    }
   }
 };
 </script>
@@ -58,9 +101,10 @@ export default {
 #EditPassword {
   .content{
     background: black;
-    opacity: 0.5;
-    width: 346px;
-    height: 309px;
+    opacity:80%;
+    margin: 0px 21px;
+    // width: 346px;
+    // height: 309px;
     border-radius: 24px;
     padding: 0px 27px;
     .input-font{

@@ -7,14 +7,20 @@
     aIcon.icon-content.main-icon(type="scan" @click="ScanMenu")
     aIcon.icon-content(type="environment" @click="EnvironmentMenu")
     aIcon.icon-content(type="question-circle" @click="QuestionMenu")
+  Question(v-if="openQuestion" @click.stop="CloseModal")
 
 </template>
 
 <script>
 export default {
+  components:{
+    Question:()=>import("@/components/footer/question")
+  },
   name: "MenuFooter",
   data () {
-    return {};
+    return {
+      openQuestion:false
+    };
   },
   methods:{
     ListMenu(){
@@ -38,6 +44,12 @@ export default {
     },
     QuestionMenu(){
       console.log("question")
+      this.openQuestion = (this.openQuestion === true) ? false : true;
+    },
+
+    CloseModal(){
+      // this.openQuestion=false
+      console.log("fddkls")
       
     }
   }
@@ -82,6 +94,7 @@ export default {
       padding: 15px;
       font-size: 38px;
     }
+  
   }
 }
 // 元件

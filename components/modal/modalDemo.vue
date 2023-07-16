@@ -9,13 +9,13 @@
           .title-name
             slot(name="title") 
         .article
-          slot(name="article")
+          div(name="article") {{ modalArticle }}
       
         .footer
           .ok-btn 
-            div(@click="saveModal") {{"確定"}}
+            div(@click="SaveModal") {{"確定"}}
           .cancel-btn
-            div(@click="closeModal") {{"取消"}}
+            div(@click="CloseModal") {{"取消"}}
 </template>
 
 <script>
@@ -27,6 +27,10 @@ export default {
     visible:{
         type:Boolean,
         default:""
+    },
+    changeToLike:{
+      type:Object,
+      default:""
     }
   },
   data () {
@@ -39,15 +43,31 @@ export default {
     //     return this.visible2 = this.visible;
     // }
     // },
+    computed:{
+      modalArticle(){
+        console.log(this.changeToLike)
+        if(this.changeToLike.isLike === false){
+          return "加入我的最愛"
+        }
+        else return "確定要從我的最愛移除嗎?"
+      }
+    },
     methods:{
-      closeModal(){
+      CloseModal(){
         this.visible2=false;
-        this.$emit("closeModal",this.visible2)
+        this.$emit("CloseModal",this.visible2)
       },
-      saveModal(){
+      SaveModal(){
         this.visible2=false;
-        this.$emit("closeModal",this.visible2,true)
-        console.log("save")
+        if(this.changeToLike.isLike === true){
+          this.changeToLike.isLike = false
+          this.$emit("SaveModal",this.visible2,this.changeToLike)
+        }
+        else{ 
+          this.changeToLike.isLike = true
+          this.$emit("SaveModal",this.visible2,this.changeToLike)
+        }
+        // console.log("save")
         
       }
     }
@@ -77,6 +97,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 1000;
   }
   .block{
     // position: relative;
@@ -86,10 +107,10 @@ export default {
     border: 5px;
     border-radius: 20px;
     // box-shadow:0 4px 12px rgb(0 0 0 / 15%);
-    margin: 10px;
+    margin: 10px 3%;
     padding: 20px 0 0 0;
   }
-    .mask{
+  .mask{
     z-index: 0;
     position: fixed;
     top: 0;
@@ -97,7 +118,7 @@ export default {
     left: 0;
     right: 0;
     background-color: rgba(55, 55, 55, 0.6);
-    }
+  }
   .article{
     padding: 30px;
   }

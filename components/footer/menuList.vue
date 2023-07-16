@@ -12,23 +12,28 @@
   //-     a-menu-item(key="setting")
   //-       aIcon(type="setting")
   // ------------------------------------
-  .icon-type(:style="styleComputed")
-    aIcon.icon-size(type="menu", @click="OpenMenu")
-  div(v-if="visible", @click.stop="CloseModal")
-    .content-area
-      aIcon.icon-content(type="user", @click="MenuToUser")
-      aIcon.icon-content(type="gift", @click="MenuToGift")
-      aIcon.icon-content(type="setting", @click="MenuToSetting")
+  
+  .goback-area  
+    aIcon(v-if="goBack" type="swap-left" @click="GoBack")
+  .menu-article
+    .icon-type(:style="styleComputed")
+      aIcon.icon-size(type="menu", @click="OpenMenu")
+    div(v-if="visible", @click.stop="CloseModal")
+      .content-area
+        aIcon.icon-content(type="user", @click="MenuToUser")
+        aIcon.icon-content(type="gift", @click="MenuToGift")
+        aIcon.icon-content(type="setting", @click="MenuToSetting")
 </template>
 
 <script>
 export default {
   name: "MenuList",
-  // props:{
-  //   type:{
-      
-  //   }
-  // },
+  props:{
+    goBack:{
+      type:Boolean,
+      default:true
+    }
+  },
   data() {
     return {
       visible: false,
@@ -51,14 +56,17 @@ export default {
       this.visible = false;
     },
     MenuToUser() {
-      this.$router.push("/member/registerVerify");
+      this.$router.push("/member");
     },
     MenuToGift() {
-      this.$router.push("/member/registerVerify");
+      this.$router.push("/collect");
     },
     MenuToSetting() {
-      this.$router.push("/member/registerVerify");
+      this.$router.push("/setting");
     },
+    GoBack(){
+      this.$router.go(-1);
+    }
   },
 };
 </script>
@@ -66,12 +74,23 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #MenuList {
-  z-index: 999;
-  position: fixed;
-  display: flex;
-  top: 25px;
-  right: 20px;
-  justify-content: end;
+  // display: flex;
+  .goback-area  {
+    z-index: 999;
+    position: fixed;
+    display: flex;
+    top: 25px;
+    left: 20px;
+    font-size: 50px;
+  }
+  .menu-article{
+    z-index: 999;
+    position: fixed;
+    display: flex;
+    top: 25px;
+    right: 20px;
+    justify-content: end;
+  }
 }
 // 元件
 #MenuList {
@@ -80,27 +99,27 @@ export default {
     background-color: #f1fbe4;
     border-radius: 50%;
     border: 3px solid #8dda1e;
-    height: 65px;
+    height: 60px;
     padding: 10px;
-    width: 65px;
+    width: 60px;
     text-align: center;
     .icon-size {
-      font-size: 38px;
+      font-size:33px;
     }
   }
   .content-area {
     background-color: #f1fbe4;
     display: flex;
     flex-direction: column;
-    width: 65px;
+    width: 60px;
     border-radius: 50px;
     // margin-top: -65px;
-    padding-top: 60px;
+    padding-top: 48px;
     border: 3px solid #8dda1e;
 
     .icon-content {
-      font-size: 38px;
-      margin: 25px 0 25px 0;
+      font-size: 33px;
+      margin: 20px 0 20px 0;
     }
   }
 }

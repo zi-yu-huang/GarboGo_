@@ -1,8 +1,11 @@
 <template lang="pug">
-//- 請填寫頁面👈
+//- 註冊頁面
 #MemberRegister
   MenuList
-  RegisterStep1
+  RegisterStep1(v-if='current=="page1"' @DoneStep1="DoneStep1")
+  RegisterStep2(v-if='current =="page2"' @DoneStep2="DoneStep2")
+  RegisterStep3(v-if='current =="page3"' @DoneStep3="DoneStep3")
+  DoneVerify(v-if='current =="page4"')
   MenuFooter
 </template>
 
@@ -12,14 +15,22 @@ export default {
   components:{
     MenuList:()=>import("@/components/footer/menuList"),
     RegisterStep1:()=>import("@/components/register/registerStep1"),
+    RegisterStep2:()=>import("@/components/register/registerStep2"),
+    RegisterStep3:()=>import("@/components/register/registerStep3"),
+    DoneVerify:()=>import("@/components/register/doneVerify"),
     MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
-  name: "Member#MemberRegister",
+  name: "MemberRegister",
   layout: "private",
   data () {
-    return {};
+    return {
+      doneStep1:"",
+      doneStep2:"",
+      doneStep3:""
+    };
   },
   mounted () {
+    
     this.MountedActivated();
   },
   activated () {
@@ -31,12 +42,43 @@ export default {
   beforeDestroy () {
     this.DeactivatedDestory();
   },
+  computed:{
+    current() {
+      if (this.doneStep1 === "" && this.doneStep2 === "") {
+        return "page1";
+      }
+      if (this.doneStep1 === true && this.doneStep2 === "") {
+        return "page2";
+      }
+      if(this.doneStep2 ===true &&this.doneStep3 === ""){
+        return "page3";
+      }
+      return "page4"
+    }
+  },
   methods: {
     MountedActivated: debounce(function () {
       // init
     }, 10),
     DeactivatedDestory () {
       // destory
+    },
+    DoneStep1(val){
+      this.doneStep1 = val
+      console.log(this.doneStep1)
+      console.log(this.doneStep1,this.doneStep2,this.doneStep3)
+
+    },
+    DoneStep2(val){
+      this.doneStep2 = val
+      console.log(this.doneStep2) 
+    },
+    DoneStep3(val){
+      console.log("erjl")
+      
+      this.doneStep3 = val
+      console.log(this.doneStep3)
+      
     }
   }
 };

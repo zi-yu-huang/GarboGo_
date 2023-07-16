@@ -44,6 +44,14 @@ css: [
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    // extend(config, { isDev, isClient }) {
+    //   // 在這裡修改 webpack 的配置
+    //   // 添加自定義的 module.rules
+    //   config.module.rules.push({
+    //     test: /\.txt$/, // 需要處理的文件類型
+    //     use: 'raw-loader' // 使用的 loader
+    //   })
+    // },
     publicPath: '/assets/images/',
     transpile: [
       'vue2-google-maps'

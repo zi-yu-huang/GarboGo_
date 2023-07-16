@@ -1,24 +1,31 @@
 <template lang="pug">
 //- 修改手機號碼後傳送驗證碼👈
 #EditVerificationCode
-  .content
-    aFormModel.form-area(
-      ref="ruleForm"
-      :model="memberForm"
-      :rules="rules"
-      )
-      aFormModelItem(ref="verificationCode" prop="verificationCode")
-        aInput.input-font(
-          placeholder="請輸入簡訊驗證碼"
-          v-model="memberForm.verificationCode"
-          )
-      aFormModelItem
-        aButton.btn-area(type="primary" @click="OnSubmit") {{"送出"}}
+  .block-area(v-if="visible") 
+    .content
+      aFormModel.form-area(
+        ref="ruleForm"
+        :model="memberForm"
+        :rules="rules"
+        )
+        aFormModelItem(ref="verificationCode" prop="verificationCode")
+          aInput.input-font(
+            placeholder="請輸入簡訊驗證碼"
+            v-model="memberForm.verificationCode"
+            )
+        aFormModelItem
+          aButton.btn-area(type="primary" @click="OnSubmit") {{"送出"}}
 </template>
   
 <script>
 export default {
   name: "EditVerificationCode",
+  props:{
+    visible:{
+      type:Boolean,
+      default:""
+    }
+  },
   data () {
     return {
       memberForm:{
@@ -38,6 +45,7 @@ export default {
         if (valid) {
           console.log(this.memberForm.verificationCode)
           this.memberForm.verificationCode=""
+          this.$emit("verifyDone",true)
         }
       })
       
@@ -49,6 +57,17 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #EditVerificationCode {
+  .block-area{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .content{
     text-align: center;
     justify-content: center; 

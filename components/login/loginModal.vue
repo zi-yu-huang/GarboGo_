@@ -1,19 +1,19 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#RegisterStep1
+#LoginModal
   .content-area
-    .title-content 註冊
+    .title-content 登入
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
-      aFormModelItem(ref="memberName", prop="memberName")
-        aInput.input-font(
-            placeholder="王小明",
-            v-model="memberForm.memberName",
-            :maxLength="9"
-        )
       aFormModelItem(ref="memberPhone", prop="memberPhone")
         aInput.input-font(
             placeholder="0912345678",
             v-model="memberForm.memberPhone",
+            :maxLength="9"
+        )      
+      aFormModelItem(ref="memberPassword", prop="memberPassword")
+        aInput.input-font(
+            placeholder="王小明",
+            v-model="memberForm.memberPassword",
             :maxLength="9"
         )
       aFormModelItem
@@ -22,15 +22,15 @@
 
 <script>
 export default {
-  name: "RegisterStep1",
-  data() {
+  name: "LoginModal",
+  data () {
     return {
       memberForm: {
-        memberName: "",
+        memberPassword: "",
         memberPhone: "",
       },
       rules: {
-        memberName: [{ required: true, message: "不可為空" }],
+        memberPassword: [{ required: true, message: "不可為空" }],
         memberPhone: [
           { required: true, message: "不可為空" },
           { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
@@ -42,10 +42,10 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          console.log(this.memberForm.memberName);
-          this.memberForm.memberName = "";
+          console.log(this.memberForm.memberPassword);
+          this.memberForm.memberPassword = "";
           this.memberForm.memberPhone = "";
-          this.$emit("DoneStep1",true)
+          this.$router.push('/member/profile')
         }
       });
     },
@@ -55,7 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#RegisterStep1 {
+#LoginModal {
   .content-area {
     padding: 50px;
     display: flex;
@@ -66,8 +66,7 @@ export default {
   }
 }
 // 元件
-#RegisterStep1 {
-
+#LoginModal {
   .title-content {
     color: white;
     font-size: 35px;
@@ -75,7 +74,7 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
-    margin-bottom: 40px;
+    margin-bottom: 80px;
   }
   .btn-area {
     background-color: #241f1f;

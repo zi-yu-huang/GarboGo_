@@ -1,12 +1,12 @@
 <template lang="pug">
-//- 請填寫頁面👈
+//- 登入頁面
 #MemberIndex
   MenuList
   .article
     img(src="~/static/PENUP_20230623_161116.png", alt="logo")
     .btn-area
-      aButton.btn-text(type="default" value="large") {{"我是會員"}}
-      aButton.btn-text(type="default" value="large") {{"我還不是會員"}}
+      aButton.btn-text(type="default" value="large" @click="MemberLogin") {{"我是會員"}}
+      aButton.btn-text(type="default" value="large" @click="MemberRegister") {{"我還不是會員"}}
 
   MenuFooter
 </template>
@@ -41,6 +41,12 @@ export default {
     }, 10),
     DeactivatedDestory () {
       // destory
+    },
+    MemberLogin(){
+      this.$router.push("member/login")
+    },
+    MemberRegister(){
+      this.$router.push("member/register")
     }
   }
 };

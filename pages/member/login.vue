@@ -1,8 +1,8 @@
 <template lang="pug">
-//- 請填寫頁面👈
-#CollectIndex
-  p CollectIndex
+//- 登入頁面👈
+#Login
   MenuList
+  LoginModal
   MenuFooter
 </template>
 
@@ -11,9 +11,10 @@ import debounce from "lodash/debounce";
 export default {
   components:{
     MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter"),
+    LoginModal:()=>import("@/components/login/loginModal"),
+    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
-  name: "CollectIndex",
+  name: "Login",
   layout: "private",
   data () {
     return {};
@@ -43,9 +44,9 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#CollectIndex {
+#Login {
 }
 // 元件
-#CollectIndex {
+#Login {
 }
 </style>

@@ -34,6 +34,7 @@ export default {
       
     },
     ScanMenu(){
+      this.$router.push("/scan");
       console.log("scan")
       
     },

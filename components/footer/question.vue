@@ -1,10 +1,10 @@
 <template lang="pug">
-//- 請填寫功能描述👈
+//- ?modal
 #Question
   .menu-area
     .menu-title {{"垃圾容量"}}
     .menu
-      aIcon.trash.purple(type="delete" theme="filled" ) 
+      aIcon.trash.purple(type="delete" theme="twoTone" two-tone-color="#A005D7" ) 
       div {{ "100% 已關閉" }}
       aIcon.trash.red(type="delete" theme="filled" ) 
       div {{ "75% ~ 90%" }}
@@ -32,8 +32,8 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     height: 300px;
-    bottom: 100px;
-    width: 80%;
+    bottom: 90px;
+    width: 85%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -51,7 +51,7 @@ export default {
     padding: 8px 16px;
     display: grid;
     gap: 16px;
-    grid-template-columns: 50px 1fr;
+    grid-template-columns: 60px 1fr;
     font-size: 22px;
     align-content: center;
   }
@@ -60,13 +60,15 @@ export default {
 #Question {
   .menu-title{
     font-family: Inter;
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 800;
     line-height: 28px;
     letter-spacing: 0em;
     text-align: center;
-    -webkit-text-stroke: 2px black;
     color: white;
+  }
+  .menu{
+    color: black;
   }
   .trash{
     font-size: 36px;

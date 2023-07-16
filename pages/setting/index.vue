@@ -53,6 +53,7 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #SettingIndex {
+  background-color: rgba(170, 216, 105, 0.8);
   .article{
     padding:40px 30px 80px 30px;
     height: 100vh;

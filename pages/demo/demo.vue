@@ -9,7 +9,7 @@
   //- aIcon(type="heart" :style="{color:iconColor,theme:filled}")
   aIcon.icon-area(type="heart" :theme="iconTheme" :style="{color:iconColor}" @click="OpenModal")
   //- aButton(type=primary @click="OpenModal") {{"open"}}
-  modal(:visible="visible"  @CloseModal="CloseModal")
+  modalDemo(:visible="visible"  @CloseModal="CloseModal")
     template(v-slot:article) {{"加入我的最愛"}}
 
 </template>
@@ -23,7 +23,7 @@ export default {
   EditVerificationCode: () => import("@/components/profile/EditVerificationCode"),
   MenuFooter:()=> import("@/components/footer/MenuFooter"),
   MenuList:()=>import("@/components/footer/menuList"),
-  modal:()=>import("@/components/modal/modalDemo")
+  modalDemo:()=>import("@/components/modal/modalDemo")
   },
   data () {
     return {

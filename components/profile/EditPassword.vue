@@ -1,37 +1,44 @@
 <template lang="pug">
 //- 修改密碼👈
 #EditPassword
-  .content
-    aFormModel.form-area(
-      ref="ruleForm"
-      :model="memberForm"
-      :rules="rules"
-      )
-      aFormModelItem(ref="oldPassword" prop="oldPassword")
-        aInput.input-font(
-          placeholder="請輸入原密碼"
-          v-model="memberForm.oldPassword"
-          :maxLength="9"
-          )
-      aFormModelItem(ref="newPassword" prop="newPassword")
-        aInput.input-font(
-          placeholder="請輸入新密碼"
-          v-model="memberForm.newPassword"
-          :maxLength="9"
-          )
-      aFormModelItem(ref="newPasswordAgain" prop="newPasswordAgain")
-        aInput.input-font(
-          placeholder="請再次輸入新密碼"
-          v-model="memberForm.newPasswordAgain"
-          :maxLength="9"
-          )
-      aFormModelItem
-        aButton.btn-area(type="primary" @click="OnSubmit") {{"確認 "}}
+  .block-area(v-if="visible")
+    .content
+      aFormModel.form-area(
+        ref="ruleForm"
+        :model="memberForm"
+        :rules="rules"
+        )
+        aFormModelItem(ref="oldPassword" prop="oldPassword")
+          aInput.input-font(
+            placeholder="請輸入原密碼"
+            v-model="memberForm.oldPassword"
+            :maxLength="9"
+            )
+        aFormModelItem(ref="newPassword" prop="newPassword")
+          aInput.input-font(
+            placeholder="請輸入新密碼"
+            v-model="memberForm.newPassword"
+            :maxLength="9"
+            )
+        aFormModelItem(ref="newPasswordAgain" prop="newPasswordAgain")
+          aInput.input-font(
+            placeholder="請再次輸入新密碼"
+            v-model="memberForm.newPasswordAgain"
+            :maxLength="9"
+            )
+        aFormModelItem
+          aButton.btn-area(type="primary" @click="OnSubmit") {{"確認 "}}
 </template>
 
 <script>
 export default {
   name: "EditPassword",
+  props:{
+    visible:{
+      type:Boolean,
+      default:""
+    }
+  },
   data () {
     return {
       memberForm:{
@@ -72,6 +79,7 @@ export default {
           this.memberForm.oldPassword=""
           this.memberForm.newPassword=""
           this.memberForm.newPasswordAgain=""
+          this.$emit("donePassword",true)
         }
       })
     }
@@ -82,6 +90,17 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #EditPassword {
+  .block-area{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .content{
     text-align: center;
     justify-content: center; 

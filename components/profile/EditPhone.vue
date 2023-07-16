@@ -1,25 +1,32 @@
 <template lang="pug">
 //- 修改手機電話👈
 #EditPhone
-  .content
-    aFormModel.form-area(
-      ref="ruleForm"
-      :model="memberForm"
-      :rules="rules"
-      )
-      aFormModelItem(ref="memberPhone" prop="memberPhone")
-        aInput.input-font(
-          placeholder="請輸入手機號碼"
-          v-model="memberForm.memberPhone"
-          :maxLength="9"
-          )
-      aFormModelItem
-        aButton.btn-area(type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
+  .block-area(v-if="visible")
+    .content
+      aFormModel.form-area(
+        ref="ruleForm"
+        :model="memberForm"
+        :rules="rules"
+        )
+        aFormModelItem(ref="memberPhone" prop="memberPhone")
+          aInput.input-font(
+            placeholder="請輸入手機號碼"
+            v-model="memberForm.memberPhone"
+            :maxLength="9"
+            )
+        aFormModelItem
+          aButton.btn-area(type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
 </template>
 
 <script>
 export default {
   name: "EditPhone",
+  props:{
+    visible:{
+      type:Boolean,
+      default:""
+    }
+  },
   data () {
     return {
       memberForm:{
@@ -40,6 +47,7 @@ export default {
         if (valid) {
           console.log(this.memberForm.memberPhone)
           this.memberForm.memberPhone=""
+          this.$emit("getVerify",true)
         }
       })
       
@@ -51,6 +59,17 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #EditPhone {
+  .block-area{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .content{
     text-align: center;
     justify-content: center; 

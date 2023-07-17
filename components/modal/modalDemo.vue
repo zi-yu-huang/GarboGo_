@@ -45,7 +45,6 @@ export default {
     // },
     computed:{
       modalArticle(){
-        console.log(this.changeToLike)
         if(this.changeToLike.isLike === false){
           return "加入我的最愛"
         }
@@ -67,8 +66,6 @@ export default {
           this.changeToLike.isLike = true
           this.$emit("SaveModal",this.visible2,this.changeToLike)
         }
-        // console.log("save")
-        
       }
     }
 };

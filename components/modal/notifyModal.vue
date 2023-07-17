@@ -1,11 +1,15 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #NotifyModal
-  p NotifyModal
   div(v-if="notifyVisible")
-    div.mask
-    div.block-area
+    div.mask()
+    div.block-area(@click="CloseModal")
       div.block
+        .setting-content(@click.stop="DontClose")
+            .text-area {{"垃圾桶清空通知"}}
+            aSwitch.text-area(:defaultChecked="notifyList.notifyTrashClear" @change="ChangeToClear")
+            .text-area {{"快不能丟的通知"}}
+            aSwitch.text-area(:defaultChecked="notifyList.notifyDontTrash" @change="ChangeToDontTrash")
 </template>
 
 <script>
@@ -15,10 +19,29 @@ export default {
     notifyVisible:{
       type:Boolean,
       default:""
+    },
+    notifyList:{
+      type:Object,
+      default:""
     }
   },
   data () {
     return {};
+  },
+  methods:{
+    CloseModal(){
+      this.$emit("CloseNotifyModal",false)
+    },
+    DontClose(){
+    },
+    ChangeToClear(){
+      this.notifyList.notifyTrashClear=!this.notifyList.notifyTrashClear
+      this.$emit("ChangeSwitch",this.notifyList)
+    },
+    ChangeToDontTrash(){
+      this.notifyList.notifyDontTrash=!this.notifyList.notifyDontTrash
+      this.$emit("ChangeSwitch",this.notifyList)
+    }
   }
 };
 </script>
@@ -47,7 +70,6 @@ export default {
     border-radius: 20px;
     // box-shadow:0 4px 12px rgb(0 0 0 / 15%);
     margin: 10px 3%;
-    padding: 20px 0 0 0;
   }
   .mask{
     z-index: 0;
@@ -58,6 +80,18 @@ export default {
     right: 0;
     background-color: rgba(55, 55, 55, 0.6);
   }
+  .setting-content{
+        padding: 50px 50px;
+        font-family: Inter;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: black;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 25px;
+      }
 }
 // 元件
 #NotifyModal {

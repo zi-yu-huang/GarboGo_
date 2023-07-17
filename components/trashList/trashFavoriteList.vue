@@ -24,7 +24,7 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  NotifyModal(:notifyVisible="notifyVisible" )
+  NotifyModal(:notifyVisible="notifyVisible" :notifyList="notifyList" @CloseNotifyModal="CloseNotifyModal" @ChangeSwitch="ChangeSwitch")
 </template>
 
 <script>
@@ -32,27 +32,38 @@ export default {
   name: "TrashFavoriteList",
   components: {
     modalDemo: () => import("@/components/modal/modalDemo"),
-    NotifyModal:()=>import('@/components/trashList/trashFavoriteList')
+    NotifyModal:()=>import('@/components/modal/notifyModal')
   },
   data() {
     return {
       notifyVisible:false,
       visible: false,
       changeToLike: {
-        street: "",
+        id: "",
         isLike: "",
+      },
+      notifyList:{
+        id:"",
+        notifyTrashClear: "",
+        notifyDontTrash:""
       },
       likeList: [
         {
           region: "北區",
           streets: [
             {
+              id:"1",
               street: "三民路一段1342號",
               isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
             },
             {
+              id:"2",
               street: "三民路一段101號",
               isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
             },
           ],
         },
@@ -60,12 +71,18 @@ export default {
           region: "南區",
           streets: [
             {
+              id:"3",
               street: "三民路一段142號",
               isLike: false,
+              notifyTrashClear: true,
+              notifyDontTrash:true
             },
             {
+              id:"4",
               street: "三民路一段12201號",
               isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:false
             },
           ],
         },
@@ -83,9 +100,7 @@ export default {
   },
   methods: {
     OpenModal(street) {
-      console.log(street);
-
-      this.changeToLike.street = street.street;
+      this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
       this.visible = true;
     },
@@ -96,16 +111,33 @@ export default {
       for (let i = 0; i < this.likeList.length; i++) {
         const streets = this.likeList[i].streets;
         for (let j = 0; j < streets.length; j++) {
-          if (streets[j].street === changeToLike.street) {
+          if (streets[j].id === changeToLike.id) {
             streets[j].isLike = changeToLike.isLike;
           }
         }
       }
       this.visible = visible;
     },
-    OpenNotifyModal(){
-      console.log()
+    OpenNotifyModal(street){
+      this.notifyList.id=street.id
+      this.notifyList.notifyTrashClear=street.notifyTrashClear
+      this.notifyList.notifyDontTrash=street.notifyDontTrash
+      
       this.notifyVisible =true
+    },
+    CloseNotifyModal(val){
+      this.notifyVisible = val
+    },
+    ChangeSwitch(list){
+      for(let i=0;i<this.likeList.length;i++){
+        const streets = this.likeList[i].streets;
+        for(let j=0;j<streets.length;j++){
+          if(streets[j].id ===list.id){
+            streets[j].notifyDontTrash = list.notifyDontTrash
+            streets[j].notifyTrashClear = list.notifyTrashClear
+          }
+        }
+      }
     }
   },
 };

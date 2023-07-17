@@ -39,7 +39,6 @@ export default {
     CloseModal(val,like){
         this.visible= val;
         if(like == true){
-        // console.log("change",this.$refs.icon)
         this.iconColor="#E70000"
         this.iconTheme="filled"
         }

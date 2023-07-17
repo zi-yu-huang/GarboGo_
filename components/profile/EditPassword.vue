@@ -75,7 +75,6 @@ export default {
     OnSubmit(){
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          console.log(this.memberForm.newPassword)
           this.memberForm.oldPassword=""
           this.memberForm.newPassword=""
           this.memberForm.newPasswordAgain=""

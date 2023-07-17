@@ -65,19 +65,14 @@ export default {
     },
     DoneStep1(val){
       this.doneStep1 = val
-      console.log(this.doneStep1)
-      console.log(this.doneStep1,this.doneStep2,this.doneStep3)
 
     },
     DoneStep2(val){
       this.doneStep2 = val
-      console.log(this.doneStep2) 
     },
     DoneStep3(val){
-      console.log("erjl")
       
       this.doneStep3 = val
-      console.log(this.doneStep3)
       
     }
   }

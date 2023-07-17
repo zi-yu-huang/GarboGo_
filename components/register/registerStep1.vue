@@ -42,7 +42,6 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          console.log(this.memberForm.memberName);
           this.memberForm.memberName = "";
           this.memberForm.memberPhone = "";
           this.$emit("DoneStep1",true)

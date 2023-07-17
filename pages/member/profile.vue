@@ -100,17 +100,13 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #MemberProfile {
+  background-color: white;
   .user-area{
   background-color: white;
   padding-bottom: 20px;
 
 }
-    // background: radial-gradient(circle at 50% -10px, transparent 0, transparent 39px, #000 40px, #000);
-  
-  .edit-area{
-    // background-color: rgba(115, 170, 36, 0.8);
 
-  }
   .btn-content{
     bottom: 100px;
     position: fixed;

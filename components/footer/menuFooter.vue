@@ -25,26 +25,19 @@ export default {
   methods:{
     ListMenu(){
       this.$router.push("/list");
-      console.log("list")
-      
     },
     HeartMenu(){
-      this.$router.push("/favorite");
-      console.log("heart")
-      
+      this.$router.push("/favorite");      
     },
     ScanMenu(){
       this.$router.push("/scan");
-      console.log("scan")
       
     },
     EnvironmentMenu(){
       this.$router.push("/");
-      console.log("bell")
       
     },
     QuestionMenu(){
-      console.log("question")
       this.openQuestion = (this.openQuestion === true) ? false : true;
     },
 

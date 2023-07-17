@@ -42,7 +42,6 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          console.log(this.memberForm.memberPassword);
           this.memberForm.memberPassword = "";
           this.memberForm.memberPhone = "";
           this.$router.push('/member/profile')

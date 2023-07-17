@@ -34,7 +34,6 @@ export default {
     OnSubmit(){
       this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-          console.log(this.memberForm.memberVerify);
           this.memberForm.memberVerify = "";
           this.$emit("DoneStep2",true)
           }

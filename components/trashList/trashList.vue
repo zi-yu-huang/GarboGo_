@@ -12,7 +12,6 @@
           style="color: red",
           @click="OpenModal(street)"
         )
-        //- aIcon.icon-area(type="heart" :theme="iconTheme" :style="{color:iconColor}" @click="OpenModal")
   modalDemo(
     :visible="visible",
     :changeToLike="changeToLike",
@@ -31,7 +30,7 @@ export default {
     return {
       visible: false,
       changeToLike: {
-        street: "",
+        id: "",
         isLike: "",
       },
       likeList: [
@@ -39,12 +38,18 @@ export default {
           region: "北區",
           streets: [
             {
+              id:"1",
               street: "三民路一段1342號",
               isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
             },
             {
+              id:"2",
               street: "三民路一段101號",
               isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
             },
           ],
         },
@@ -52,12 +57,18 @@ export default {
           region: "南區",
           streets: [
             {
+              id:"3",
               street: "三民路一段142號",
               isLike: false,
+              notifyTrashClear: true,
+              notifyDontTrash:true
             },
             {
+              id:"4",
               street: "三民路一段12201號",
               isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:false
             },
           ],
         },
@@ -75,46 +86,22 @@ export default {
   },
   methods: {
     OpenModal(street) {
-      console.log(street);
-
-      this.changeToLike.street = street.street;
+      this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
-      // if(street.isLike ===true){
-      //   }
-      //   else{
-      //     street.isLike = true
-      //     this.changeToLike = true
-      //   }
       this.visible = true;
     },
-    CloseModal(val, like) {
+    CloseModal(val) {
       this.visible = val;
     },
     SaveModal(visible, changeToLike) {
       for (let i = 0; i < this.likeList.length; i++) {
         const streets = this.likeList[i].streets;
         for (let j = 0; j < streets.length; j++) {
-          if (streets[j].street === changeToLike.street) {
+          if (streets[j].id === changeToLike.id) {
             streets[j].isLike = changeToLike.isLike;
           }
         }
       }
-      // for(let j=0;j<i.streets;j++){
-      //   console.log(j)
-
-      // }
-      // for(j in this.likeList[i].street){
-      //   console.log(j)
-
-      // }
-      // for(item in this.likeList.street){
-
-      // }
-      // this.changeToLike = isLike;
-      // this.$refs.likeRef.forEach((ref) => {
-      //   ref.theme = this.isLike(isLike);
-      // });
-      // this.isLike();
       this.visible = visible;
     },
   },

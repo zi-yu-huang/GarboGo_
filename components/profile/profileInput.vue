@@ -58,20 +58,16 @@ export default {
   },
   methods:{
     EditName(){
-      console.log("dfkjlsj")
       
     },
     LogOut(){
       this.$router.push("/member")
-      console.log()
     },
     EditPhone(){
       this.$emit("openPhone",true)
     },
     EditPassword(){
       this.$emit("openPassword",true)
-
-      console.log()
       
     }
   }
@@ -81,10 +77,12 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #ProfileInput {
+  background-color: rgba(115, 170, 36, 0.8);;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  border-radius: 60px 60px 0 0 ;
   // width: 75%;
   .form-grid{
     display: grid;

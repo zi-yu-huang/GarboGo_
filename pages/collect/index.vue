@@ -1,8 +1,8 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #CollectIndex
-  p CollectIndex
   MenuList
+  CollectTable
   MenuFooter
 </template>
 
@@ -12,6 +12,7 @@ export default {
   components:{
     MenuList:()=>import("@/components/footer/menuList"),
     MenuFooter:()=>import("@/components/footer/MenuFooter"),
+    CollectTable:()=>import("@/components/collect/collectTable")
   },
   name: "CollectIndex",
   layout: "private",
@@ -44,6 +45,8 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #CollectIndex {
+  background-color: rgba(170, 216, 105, 0.8);
+  height: 100vh;
 }
 // 元件
 #CollectIndex {

@@ -1,20 +1,18 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#IndexPage
+#DemoMap
+  TrashMap
 
 </template>
 
 <script>
 export default {
-  layout:'default',
-
+  name: "DemoMap",
   components:{
+    TrashMap:()=>import("@/components/map/trashMap")
   },
-  name: "IndexPage",
-
   data () {
     return {
-
     };
   }
 };
@@ -22,9 +20,9 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#IndexPage {
+#DemoMap {
 }
 // 元件
-#IndexPage {
+#DemoMap {
 }
 </style>

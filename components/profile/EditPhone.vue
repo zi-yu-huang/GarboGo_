@@ -1,6 +1,6 @@
 <template lang="pug">
-//- 修改密碼👈
-#EditPassword
+//- 修改手機電話👈
+#EditPhone
   .block-area(v-if="visible")
     .content
       aFormModel.form-area(
@@ -8,31 +8,19 @@
         :model="memberForm"
         :rules="rules"
         )
-        aFormModelItem(ref="oldPassword" prop="oldPassword")
+        aFormModelItem(ref="memberPhone" prop="memberPhone")
           aInput.input-font(
-            placeholder="請輸入原密碼"
-            v-model="memberForm.oldPassword"
-            :maxLength="9"
-            )
-        aFormModelItem(ref="newPassword" prop="newPassword")
-          aInput.input-font(
-            placeholder="請輸入新密碼"
-            v-model="memberForm.newPassword"
-            :maxLength="9"
-            )
-        aFormModelItem(ref="newPasswordAgain" prop="newPasswordAgain")
-          aInput.input-font(
-            placeholder="請再次輸入新密碼"
-            v-model="memberForm.newPasswordAgain"
+            placeholder="請輸入新手機號碼"
+            v-model="memberForm.memberPhone"
             :maxLength="9"
             )
         aFormModelItem
-          aButton.btn-area(type="primary" @click="OnSubmit") {{"確認 "}}
+          aButton.btn-area(type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
 </template>
 
 <script>
 export default {
-  name: "EditPassword",
+  name: "EditPhone",
   props:{
     visible:{
       type:Boolean,
@@ -41,32 +29,15 @@ export default {
   },
   data () {
     return {
+
       memberForm:{
-        oldPassword: "",
-        newPassword: "",
-        newPasswordAgain:""
+        memberPhone: "",
       },
       rules: {
-        oldPassword: [
+        memberPhone: [
           { required: true,message: "不可為空"},
-          { validator: this.rValidataPhoneFormat, trigger: "blur" }
-        ],
-        newPassword: [
-          { required: true,message: "不可為空"},
-          { validator: this.rValidataPhoneFormat, trigger: "blur" }
-        ],        
-        newPasswordAgain: [
-          { required: true,message: "不可為空"},
-          { validator: (rule, value, cbfn) => {
-              const form = this.memberForm;
-              if (value && value !== form.newPassword) {
-                cbfn("兩次密碼不一致!");
-              } else {
-                cbfn();
-              }
-            },
-            trigger: "blur"
-          }
+          { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
+          // { validator: this.rValidataPhoneFormat, trigger: "blur" }
         ]
       }
     };
@@ -75,20 +46,19 @@ export default {
     OnSubmit(){
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.memberForm.oldPassword=""
-          this.memberForm.newPassword=""
-          this.memberForm.newPasswordAgain=""
-          this.$emit("donePassword",true)
+          console.log(this.memberForm.memberPhone)
+          this.memberForm.memberPhone=""
+          this.$emit("getVerify",true)
         }
       })
-    }
+    },
   }
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
-#EditPassword {
+#EditPhone {
   .block-area{
     z-index: 999;
     position: fixed;
@@ -129,7 +99,7 @@ export default {
   }
 }
 // 元件
-#EditPassword {
+#EditPhone {
   .ant-row{
     margin: 0 !important;
   }
@@ -143,12 +113,12 @@ export default {
     padding: 0px 27px;
 
     .input-font{
-      margin: 10px 0;
     height: 50px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-    }
+
+  }
   }
 }
 </style>

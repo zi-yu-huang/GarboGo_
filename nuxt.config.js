@@ -22,11 +22,13 @@ css: [
     {
       src: 'ant-design-vue/dist/antd.less',
       lang: 'less'
-    }    
+    } ,
+    '@assets/css/backgroundColor.css'
  ],
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
+    '~/plugins/vue2-google-maps.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -42,6 +44,19 @@ css: [
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config, { isClient }) {
+      if (isClient) {
+        config.module.rules.push({
+          test: /\.js$/,
+          loader: 'babel-loader',
+          exclude: /node_modules\/(?!vue-qrcode-reader)/, // Exclude other node_modules except vue-qrcode-reader
+        });
+      }
+    },
+    publicPath: '/assets/images/',
+    transpile: [
+      'vue2-google-maps'
+    ],
     loaders: {
       less: {
         lessOptions: {

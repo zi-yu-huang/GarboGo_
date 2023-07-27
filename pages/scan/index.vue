@@ -1,220 +1,189 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #Scan
-  //-  .scan-mask
-  //- .saoma
-  qrcode-stream(@decode="OnDecode" @init="OnInit" style='height:300px;width:300px')
-  div(v-if="qrcodeData")
-    p {{ qrcpdeData }}
-      //- div
-      //-   .qr-scanner
-      //-   .box 
-      //-     .line 
-      //-     .angle 
-      //- qrcode-stream(class="QrcodeStream" @decode="onDecode" @init="OnInit")
+  MenuList
+  .sucess-mask(v-if="sucess")
+    .sucess-text {{ "已成功連線至垃圾桶!" }}
+  .alert-area(v-if="isError")
+    aAlert.alert-text(message="連線失敗", type="error", description=" ", show-icon) 
+  div(v-if="!sucess")
+    .scan-mask
+    .saoma
+      .camera-mask
+      qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
+
+  MenuFooter
 </template>
 
-<script> 
+<script>
 import debounce from "lodash/debounce";
-import { QrcodeStream } from 'vue-qrcode-reader';
+import { QrcodeStream } from "vue-qrcode-reader";
 export default {
-  layout:'default',
-  components:{
+  components: {
     QrcodeStream,
+    MenuList: () => import("@/components/footer/menuList"),
+    MenuFooter: () => import("@/components/footer/MenuFooter"),
   },
   name: "Scan",
   layout: "private",
-  data () {
+  data() {
     return {
-      qrcodeData: null,
-      result:'',//掃碼結果訊息
-      error:'',//錯誤訊息
+      sucess: false,
+      isError: false,
+      result: "", //掃碼結果訊息
+      error: "", //錯誤訊息
     };
   },
-  mounted () {
+  mounted() {
     this.MountedActivated();
   },
-  activated () {
+  activated() {
     this.MountedActivated();
   },
-  deactivated () {
+  deactivated() {
     this.DeactivatedDestory();
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.DeactivatedDestory();
   },
   methods: {
     MountedActivated: debounce(function () {
       // init
     }, 10),
-    DeactivatedDestory () {
+    DeactivatedDestory() {
       // destory
     },
-    // onDecode(url){
-      // if (url) {
-      //   this.qrcodeData = url
-      // }
-
-      // this.result = result
-      // window.location.href=url
-      // this.$router.push(result)
-    // },
-    // OnInit(promise){
-    //   promise
-    //     .then(console.log)
-    //     .catch(console.error)
-    // }
-    OnDecode(result){
-      if(result){
-        // this.$router.push("/")
-        // this.$router.push({
-        //   path:'/',
-        //   query:{
-        //     code:result,
-        //   }
-        // })
-        console.log("sucess")
+    OnDecode(result) {
+      if (result==='https://1x.antdv.com/components/alert-cn/') {
+        this.sucess = true;
+        console.log(result)
         
+        this.result = result;
+        console.log("sucess");
+      } else {
+        this.isError = true;
+        console.log("error");
       }
-      else console.log("false")
-      
+
+      // window.location.href=this.result
+      // this.$router.push(result)
     },
-    async OnInit(promise){
-      try{
-        await promise
-      }catch (error){
-        if(error.name ==="NotAllowedError"){
-          window.alert('相機訪問權限')
-          this.$router.push({path:'/'})
-        }else if(error.name ==="NotFoundError"){
-          this.$router.push({path:'/'})
-          window.alert('沒有攝像頭')
-        }else if(error.name ==="NotSupportedError"){
-          this.$router.push({path:'/'})
-          window.alert('需安全上下文')
-        }else if(error.name ==="NotReadableError"){
-          this.$router.push({path:'/'})
-          window.alert('相機被佔用')
-        }else if(error.name ==="OverconstrainedError"){
-          this.$router.push({path:'/'})
-          window.alert('攝像頭不合適')
-        }else if(error.name ==="StreamApiNotSupportedError"){
-          this.$router.push({path:'/'})
-          window.alert('瀏覽器不支援')
+    async OnInit(promise) {
+      try {
+        await promise;
+      } catch (error) {
+        if (error.name === "NotAllowedError") {
+          window.alert("相機訪問權限");
+          this.$router.push({ path: "/" });
+        } else if (error.name === "NotFoundError") {
+          this.$router.push({ path: "/" });
+          window.alert("沒有攝像頭");
+        } else if (error.name === "NotSupportedError") {
+          this.$router.push({ path: "/" });
+          window.alert("需安全上下文");
+        } else if (error.name === "NotReadableError") {
+          this.$router.push({ path: "/" });
+          window.alert("相機被佔用");
+        } else if (error.name === "OverconstrainedError") {
+          this.$router.push({ path: "/" });
+          window.alert("攝像頭不合適");
+        } else if (error.name === "StreamApiNotSupportedError") {
+          this.$router.push({ path: "/" });
+          window.alert("瀏覽器不支援");
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
-// #Scan {
-//   .scan-mask{
-//     z-index: 0;
-//     position: fixed;
-//     top: 0;
-//     bottom: 0;
-//     left: 0;
-//     right: 0;
-//     background-color: rgba(55, 55, 55, 0.6);
-//   }
-//   .saoma{
-//     width: 100vw;
-//     height: 100vh;
-//   }
-//   .qr-scanner{
-//     background-image:
-//       linear-gradient(0deg,
-//         transparent 24%,
-//         rgba(32,255,77,0.1) 25%,
-//         rgba(32,255,77,0.1) 26%,
-//         transparent 27%,
-//         transparent 74%,
-//         rgba(32,255,77,0.1)75%,
-//         rgba(32,255,77,0.1) 76%,
-//         transparent 77%,
-//         transparent),
-//       linear-gradient(90deg,
-//         transparent 24%,
-//         rgba(32,255,77,0.1) 25%,
-//         rgba(32,255,77,0.1) 26%,
-//         transparent 27%,
-//         transparent 74%,
-//         rgba(32,255,77,0.1)75%,
-//         rgba(32,255,77,0.1) 76%,
-//         transparent 77%,
-//         transparent);
-//       background-size: 3rem 3rem;
-//       background-position: -1rem -1rem;
-//       width :100%;
-//       height: 100vh;
-//       height: 100vh;
-//       position: relative;
-//       background-color: #1110;
-//   }
-//   .qr-scanner .box{
-//     width:213px;
-//     height: 213px;
-//     position: absolute;
-//     left: 50%;
-//     top:50%;
-//     transform: translate(-50%,-50%);
-//     overflow: hidden;
-//     border:0.1rem solid rgba(0,255,51,0.2);
-//   }
-//   .qr-scanner .line{
-//     height: calc(100% - 2px);
-//     width: 100%;
-//     background: linear-gradient(180deg,rgba(0,255,51,0) 43%,#00ff33 211%);
-//     border-bottom: 3px solid #00ff33;
-//     transform:translateY(-100%);
-//     animation:rader-beam 2s infinite alternate;
-//     animation-timing-function:cubic-bezier(0.53,0,0.43,0.99);
-//     animation-delay: 1.4s;
-//   }
-//   .qr-scanner .box:after,
-//   .qr-scanner .box::before,
-//   .qr-scanner .angle::after,
-//   .qr-scanner .angle::before{
-//     content:'';
-//     display: block;
-//     position:absolute;
-//     width: 3vw;
-//     height: 3vw;
-//     border:0.2rem solid transparent;
-//   }
-//   .qr-scanner .box::after,
-//   .qr-scanner .box::before{
-//     top: 0;
-//     border-top-color: #00ff33;
-//   }
-//   .qr-scanner .angle:after,
-//   .qr-scanner .angle::before{
-//     bottom: 0;
-//     border-bottom-color: #00ff33;
-//   }
-//   .qr-scanner .box::before,
-//   .qr-scanner .angle::before{
-//     left: 0;
-//     border-left-color: #00ff33;
-//   }
-//   .qr-scanner .box::after,
-//   .qr-scanner .angle::after{
-//     right: 0;
-//     border-right-color: #00ff33;
-//   }
-//   @keyframes rader-beam{
-//     0%{
-//       transform: translateY(-100%);
-//     }
-//     100%{
-//       transform: translateY(0);
-//     }
-//   }
-// }
-// // 元件
-// #Scan {
-// }
+#Scan {
+  .scan-mask {
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(55, 55, 55, 0.6);
+  }
+  .saoma {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .camera-mask {
+    z-index: 999;
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    border-image-source: radial-gradient(
+      57% 75%,
+      transparent 0px,
+      transparent 100%,
+      white 100%
+    );
+    border-image-slice: 1;
+    border-width: 10px;
+    border-style: solid;
+  }
+  .sucess-mask {
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .sucess-text {
+    border-image-source: radial-gradient(
+      57% 75%,
+      transparent 0px,
+      transparent 100%,
+      black 100%
+    );
+    border-image-slice: 1;
+    border-width: 10px;
+    border-style: solid;
+    width: 280px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #8cba4a;
+    font-weight: 700;
+  }
+  .alert-area {
+    z-index: 999;
+    position: absolute;
+    width: 100vw;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+// 元件
+#Scan {
+  .alert-text {
+    width: 169px;
+    height: 56px;
+    justify-content: flex-start;
+    background-color: white;
+    border: 1px solid white;
+    display: flex;
+  }
+}
+// .ant-alert-with-description 
+.ant-alert-message {
+  color: #d30606 !important;
+}
 </style>
+  
+  

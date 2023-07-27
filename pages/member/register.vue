@@ -1,24 +1,21 @@
 <template lang="pug">
 //- 註冊頁面
 #MemberRegister
-  MenuList
   RegisterStep1(v-if='current=="page1"' @DoneStep1="DoneStep1")
   RegisterStep2(v-if='current =="page2"' @DoneStep2="DoneStep2")
   RegisterStep3(v-if='current =="page3"' @DoneStep3="DoneStep3")
   DoneVerify(v-if='current =="page4"')
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
     RegisterStep1:()=>import("@/components/register/registerStep1"),
     RegisterStep2:()=>import("@/components/register/registerStep2"),
     RegisterStep3:()=>import("@/components/register/registerStep3"),
     DoneVerify:()=>import("@/components/register/doneVerify"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
   name: "MemberRegister",
   layout: "private",

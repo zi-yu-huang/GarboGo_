@@ -1,7 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #MemberProfile
-  MenuList
   .user-area
     .circle-area
       aIcon.icon-area(type="user")
@@ -11,7 +10,6 @@
     .btn-content
       aButton.btn-area(type=primary @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
-  MenuFooter
   EditPhone(:visible = "openPhone" @getVerify="GetVerify")
   EditVerify(:visible="getVerify" @verifyDone="VerifyDone")
   EditPassword(:visible="openPassword" @donePassword="DonePassword")
@@ -20,9 +18,8 @@
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter"),
     ProfileInput:()=>import("@/components/profile/profileInput"),
     EditPhone:()=>import("@/components/profile/EditPhone"),
     EditVerify:()=>import("@/components/profile/EditVerificationCode"),
@@ -109,7 +106,7 @@ export default {
 
   .btn-content{
     bottom: 100px;
-    position: fixed;
+    position: absolute;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -147,9 +144,10 @@ export default {
   
   .btn-area{
     border-radius: 30px;
-    height: 45px;
+    height: 47px;
     color: black;
     font-size: 20px;
+    padding: 0 10px;
     border: 3px solid #68B000;
   }
 }

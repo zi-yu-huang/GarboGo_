@@ -12,7 +12,7 @@
           style="color: red",
           @click="OpenModal(street)"
         )
-  modalDemo(
+  LikeModal(
     :visible="visible",
     :changeToLike="changeToLike",
     @CloseModal="CloseModal",
@@ -24,7 +24,7 @@
 export default {
   name: "TrashList",
   components: {
-    modalDemo: () => import("@/components/modal/modalDemo"),
+    LikeModal: () => import("@/components/modal/likeModal"),
   },
   data() {
     return {
@@ -72,6 +72,7 @@ export default {
             },
           ],
         },
+        
       ],
     };
   },

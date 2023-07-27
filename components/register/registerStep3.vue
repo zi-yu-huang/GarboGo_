@@ -101,6 +101,14 @@ export default {
     border-radius: 14px;
     height: 50px;
   }
+
+  .input-font{
+    height: 50px;
+    border-radius: 14px;
+    font-size: 20px;
+    padding: 0 20px;
+
+  }
 }
 </style>
     

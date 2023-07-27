@@ -10,7 +10,7 @@
         )
         aFormModelItem(ref="memberPhone" prop="memberPhone")
           aInput.input-font(
-            placeholder="請輸入手機號碼"
+            placeholder="請輸入新手機號碼"
             v-model="memberForm.memberPhone"
             :maxLength="9"
             )
@@ -29,6 +29,7 @@ export default {
   },
   data () {
     return {
+
       memberForm:{
         memberPhone: "",
       },
@@ -50,8 +51,7 @@ export default {
           this.$emit("getVerify",true)
         }
       })
-      
-    }
+    },
   }
 };
 </script>
@@ -60,6 +60,7 @@ export default {
 // 排版
 #EditPhone {
   .block-area{
+    z-index: 999;
     position: fixed;
     top: 0;
     left: 0;
@@ -82,11 +83,26 @@ export default {
     .btn-area{
       width: -webkit-fill-available;
       text-align: center;
+      background-color:  #8DDA1E;
+      width: -webkit-fill-available;
+      text-align: center;
+      font-family: Inter;
+      font-size: 24px;
+      font-weight: 600;
+      /* line-height: 24px; */
+      letter-spacing: 0em;
+      color: white;
+      margin-top: 12px;
+      border-radius: 14px;
+      height: 50px;
     }
   }
 }
 // 元件
 #EditPhone {
+  .ant-row{
+    margin: 0 !important;
+  }
   .content{
     background: black;
     opacity:80%;
@@ -95,9 +111,14 @@ export default {
     // height: 309px;
     border-radius: 24px;
     padding: 0px 27px;
+
     .input-font{
-      text-align: center;
-    }
+    height: 50px;
+    border-radius: 14px;
+    font-size: 20px;
+    padding: 0 20px;
+
+  }
   }
 }
 </style>

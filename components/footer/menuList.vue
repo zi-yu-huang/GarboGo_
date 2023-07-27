@@ -12,13 +12,13 @@
   //-     a-menu-item(key="setting")
   //-       aIcon(type="setting")
   // ------------------------------------
-  
-  .goback-area  
-    aIcon(v-if="goBack" type="swap-left" @click="GoBack")
+
+  .goback-area 
+    aIcon(v-if="goBack", type="swap-left", @click="GoBack")
   .menu-article
     .icon-type(:style="styleComputed")
       aIcon.icon-size(type="menu", @click="OpenMenu")
-    div(v-if="visible", @click.stop="CloseModal")
+    div(v-if="visible")
       .content-area
         aIcon.icon-content(type="user", @click="MenuToUser")
         aIcon.icon-content(type="gift", @click="MenuToGift")
@@ -26,13 +26,14 @@
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   name: "MenuList",
-  props:{
-    goBack:{
-      type:Boolean,
-      default:true
-    }
+  props: {
+    goBack: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -42,18 +43,40 @@ export default {
   computed: {
     styleComputed() {
       if (this.visible == true) {
-        return{ "border": "3px solid transparent","background-color":"transparent"}
+        return {
+          border: "3px solid transparent",
+          "background-color": "transparent",
+        };
       }
     },
   },
+  mounted() {
+    $(document).click((event) => {
+      if (this.visible === true) {
+        const target = $(event.target);
+        const menuIcon = $(".icon-type");
+        if (!target.closest(menuIcon).length) {
+          this.visible = false;
+        }
+      }
+    });
+  },
   methods: {
     OpenMenu() {
-      if (this.visible === false) {
-        this.visible = true;
-      } else this.visible = false;
-    },
-    CloseModal() {
-      this.visible = false;
+      this.visible = this.visible === true ? false : true;
+      console.log(this.visible);
+      // $(document).ready(() => {
+      //   if (this.visible === true) {
+      //     console.log("sdfjlks");
+
+      //     $("body").click(() => {
+      //       console.log("body");
+
+      //       this.visible = false;
+      //     });
+      //   }
+      // });
+
     },
     MenuToUser() {
       this.$router.push("/member");
@@ -64,9 +87,9 @@ export default {
     MenuToSetting() {
       this.$router.push("/setting");
     },
-    GoBack(){
+    GoBack() {
       this.$router.go(-1);
-    }
+    },
   },
 };
 </script>
@@ -75,7 +98,7 @@ export default {
 // 排版
 #MenuList {
   // display: flex;
-  .goback-area  {
+  .goback-area {
     z-index: 999;
     position: fixed;
     display: flex;
@@ -83,7 +106,7 @@ export default {
     left: 20px;
     font-size: 50px;
   }
-  .menu-article{
+  .menu-article {
     z-index: 999;
     position: fixed;
     display: flex;
@@ -104,7 +127,7 @@ export default {
     width: 60px;
     text-align: center;
     .icon-size {
-      font-size:33px;
+      font-size: 33px;
     }
   }
   .content-area {

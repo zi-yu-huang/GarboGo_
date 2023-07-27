@@ -1,22 +1,19 @@
 <template lang="pug">
 //- 登入頁面
 #MemberIndex
-  MenuList
   .article
     img(src="~/static/PENUP_20230623_161116.png", alt="logo")
     .btn-area
       aButton.btn-text(type="default" value="large" @click="MemberLogin") {{"我是會員"}}
       aButton.btn-text(type="default" value="large" @click="MemberRegister") {{"我還不是會員"}}
 
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
   name: "MemberIndex",
   layout: "private",
@@ -65,7 +62,6 @@ export default {
     margin-bottom: 35px;
   }
   .article{
-    height: 100vh;
     padding: 150px 80px;
     justify-content: flex-start;
     display: flex;

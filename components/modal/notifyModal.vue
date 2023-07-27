@@ -95,5 +95,18 @@ export default {
 }
 // 元件
 #NotifyModal {
+  .ant-switch {
+    background-color: rgba(255, 217, 217, 0.77) !important;
+    border: 1px solid black;
+  }
+  .ant-switch-checked {
+    background-color:rgba(230, 255, 194, 0.59) !important;/* 開關開啟時的底色 */
+  }
+  .ant-switch-checked::after {
+    background-color: #8DDA1E !important; /* 開關滑塊開啟時的icon顏色 */
+  }
+  .ant-switch::after {
+    background-color: #E70000 ; /* 開關滑塊關閉時的icon顏色 */
+  }
 }
 </style>

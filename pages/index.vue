@@ -1,16 +1,14 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #IndexPage
-  MenuList
-  MenuFooter
 
 </template>
 
 <script>
 export default {
+  layout:'default',
+
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
   name: "IndexPage",
 

@@ -1,21 +1,19 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #ListIndex
-  MenuList
   .article
     .title-size {{ "垃圾桶列表" }}
     .setting-area
       //- .setting-content
       TrashList
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
+
   components: {
-    MenuList: () => import("@/components/footer/menuList"),
-    MenuFooter: () => import("@/components/footer/MenuFooter"),
     TrashList:()=>import('@/components/trashList/trashList')
   },
   name: "ListIndex",
@@ -54,15 +52,14 @@ export default {
 #ListIndex {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
-    padding: 40px 30px 80px 30px;
-    height: 100vh;
+    padding: 40px 30px 90px 30px;
     text-align: center;
     display: flex;
     flex-direction: column;
     .setting-area {
+      height: fill;
       background-color: white;
-      height: 100vh;
-      margin: 30px 0px;
+      margin-top: 30px;
       width: 100%;
       border-radius: 15px;
       .setting-content {

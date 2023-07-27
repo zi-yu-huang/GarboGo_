@@ -1,17 +1,14 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #CollectIndex
-  MenuList
   CollectTable
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter"),
     CollectTable:()=>import("@/components/collect/collectTable")
   },
   name: "CollectIndex",

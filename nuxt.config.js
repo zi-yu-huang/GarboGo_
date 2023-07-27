@@ -44,14 +44,15 @@ css: [
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // extend(config, { isDev, isClient }) {
-    //   // 在這裡修改 webpack 的配置
-    //   // 添加自定義的 module.rules
-    //   config.module.rules.push({
-    //     test: /\.txt$/, // 需要處理的文件類型
-    //     use: 'raw-loader' // 使用的 loader
-    //   })
-    // },
+    extend(config, { isClient }) {
+      if (isClient) {
+        config.module.rules.push({
+          test: /\.js$/,
+          loader: 'babel-loader',
+          exclude: /node_modules\/(?!vue-qrcode-reader)/, // Exclude other node_modules except vue-qrcode-reader
+        });
+      }
+    },
     publicPath: '/assets/images/',
     transpile: [
       'vue2-google-maps'

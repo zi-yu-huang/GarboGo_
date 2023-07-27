@@ -1,21 +1,18 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #FavoriteIndex
-  MenuList
   .article
     div.title-size {{"我的最愛"}}
     .setting-area
       //- .setting-content
       TrashList
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter"),
     TrashList:()=>import('@/components/trashList/trashFavoriteList')
 
   },
@@ -26,6 +23,7 @@ export default {
   },
   mounted () {
     this.MountedActivated();
+
   },
   activated () {
     this.MountedActivated();
@@ -51,18 +49,22 @@ export default {
 // 排版
 #FavoriteIndex {
   background-color: rgba(170, 216, 105, 0.8);
-;
+  // min-height: 100vh;
+  // max-height: -webkit-fill-available;
+  
   .article{
-    padding:40px 30px 80px 30px;
-    height: 100vh;
+    padding:40px 30px 90px 30px;
     text-align: center;
     display: flex;
     flex-direction: column;
     .setting-area{
+      // min-height: -webkit-fill-available;
+      height: fill;
+      // max-height: -webkit-fill-available;
+      // margin-bottom: 99px;
+      // overflow-y: scroll;
       background-color: white;
-      height: 100vh;
-      margin: 30px 0px;
-      width: 100%;
+      margin-top: 30px;
       border-radius: 15px;
       .setting-content{
         padding: 50px 40px;

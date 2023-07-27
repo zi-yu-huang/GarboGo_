@@ -2,7 +2,6 @@
 //- 請填寫頁面👈
 #SettingIndex
   .background
-    MenuList
     .article
       div.title-size {{"設定"}}
       .setting-area
@@ -11,15 +10,13 @@
           aSwitch.text-area
           .text-area {{"垃圾車到點通知"}}
           aSwitch.text-area
-    MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
   name: "SettingIndex",
   layout: "private",
@@ -93,6 +90,19 @@ export default {
   }
   .text-area{
     margin: 9px 0px;
+  }
+  .ant-switch {
+    background-color: rgba(255, 217, 217, 0.77) !important;
+    border: 1px solid black;
+  }
+  .ant-switch-checked {
+    background-color:rgba(230, 255, 194, 0.59) !important;/* 開關開啟時的底色 */
+  }
+  .ant-switch-checked::after {
+    background-color: #8DDA1E !important; /* 開關滑塊開啟時的icon顏色 */
+  }
+  .ant-switch::after {
+    background-color: #E70000 ; /* 開關滑塊關閉時的icon顏色 */
   }
 }
 </style>

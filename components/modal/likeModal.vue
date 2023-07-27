@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#ModalDemo
+#LikeModal
   div(v-if="visible")
     div.mask
     div.block-area
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ModalDemo",
+  name: "LikeModal",
   components: {
   },
   props:{
@@ -73,7 +73,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#ModalDemo {
+#LikeModal {
   .header{
       display: flex;
       justify-content: space-between;
@@ -125,7 +125,7 @@ export default {
   }
 }
 // 元件
-#ModalDemo {
+#LikeModal {
   .article{
     font-size: 20px;
     text-align: center;

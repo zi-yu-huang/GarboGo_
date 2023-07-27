@@ -1,3 +1,7 @@
 body {
-    background-color:rgba(115, 170, 36, 0.8); /* 根据你的需求设置背景颜色 */
-  }
+  background-color:rgba(115, 170, 36, 0.8); /* 根据你的需求设置背景颜色 */
+  /* min-height: 100vh; */
+  /* min-height: -webkit-fill-available; */
+  /* overflow: hidden; */
+  padding-bottom: 76px;
+}

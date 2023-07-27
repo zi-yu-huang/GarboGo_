@@ -90,6 +90,8 @@ export default {
     margin-top: 65px;
     font-size: 22px;
     width: 75%;
+    gap: 15px;
+    align-items: center;
   }
 }
 // 元件
@@ -103,9 +105,21 @@ export default {
     font-size: 17px;
     font-weight: 600;
     color: white;
-    margin-top: 12px;
-    border-radius: 8px;
+    margin-top: 20px;
+    border-radius: 14px;
     height: 40px;
+    width: 100px;
+  }
+
+  .input-font{
+    height: 50px;
+    border-radius: 25px;
+    font-size: 20px;
+    padding: 0 20px;
+
+  }
+  .ant-form-item {
+    margin-bottom: 0 !important;
   }
 }
 </style>

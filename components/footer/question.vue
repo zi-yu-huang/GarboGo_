@@ -2,31 +2,32 @@
 //- ?modal
 #Question
   .menu-area
-    .menu-title {{"垃圾容量"}}
+    .menu-title {{ "垃圾容量" }}
     .menu
-      aIcon.trash.purple(type="delete" theme="twoTone" two-tone-color="#A005D7" ) 
+      aIcon.trash.purple(type="delete", theme="filled") 
       div {{ "100% 已關閉" }}
-      aIcon.trash.red(type="delete" theme="filled" ) 
+      aIcon.trash.red(type="delete", theme="filled") 
       div {{ "75% ~ 90%" }}
-      aIcon.trash.yellow(type="delete" theme="filled" ) 
+      aIcon.trash.yellow(type="delete", theme="filled") 
       div {{ "50% ~ 74%" }}
-      aIcon.trash.green(type="delete" theme="filled" ) 
+      aIcon.trash.green(type="delete", theme="filled") 
       div {{ "0% ~ 49%" }}
 </template>
 
 <script>
 export default {
   name: "Question",
-  data () {
+  data() {
     return {};
-  }
+  },
+
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
-#Question {    
-  .menu-area{
+#Question {
+  .menu-area {
     position: fixed;
     // top: 0;
     left: 50%;
@@ -34,7 +35,7 @@ export default {
     height: 300px;
     bottom: 90px;
     width: 85%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     border-radius: 16px;
@@ -42,7 +43,7 @@ export default {
     // justify-content: center;
     padding: 16px 20px;
   }
-  .menu{
+  .menu {
     background-color: white;
     opacity: 0.85;
     height: 100%;
@@ -58,7 +59,7 @@ export default {
 }
 // 元件
 #Question {
-  .menu-title{
+  .menu-title {
     font-family: Inter;
     font-size: 26px;
     font-weight: 800;
@@ -67,24 +68,23 @@ export default {
     text-align: center;
     color: white;
   }
-  .menu{
+  .menu {
     color: black;
   }
-  .trash{
+  .trash {
     font-size: 36px;
   }
-  .purple{
-    color:  #AC00E9CC;
+  .purple {
+    color: #a005d7;
   }
-  .red{
-    color: #E70000CC;
+  .red {
+    color: #e70000;
   }
-  .yellow{
-    color: #FFF500;
+  .yellow {
+    color: #ece200;
   }
-  .green{
-    color: #8DDA1ECC;
-
+  .green {
+    color: #84ce19;
   }
 }
 </style>

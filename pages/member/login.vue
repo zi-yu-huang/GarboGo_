@@ -1,18 +1,16 @@
 <template lang="pug">
 //- 登入頁面👈
 #Login
-  MenuList
   LoginModal
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
+  layout:'default',
+
   components:{
-    MenuList:()=>import("@/components/footer/menuList"),
     LoginModal:()=>import("@/components/login/loginModal"),
-    MenuFooter:()=>import("@/components/footer/MenuFooter")
   },
   name: "Login",
   layout: "private",

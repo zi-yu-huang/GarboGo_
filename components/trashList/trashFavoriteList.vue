@@ -17,8 +17,9 @@
           theme="filled",
           @click="OpenNotifyModal(street)"
         )
+      a-divider
         //- aIcon.icon-area(type="heart" :theme="iconTheme" :style="{color:iconColor}" @click="OpenModal")
-  modalDemo(
+  LikeModal(
     :visible="visible",
     :changeToLike="changeToLike",
     @CloseModal="CloseModal",
@@ -31,7 +32,7 @@
 export default {
   name: "TrashFavoriteList",
   components: {
-    modalDemo: () => import("@/components/modal/modalDemo"),
+    LikeModal: () => import("@/components/modal/likeModal"),
     NotifyModal:()=>import('@/components/modal/notifyModal')
   },
   data() {
@@ -83,6 +84,78 @@ export default {
               isLike: false,
               notifyTrashClear: false,
               notifyDontTrash:false
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
             },
           ],
         },
@@ -184,6 +257,9 @@ export default {
     font-size: 16px;
     font-weight: 800;
     line-height: 19px;
+  }
+  .ant-divider-horizontal{
+    margin: 0 !important;
   }
 }
 </style>

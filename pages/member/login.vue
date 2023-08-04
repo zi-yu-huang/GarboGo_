@@ -13,7 +13,6 @@ export default {
     LoginModal:()=>import("@/components/login/loginModal"),
   },
   name: "Login",
-  layout: "private",
   data () {
     return {};
   },

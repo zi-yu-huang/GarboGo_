@@ -27,7 +27,6 @@ export default {
 
   },
   name: "MemberProfile",
-  layout: "private",
   data () {
     return {
       getVerify:false,

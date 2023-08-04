@@ -9,7 +9,7 @@
       @google-maps-ready="onMapReady"
     )
     GmapMarker(:position="currentLocation" )
-      aIcon(type="environment" @click="environment")
+      aIcon(type="environment")
 </template>
 
 <script>
@@ -24,9 +24,11 @@ export default {
   },
   mounted() {
     this.getCurrentLocation();
+    
   },
   methods: {
     getCurrentLocation() {
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => {
@@ -37,12 +39,16 @@ export default {
             );
 
             geocoder.geocode({ location: latLng }, (results, status) => {
+              console.log("dfjksl",geocoder.geocode)
+
               if (status === "OK" && results[0]) {
                 this.currentLocation = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude
                 };
-
+                
+                console.log(this.currentLocation)
+                
                 this.center = this.currentLocation;
               } else {
                 console.log("无法获取当前位置");

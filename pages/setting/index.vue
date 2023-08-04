@@ -19,7 +19,6 @@ export default {
   components:{
   },
   name: "SettingIndex",
-  layout: "private",
   data () {
     return {};
   },

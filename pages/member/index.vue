@@ -16,7 +16,6 @@ export default {
   components:{
   },
   name: "MemberIndex",
-  layout: "private",
   data () {
     return {};
   },

@@ -21,11 +21,11 @@ import { QrcodeStream } from "vue-qrcode-reader";
 export default {
   components: {
     QrcodeStream,
+    
     MenuList: () => import("@/components/footer/menuList"),
     MenuFooter: () => import("@/components/footer/MenuFooter"),
   },
   name: "Scan",
-  layout: "private",
   data() {
     return {
       sucess: false,

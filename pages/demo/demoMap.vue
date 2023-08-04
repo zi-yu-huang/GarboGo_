@@ -1,28 +1,138 @@
 <template lang="pug">
-//- 請填寫功能描述👈
+//- 請填寫頁面👈
 #DemoMap
-  TrashMap
-
+  .container.mt-4
+    h2.text-center.text-secondary.pb-2 {{"台北市營運餐廳"}}
+    .map-container.border.rounded
+      ul.nav.justify-content-center.border-bottom
+        // 營運地區 nav
+      // 地圖呈現在此
+      .google-map#map
+  GarbageModal(:visible="visible")
 </template>
 
+
 <script>
+import dummyRestaurants from "@/components/map/map.json"
 export default {
   name: "DemoMap",
   components:{
-    TrashMap:()=>import("@/components/map/trashMap")
+    TrashMap:()=>import("@/components/map/trashMap"),
+    GarbageModal: () => import("@/components/modal/garbageModal"),
+
   },
-  data () {
+  data() {
     return {
+      visible:false,
+      map: null,
+      currentLocation:{
+      lat: null, 
+      lng: null},
+      restaurants: []
     };
-  }
+  },
+  async mounted() {
+    // 先取得當前位置資訊
+    await this.getCurrentLocation();
+    this.initMap();
+    // 取得餐廳假資料
+    this.fetchRestaurants();
+    // 使用餐廳假資料建立地標
+    this.setMarker();
+  },
+  methods: {
+    fetchRestaurants() {
+      this.restaurants = dummyRestaurants.restaurants;
+      this.currentLocation.lat = dummyRestaurants.center.lat;
+      this.currentLocation.lng = dummyRestaurants.center.lng;
+    },
+    initMap() {
+      
+      this.map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: this.currentLocation.lat, lng: this.currentLocation.lng },
+        zoom: 15,
+        maxZoom: 20,
+        minZoom: 3,
+        streetViewControl: false,
+        mapTypeControl: false
+      });
+      console.log(this.currentLocation)
+    },
+    setMarker() {
+      // 為每間餐廳都建立地標、訊息視窗、事件監聽
+      this.restaurants.forEach(location => {
+        const marker = new google.maps.Marker({
+          // 設定為該餐廳的座標
+          position: { lat: location.lat, lng: location.lng },
+          map: this.map
+        });
+        // 建立訊息視窗
+        const infowindow = new google.maps.InfoWindow({
+          content: `
+          <div id="Question">
+            <p id="firstHeading" class="firstHeading">${location.name}</p>
+          </div>
+        `,
+          maxWidth: 200
+        });
+        // 綁定點擊事件監聽
+        marker.addListener("click", () => {
+          infowindow.open(this.map, marker);
+          console.log("erjei")
+          
+        });
+      });
+    },
+    getCurrentLocation() {
+      
+      return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              const geocoder = new google.maps.Geocoder();
+              const latLng = new google.maps.LatLng(
+                position.coords.latitude,
+                position.coords.longitude
+              );
+
+              geocoder.geocode({ location: latLng }, (results, status) => {
+                console.log("sdfjsk");
+                
+                if (status === "OK" && results[0]) {
+                  this.currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                  };
+                  console.log(this.currentLocation);
+                  
+                  // this.center = this.currentLocation;
+                  resolve();
+                } else {
+                  console.log("無法獲取當前位置");
+                  reject();
+                }
+              });
+            },
+            error => {
+              console.log("獲取位置失敗：", error);
+              reject();
+            }
+          );
+        } else {
+          console.log("瀏覽器不支援 Geolocation API");
+          reject();
+        }
+      });
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-// 排版
-#DemoMap {
-}
-// 元件
-#DemoMap {
-}
-</style>
+
+<style scoped>
+  .google-map {
+    width: 100%;
+    height: 400px;
+  }
+  </style>
+

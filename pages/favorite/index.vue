@@ -17,7 +17,6 @@ export default {
 
   },
   name: "FavoriteIndex",
-  layout: "private",
   data () {
     return {};
   },

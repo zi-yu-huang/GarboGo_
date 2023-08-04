@@ -1,41 +1,54 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #CollectIndex
-  CollectTable
+  .article
+    .title-size {{"印花集章"}}
+    .table-area(v-for="(item, index) in card", :key="index")
+      CollectTable(:point="10")
+    div(v-if="lastPoint > 0")
+      CollectTable(:point="lastPoint")
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 export default {
-  layout:'default',
-  components:{
-    CollectTable:()=>import("@/components/collect/collectTable")
+  layout: "default",
+  components: {
+    CollectTable: () => import("@/components/collect/collectTable"),
   },
   name: "CollectIndex",
-  layout: "private",
-  data () {
-    return {};
+  data() {
+    return {
+      point: 20,
+      card: 0,
+      lastPoint: 0,
+    };
   },
-  mounted () {
+  mounted() {
+    this.MountedActivated();
+    this.CalculateCard();
+  },
+  activated() {
     this.MountedActivated();
   },
-  activated () {
-    this.MountedActivated();
-  },
-  deactivated () {
+  deactivated() {
     this.DeactivatedDestory();
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.DeactivatedDestory();
   },
   methods: {
     MountedActivated: debounce(function () {
       // init
     }, 10),
-    DeactivatedDestory () {
+    DeactivatedDestory() {
       // destory
-    }
-  }
+    },
+    CalculateCard() {
+      this.card = new Array(Math.floor(this.point / 10)).fill(0);
+      this.lastPoint = this.point % 10;
+    },
+  },
 };
 </script>
 
@@ -44,8 +57,24 @@ export default {
 #CollectIndex {
   background-color: rgba(170, 216, 105, 0.8);
   height: 100vh;
+  .article{
+    padding:40px 30px 90px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .table-area{
+    margin-top: 20px;
+  }
 }
 // 元件
-#CollectIndex {
+#CollectIndex {  
+  .title-size{
+    font-family: Inter;
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 42px;
+    letter-spacing: 0em;
+  }
 }
 </style>

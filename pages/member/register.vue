@@ -18,7 +18,6 @@ export default {
     DoneVerify:()=>import("@/components/register/doneVerify"),
   },
   name: "MemberRegister",
-  layout: "private",
   data () {
     return {
       doneStep1:"",

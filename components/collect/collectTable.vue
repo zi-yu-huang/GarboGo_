@@ -2,12 +2,12 @@
 //- 請填寫功能描述👈
 #CollectTable
   .collect-table
-    .collect-icon(v-for="item in total")
-      .icon-area(v-if="item < collect")
+    .collect-icon(v-for="item in total", :key= "item")
+      .icon-area(v-if="item <= point")
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
-  //- .exchange-area(v-if="collect=10")
-  //-   .btn-area(@click="IsChange") {{ "立即兌換 ＞" }}
-  //- CollectModal(:visible="visible" @CloseModal="CloseModal" @SaveModal="SaveModal")
+  .exchange-area(v-if="point===10")
+    .btn-area(@click="IsChange") {{ "立即兌換 ＞" }}
+  CollectModal(:visible="visible" @CloseModal="CloseModal" @SaveModal="SaveModal")
 </template>
 
 <script>
@@ -16,9 +16,15 @@ export default {
     CollectModal:()=>import("@/components/modal/collectModal")
   },
   name: "CollectTable",
+  props:{
+    point:{
+      type:Number,
+      default:""
+    }
+  },
   data() {
     return {
-      collect: 5,
+      // collect: 6,
       total:10,
       visible:false
     };
@@ -46,7 +52,7 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #CollectTable {
-  margin: 20px;
+  // margin: 20px;
   .collect-table {
     border-radius: 10px 10px 0 0;
     display: grid;

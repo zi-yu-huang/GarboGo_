@@ -17,7 +17,6 @@ export default {
     TrashList:()=>import('@/components/trashList/trashList')
   },
   name: "ListIndex",
-  layout: "private",
   data() {
     return {
       

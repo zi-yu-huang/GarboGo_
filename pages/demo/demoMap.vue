@@ -2,18 +2,19 @@
 //- 請填寫頁面👈
 #DemoMap
   .container.mt-4
-    h2.text-center.text-secondary.pb-2 {{"台北市營運餐廳"}}
+    h2.text-center.text-secondary.pb-2 {{ "台北市營運餐廳" }}
     .map-container.border.rounded
       ul.nav.justify-content-center.border-bottom
         // 營運地區 nav
       // 地圖呈現在此
-      .google-map#map
-  GarbageModal(:visible="visible")
+      #map.google-map
 </template>
 
 
 <script>
-import dummyRestaurants from "@/components/map/map.json"
+import Vue from "vue";
+import GarbageModal from "@/components/modal/GarbageModal";
+import dummytrashcan from "@/components/map/map.json"
 export default {
   name: "DemoMap",
   components:{
@@ -28,7 +29,7 @@ export default {
       currentLocation:{
       lat: null, 
       lng: null},
-      restaurants: []
+      trashcan: []
     };
   },
   async mounted() {
@@ -36,15 +37,15 @@ export default {
     await this.getCurrentLocation();
     this.initMap();
     // 取得餐廳假資料
-    this.fetchRestaurants();
+    this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
   },
   methods: {
-    fetchRestaurants() {
-      this.restaurants = dummyRestaurants.restaurants;
-      this.currentLocation.lat = dummyRestaurants.center.lat;
-      this.currentLocation.lng = dummyRestaurants.center.lng;
+    fetchtrashcan() {
+      this.trashcan = dummytrashcan.trashcan;
+      this.currentLocation.lat = dummytrashcan.center.lat;
+      this.currentLocation.lng = dummytrashcan.center.lng;
     },
     initMap() {
       
@@ -59,30 +60,54 @@ export default {
       console.log(this.currentLocation)
     },
     setMarker() {
+      this.trashcan.forEach(location => {
+        console.log(location.General)
       // 為每間餐廳都建立地標、訊息視窗、事件監聽
-      this.restaurants.forEach(location => {
         const marker = new google.maps.Marker({
           // 設定為該餐廳的座標
           position: { lat: location.lat, lng: location.lng },
           map: this.map
         });
-        // 建立訊息視窗
-        const infowindow = new google.maps.InfoWindow({
-          content: `
-          <div id="Question">
-            <p id="firstHeading" class="firstHeading">${location.name}</p>
-          </div>
-        `,
-          maxWidth: 200
-        });
+        
         // 綁定點擊事件監聽
         marker.addListener("click", () => {
+          // 建立 infowindow
+          const infowindow = new google.maps.InfoWindow({
+            maxWidth: 200,
+          });
+
+          // 使用 GarbageModal 元件
+          const garbageModalComponent = new Vue({
+            render: (h) => h(GarbageModal, { props: { general: location.General, recycle: location.Recycle } }),
+          });
+
+          // 將 GarbageModal 元件的 HTML 內容放入 infowindow
+          infowindow.setContent(garbageModalComponent.$mount().$el);
+
+          // 開啟 infowindow
           infowindow.open(this.map, marker);
-          console.log("erjei")
-          
         });
       });
     },
+
+    //     // 建立訊息視窗
+    //     const infowindow = new google.maps.InfoWindow({
+    //       content: `
+    //       <div id="Question">
+    //         <p id="firstHeading" class="firstHeading">${location.name}</p>
+    //       </div>
+    //     `,
+        
+    //       maxWidth: 200
+    //     });
+    //     // 綁定點擊事件監聽
+    //     marker.addListener("click", () => {
+    //       infowindow.open(this.map, marker);
+    //       console.log("erjei")
+          
+    //     });
+    //   });
+    // },
     getCurrentLocation() {
       
       return new Promise((resolve, reject) => {
@@ -130,9 +155,9 @@ export default {
 
 
 <style scoped>
-  .google-map {
-    width: 100%;
-    height: 400px;
-  }
-  </style>
+.google-map {
+  width: 100%;
+  height: 400px;
+}
+</style>
 

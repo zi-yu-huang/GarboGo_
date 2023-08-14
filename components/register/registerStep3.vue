@@ -17,7 +17,7 @@
           :maxLength="9"
           )
       aFormModelItem
-        Button.btn-area(type="primary", @click="OnSubmit") {{ "下一步 " }}
+        Button.btn-area(type="primary", @click="OnSubmit") {{ "確認" }}
 </template>
     
     <script>
@@ -97,13 +97,15 @@ export default {
     /* line-height: 24px; */
     letter-spacing: 0em;
     color: white;
-    margin-top: 12px;
+    // margin-top: 12px;
     border-radius: 14px;
-    height: 50px;
+    height: 45px;    
+    border: 1px solid black;
+
   }
 
   .input-font{
-    height: 50px;
+    height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;

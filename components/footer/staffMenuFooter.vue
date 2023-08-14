@@ -1,9 +1,9 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#MenuFooter
+#StaffMenuFooter
   .content
     aIcon.icon-content(type="unordered-list", @click="ListMenu")
-    aIcon.icon-content(type="heart", @click="HeartMenu")
+    //- aIcon.icon-content(type="heart", @click="HeartMenu")
     aIcon.icon-content.main-icon(type="scan", @click="ScanMenu")
     aIcon.icon-content(type="environment", @click="EnvironmentMenu")
     aIcon.icon-content.icon-type(type="question-circle", @click="QuestionMenu")
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 export default {
   components: {
     Question: () => import("@/components/footer/question"),
   },
-  name: "MenuFooter",
+  name: "StaffMenuFooter",
   data() {
     return {
       openQuestion: false,
@@ -35,27 +35,28 @@ export default {
   },
   methods: {
     ListMenu() {
-      this.$router.push("/list");
+      this.$router.push("/staff/list");
     },
     HeartMenu() {
-      this.$router.push("/favorite");
+      this.$router.push("/staff/favorite");
     },
     ScanMenu() {
-      this.$router.push("/scan");
+      this.$router.push("/staff/scan");
     },
     EnvironmentMenu() {
-      this.$router.push("/map");
+      this.$router.push("/staff/trashMap");
     },
     QuestionMenu() {
       this.openQuestion = this.openQuestion === true ? false : true;
-    },
+
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
-#MenuFooter {
+#StaffMenuFooter {
   .content {
     //------------------
     // footer至底 1
@@ -94,16 +95,6 @@ export default {
   }
 }
 // 元件
-#MenuFooter {
-  @media (min-width: 769px) {
-    .content {
-      position: fixed; /* 子元素使用绝对定位 */
-      left: 50%; /* 将子元素的左侧定位到父元素中心 */
-      transform: translate(-50%, -50%); /* 使用 transform 居中子元素 */
-      bottom: 50px;
-      width: 700px;
-      border-radius: 30px;
-    }
-  }
+#StaffMenuFooter {
 }
 </style>

@@ -4,17 +4,15 @@
   .content-area
     .title-content 登入
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
-      aFormModelItem(ref="memberPhone", prop="memberPhone")
+      aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-            placeholder="0912345678",
-            v-model="memberForm.memberPhone",
-            :maxLength="9"
+            placeholder="abcd@gmail.com",
+            v-model="memberForm.memberEmail",
         )      
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
             placeholder="王小明",
             v-model="memberForm.memberPassword",
-            :maxLength="9"
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
@@ -27,13 +25,13 @@ export default {
     return {
       memberForm: {
         memberPassword: "",
-        memberPhone: "",
+        memberEmail: "",
       },
       rules: {
         memberPassword: [{ required: true, message: "不可為空" }],
-        memberPhone: [
+        memberEmail: [
           { required: true, message: "不可為空" },
-          { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
+          {type: 'email',message: '請輸入有效的信箱'}
         ],
       },
     };
@@ -43,7 +41,7 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.memberForm.memberPassword = "";
-          this.memberForm.memberPhone = "";
+          this.memberForm.memberEmail = "";
           this.$router.push('/member/profile')
         }
       });
@@ -62,6 +60,13 @@ export default {
     text-align: center;
     height: 70vh;
     justify-content: center;
+    align-items: center;
+  }
+  @media (min-width: 769px) {
+    .form-area{
+      width: 600px;
+
+    }
   }
 }
 // 元件
@@ -73,7 +78,7 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
   }
   .btn-area {
     background-color: #241f1f;
@@ -85,12 +90,11 @@ export default {
     /* line-height: 24px; */
     letter-spacing: 0em;
     color: white;
-    margin-top: 12px;
     border-radius: 14px;
-    height: 50px;
+    height: 45px;
   }
   .input-font{
-    height: 50px;
+    height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;

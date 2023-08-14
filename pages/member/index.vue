@@ -90,5 +90,13 @@ export default {
     border-radius: 25px;
     
   }
+  @media (min-width: 769px) {
+    .btn-area{
+      display: flex;
+    }
+    .btn-text{
+      height: 100px;
+    }
+  }
 }
 </style>

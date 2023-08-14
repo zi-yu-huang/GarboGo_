@@ -52,13 +52,13 @@ export default {
   background-color: rgba(170, 216, 105, 0.8);
   .article{
     padding:40px 30px 80px 30px;
-    height: 100vh;
+    // height: 100vh;
     text-align: center;
     display: flex;
     flex-direction: column;
     .setting-area{
+      height: fill;
       background-color: white;
-      height: 100vh;
       margin: 30px 0px;
       width: 100%;
       border-radius: 15px;

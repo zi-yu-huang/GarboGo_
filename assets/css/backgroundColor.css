@@ -5,3 +5,12 @@ body {
   /* overflow: hidden; */
   padding-bottom: 76px;
 }
+html{
+  /* background-color: white; */
+}
+@media (min-width:769px) {
+  body{
+    padding-bottom: 0px;
+  }
+
+}

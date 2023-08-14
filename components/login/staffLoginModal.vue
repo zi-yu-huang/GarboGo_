@@ -1,18 +1,18 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#RegisterStep1
+#StaffLoginModal
   .content-area
-    .title-content 註冊
+    .title-content 登入
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
-      aFormModelItem(ref="memberName", prop="memberName")
-        aInput.input-font(
-            placeholder="王小明",
-            v-model="memberForm.memberName",
-        )
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
             placeholder="abcd@gmail.com",
             v-model="memberForm.memberEmail",
+        )      
+      aFormModelItem(ref="memberPassword", prop="memberPassword")
+        aInput.input-font(
+            placeholder="王小明",
+            v-model="memberForm.memberPassword",
             :maxLength="9"
         )
       aFormModelItem
@@ -21,15 +21,15 @@
 
 <script>
 export default {
-  name: "RegisterStep1",
-  data() {
+  name: "StaffLoginModal",
+  data () {
     return {
       memberForm: {
-        memberName: "",
+        memberPassword: "",
         memberEmail: "",
       },
       rules: {
-        memberName: [{ required: true, message: "不可為空" }],
+        memberPassword: [{ required: true, message: "不可為空" }],
         memberEmail: [
           { required: true, message: "不可為空" },
           {type: 'email',message: '請輸入有效的信箱'}
@@ -41,9 +41,9 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.memberForm.memberName = "";
+          this.memberForm.memberPassword = "";
           this.memberForm.memberEmail = "";
-          this.$emit("DoneStep1",true)
+          this.$router.push('/staff/profile')
         }
       });
     },
@@ -53,7 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#RegisterStep1 {
+#StaffLoginModal {
   .content-area {
     padding: 50px;
     display: flex;
@@ -64,8 +64,7 @@ export default {
   }
 }
 // 元件
-#RegisterStep1 {
-
+#StaffLoginModal {
   .title-content {
     color: white;
     font-size: 35px;
@@ -73,7 +72,7 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
   .btn-area {
     background-color: #241f1f;
@@ -85,7 +84,6 @@ export default {
     /* line-height: 24px; */
     letter-spacing: 0em;
     color: white;
-    margin-top: 12px;
     border-radius: 14px;
     height: 45px;
   }
@@ -94,7 +92,6 @@ export default {
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-
-  }
+}
 }
 </style>

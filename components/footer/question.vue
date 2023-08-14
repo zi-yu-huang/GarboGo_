@@ -57,6 +57,18 @@ export default {
     font-size: 22px;
     align-content: center;
   }
+
+ @media (min-width: 769px) {
+    .menu-area{
+      position: fixed; /* 子元素使用绝对定位 */
+      left: 50%; /* 将子元素的左侧定位到父元素中心 */
+      top:50%;
+      transform: translate(-50%, -50%); /* 使用 transform 居中子元素 */
+      bottom: 50px;
+      width: 350px;
+    }
+  
+ }
 }
 // 元件
 #Question {

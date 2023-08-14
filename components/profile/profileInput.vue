@@ -11,13 +11,14 @@
         v-model="memberForm.memberName",
         :maxLength="9"
       )
-    .member-text {{ "手機：" }}
-    aFormModelItem(ref="memberPhone", prop="memberPhone")
+    .member-text {{ "信箱：" }}
+    aFormModelItem(ref="memberEmail", prop="memberEmail")
       aInput.input-font(
         @click="EditPhone"
         :disabled="notEdit"
-        v-model="memberForm.memberPhone",
+        v-model="memberForm.memberEmail",
         :maxLength="9"
+        readOnly
       )
     .member-text {{ "密碼：" }}
     aFormModelItem(ref="memberPassword", prop="memberPassword")
@@ -27,6 +28,7 @@
         :disabled="notEdit"
         v-model="memberForm.memberPassword",
         :maxLength="9"
+        readOnly
       )
   aFormModelItem
     aButton.btn-area(v-if="notEdit" type="primary", @click="LogOut") {{ "登出" }}
@@ -48,7 +50,7 @@ export default {
       // notEdit:true,
       memberForm: {
         memberName: "黃曉明",
-        memberPhone: "0912345678",
+        memberEmail: "abcd@gmail.com",
         memberPassword:"2312321"
       },
       rules: {
@@ -87,7 +89,7 @@ export default {
   .form-grid{
     display: grid;
     grid-template-columns: auto 1fr;
-    margin-top: 65px;
+    margin-top: 50px;
     font-size: 22px;
     width: 75%;
     gap: 15px;
@@ -112,7 +114,7 @@ export default {
   }
 
   .input-font{
-    height: 50px;
+    height: 45px;
     border-radius: 25px;
     font-size: 20px;
     padding: 0 20px;

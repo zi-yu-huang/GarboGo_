@@ -1,5 +1,5 @@
 <template lang="pug">
-//- 修改手機號碼後傳送驗證碼👈
+//- 修改信箱後傳送驗證碼👈
 #EditVerificationCode
   .block-area(v-if="visible") 
     .content
@@ -10,7 +10,7 @@
         )
         aFormModelItem(ref="verificationCode" prop="verificationCode")
           aInput.input-font(
-            placeholder="請輸入簡訊驗證碼"
+            placeholder="請輸入郵件驗證碼"
             v-model="memberForm.verificationCode"
             )
         aFormModelItem
@@ -162,7 +162,7 @@ export default {
   }
   .content{
     background: black;
-    opacity: 80%;
+    // opacity: 80%;
     margin: 0px 21px;
     // width: 346px;
     // height: 309px;

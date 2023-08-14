@@ -1,5 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  env: {
+    TEST_MODE: process.env.TEST_MODE || "T", // 測試模式
+  },
   head: {
     title: 'GarboGo',
     htmlAttrs: {

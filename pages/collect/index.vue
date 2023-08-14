@@ -19,7 +19,7 @@ export default {
   name: "CollectIndex",
   data() {
     return {
-      point: 20,
+      point: 80,
       card: 0,
       lastPoint: 0,
     };
@@ -56,7 +56,8 @@ export default {
 // 排版
 #CollectIndex {
   background-color: rgba(170, 216, 105, 0.8);
-  height: 100vh;
+  // height: 100vh;
+  height: fill;
   .article{
     padding:40px 30px 90px 30px;
     text-align: center;

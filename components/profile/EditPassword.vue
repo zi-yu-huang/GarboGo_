@@ -135,7 +135,7 @@ export default {
   }
   .content{
     background: black;
-    opacity:80%;
+    // opacity:80%;
     margin: 0px 21px;
     // width: 346px;
     // height: 309px;

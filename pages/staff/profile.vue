@@ -18,7 +18,7 @@
 <script>
 import debounce from "lodash/debounce";
 export default {
-  layout:'default',
+  layout:'staff',
   components:{
     ProfileInput:()=>import("@/components/profile/profileInput"),
     EditPhone:()=>import("@/components/profile/EditPhone"),

@@ -1,8 +1,8 @@
 <template lang="pug">
 //- 請填寫頁面👈
-#FavoriteIndex
+#ListIndex
   .article
-    div.title-size {{"我的最愛"}}
+    .title-size {{ "垃圾桶列表" }}
     .setting-area
       //- .setting-content
       TrashList
@@ -11,61 +11,59 @@
 <script>
 import debounce from "lodash/debounce";
 export default {
-  layout:'default',
-  components:{
-    TrashList:()=>import('@/components/trashList/trashFavoriteList')
+  layout:'staff',
 
+  components: {
+    TrashList:()=>import('@/components/trashList/trashList')
   },
-  name: "FavoriteIndex",
-  data () {
-    return {};
+  name: "ListIndex",
+  data() {
+    return {
+      
+    };
   },
-  mounted () {
-    this.MountedActivated();
+  mounted() {
 
-  },
-  activated () {
     this.MountedActivated();
   },
-  deactivated () {
+  activated() {
+    this.MountedActivated();
+  },
+  deactivated() {
     this.DeactivatedDestory();
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.DeactivatedDestory();
   },
   methods: {
     MountedActivated: debounce(function () {
       // init
     }, 10),
-    DeactivatedDestory () {
+    DeactivatedDestory() {
       // destory
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
-#FavoriteIndex {
+#ListIndex {
   background-color: rgba(170, 216, 105, 0.8);
-  // min-height: 100vh;
-  // max-height: -webkit-fill-available;
-  
-  .article{
-    padding:40px 30px 90px 30px;
+  .article {
+    padding: 40px 30px 90px 30px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    .setting-area{
-      // min-height: -webkit-fill-available;
+    .setting-area {
       height: fill;
-      // max-height: -webkit-fill-available;
-      // margin-bottom: 99px;
-      overflow-y: scroll;
       background-color: white;
       margin-top: 30px;
+      width: 100%;
+      overflow-y: scroll;
+
       border-radius: 15px;
-      .setting-content{
+      .setting-content {
         padding: 50px 40px;
         font-family: Inter;
         font-size: 20px;
@@ -76,14 +74,13 @@ export default {
 
         display: grid;
         grid-template-columns: 1fr 0fr;
-  
       }
     }
   }
 }
 // 元件
-#FavoriteIndex {
-  .title-size{
+#ListIndex {
+  .title-size {
     font-family: Inter;
     font-size: 35px;
     font-weight: 800;

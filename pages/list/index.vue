@@ -60,6 +60,8 @@ export default {
       background-color: white;
       margin-top: 30px;
       width: 100%;
+      overflow-y: scroll;
+
       border-radius: 15px;
       .setting-content {
         padding: 50px 40px;

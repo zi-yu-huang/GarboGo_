@@ -1,5 +1,5 @@
 <template lang="pug">
-//- 修改手機電話👈
+//- 修改電子信箱👈
 #EditPhone
   .block-area(v-if="visible")
     .content
@@ -8,12 +8,11 @@
         :model="memberForm"
         :rules="rules"
         )
-        aFormModelItem(ref="memberPhone" prop="memberPhone")
+        aFormModelItem(ref="memberEmail" prop="memberEmail")
           aInput.input-font(
-            placeholder="請輸入新手機號碼"
-            v-model="memberForm.memberPhone"
-            :maxLength="9"
-            )
+            placeholder="請輸入新電子信箱"
+            v-model="memberForm.memberEmail"
+           )
         aFormModelItem
           aButton.btn-area(type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
 </template>
@@ -31,13 +30,13 @@ export default {
     return {
 
       memberForm:{
-        memberPhone: "",
+        memberEmail: "",
       },
       rules: {
-        memberPhone: [
-          { required: true,message: "不可為空"},
-          { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
-          // { validator: this.rValidataPhoneFormat, trigger: "blur" }
+        memberEmail: [
+          { required: true,message: "不可為空"},          
+          {type: 'email',message: '請輸入有效的信箱'}
+
         ]
       }
     };
@@ -46,8 +45,8 @@ export default {
     OnSubmit(){
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          console.log(this.memberForm.memberPhone)
-          this.memberForm.memberPhone=""
+          console.log(this.memberForm.memberEmail)
+          this.memberForm.memberEmail=""
           this.$emit("getVerify",true)
         }
       })
@@ -105,7 +104,7 @@ export default {
   }
   .content{
     background: black;
-    opacity:80%;
+    // opacity:80%;
     margin: 0px 21px;
     // width: 346px;
     // height: 309px;

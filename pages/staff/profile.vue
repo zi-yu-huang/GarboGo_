@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
-#MemberProfile
+#StaffProfile
   .user-area
     .circle-area
       aIcon.icon-area(type="user")
@@ -26,7 +26,7 @@ export default {
     EditPassword:()=>import("@/components/profile/EditPassword")
 
   },
-  name: "MemberProfile",
+  name: "StaffProfile",
   data () {
     return {
       getVerify:false,
@@ -95,7 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#MemberProfile {
+#StaffProfile {
   background-color: white;
   .user-area{
   background-color: white;
@@ -114,7 +114,7 @@ export default {
   }
 }
 // 元件
-#MemberProfile {
+#StaffProfile {
   .user-area{
     display: flex;
     padding-top: 14%;

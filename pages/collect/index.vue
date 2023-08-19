@@ -3,10 +3,12 @@
 #CollectIndex
   .article
     .title-size {{"印花集章"}}
-    .table-area(v-for="(item, index) in card", :key="index")
-      CollectTable(:point="10")
     div(v-if="lastPoint > 0")
-      CollectTable(:point="lastPoint")
+      CollectTable(:point="lastPoint" :isDeal="false")
+    .table-area(v-for="(item, index) in card", :key="index")
+      CollectTable(:point="10" :isDeal="false")
+    .table-area(v-for="(item, index) in 3", :key="index")
+      CollectTable(:point="10" :isDeal="true")
 </template>
 
 <script>
@@ -19,9 +21,10 @@ export default {
   name: "CollectIndex",
   data() {
     return {
-      point: 80,
+      point: 32,
       card: 0,
       lastPoint: 0,
+      exchange_ticket:3,
     };
   },
   mounted() {

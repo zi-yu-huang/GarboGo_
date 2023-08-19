@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
+import { LikeTrashApi } from "@/services/likeTrash";
 export default {
   name: "TrashList",
   components: {
@@ -29,51 +31,14 @@ export default {
   data() {
     return {
       visible: false,
+      originalData: [],
       changeToLike: {
-        id: "",
+        tplace: "",
         isLike: "",
+        tname:""
       },
-      likeList: [
-        {
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },
-        {
-          region: "南區",
-          streets: [
-            {
-              id:"3",
-              street: "三民路一段142號",
-              isLike: false,
-              notifyTrashClear: true,
-              notifyDontTrash:true
-            },
-            {
-              id:"4",
-              street: "三民路一段12201號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:false
-            },
-          ],
-        },
-        
-      ],
+      likeTrash: {},
+      likeList: [],
     };
   },
   computed: {
@@ -85,25 +50,110 @@ export default {
       };
     },
   },
+  mounted() {
+    this.Init();
+  },
   methods: {
+    Init() {
+      this.GetTrashListApi();
+      this.GetLikeTrashApi();
+    },
     OpenModal(street) {
-      this.changeToLike.id = street.id;
+      console.log(street);
+      this.changeToLike.tplace = street.tplace;
+      this.changeToLike.tname = street.tname;
       this.changeToLike.isLike = street.isLike;
       this.visible = true;
     },
     CloseModal(val) {
       this.visible = val;
     },
-    SaveModal(visible, changeToLike) {
-      for (let i = 0; i < this.likeList.length; i++) {
-        const streets = this.likeList[i].streets;
-        for (let j = 0; j < streets.length; j++) {
-          if (streets[j].id === changeToLike.id) {
-            streets[j].isLike = changeToLike.isLike;
+    async SaveModal(visible, changeToLike) {
+      console.log(changeToLike);
+
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   console.log(streets)
+      // for (let j = 0; j < streets.length; j++) {
+      // if (streets[j].tplace === changeToLike.tplace) {
+      //   streets[j].isLike = changeToLike.isLike;
+      //   }
+      // }
+      // }
+      // console.log(this.changeToLike);
+
+      this.visible = false;
+      this.GetCreateFavoriteApi(2, changeToLike.tname);
+    },
+
+    //API----------------------------------------------
+    async GetTrashListApi() {
+      const response = await TrashcanListApi();
+      console.log(response);
+      this.originalData = response;
+    },
+    async GetLikeTrashApi() {
+      const likeTrashList = await LikeTrashApi(2);
+      console.log(likeTrashList);
+      this.likeTrash = likeTrashList;
+      this.GetList();
+    },
+    GetList() {
+      const newList = [];
+      const originData = this.originalData.trashcan;
+
+      for (const currentItem of originData) {
+        // 查找newList中是否已有对应区域的数据
+        const regionEntry = newList.find(
+          (entry) => entry.region === currentItem.region
+        );
+
+        if (!regionEntry) {
+          // 如果没有找到对应区域的数据，则创建一个新的区域对象
+          newList.push({
+            region: currentItem.region,
+            streets: [
+              {
+                street: currentItem.street,
+                isLike: currentItem.isLike,
+                tplace: currentItem.tplace,
+                tname: currentItem.tname,
+                // 添加其他属性
+              },
+            ],
+          });
+        } else {
+          // 如果找到了对应区域的数据，则将街道信息添加到该区域对象的streets数组中
+          regionEntry.streets.push({
+            street: currentItem.street,
+            isLike: currentItem.isLike,
+            tplace: currentItem.tplace,
+            tname: currentItem.tname,
+            // 添加其他属性
+          });
+        }
+      }
+      for (const item of newList) {
+        for (const itemPlace of item.streets) {
+          for (const list in this.likeTrash) {
+            // console.log(this.likeTrash[list])
+            if (itemPlace.tplace == this.likeTrash[list]) {
+              itemPlace.isLike = true;
+            }
           }
         }
       }
-      this.visible = visible;
+      // if(this.likeTrash ==)
+      this.likeList = newList;
+      console.log(this.likeList);
+    },
+    async GetCreateFavoriteApi(uid, tname) {
+      try {
+        const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
+        console.log(responseData);
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
     },
   },
 };

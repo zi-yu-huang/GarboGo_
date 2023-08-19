@@ -45,10 +45,10 @@ export default {
     // },
     computed:{
       modalArticle(){
-        if(this.changeToLike.isLike === false){
-          return "加入我的最愛"
+        if(this.changeToLike.isLike === true){
+          return "確定要從我的最愛移除嗎?"
         }
-        else return "確定要從我的最愛移除嗎?"
+        else return "加入我的最愛"
       }
     },
     methods:{

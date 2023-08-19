@@ -2,11 +2,6 @@
   <div class="wrapper">
     <!-- 放置共用的導覽列 -->
     <MenuList />
-    <nav>
-      <ul>
-        <!-- 加入其他導覽連結 -->
-      </ul>
-    </nav>
 
     <!-- 頁面內容 -->
     <nuxt />
@@ -20,7 +15,7 @@
 <script>
 export default {
   components: {
-    MenuList: () => import("@/components/footer/menuList"),
+    MenuList: () => import("@/components/footer/staffMenuList"),
     MenuFooter: () => import("@/components/footer/staffMenuFooter"),
   },
   name: "Default",

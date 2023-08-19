@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
-#ListIndex
+#StaffList
   .article
     .title-size {{ "垃圾桶列表" }}
     .setting-area
@@ -14,9 +14,9 @@ export default {
   layout:'staff',
 
   components: {
-    TrashList:()=>import('@/components/trashList/trashList')
+    TrashList:()=>import('@/components/trashList/staffList')
   },
-  name: "ListIndex",
+  name: "StaffList",
   data() {
     return {
       
@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#ListIndex {
+#StaffList {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
     padding: 40px 30px 90px 30px;
@@ -79,7 +79,7 @@ export default {
   }
 }
 // 元件
-#ListIndex {
+#StaffList {
   .title-size {
     font-family: Inter;
     font-size: 35px;

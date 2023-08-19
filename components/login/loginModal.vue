@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import {LoginApi} from "@/services/login.js"
 export default {
   name: "LoginModal",
   data () {
@@ -38,8 +39,13 @@ export default {
   },
   methods: {
     OnSubmit() {
-      this.$refs.ruleForm.validate((valid) => {
+      
+      this.$refs.ruleForm.validate(async(valid) => {
         if (valid) {
+          const a = await LoginApi();
+          console.log(a)
+          
+          console.log("fdjkl")
           this.memberForm.memberPassword = "";
           this.memberForm.memberEmail = "";
           this.$router.push('/member/profile')

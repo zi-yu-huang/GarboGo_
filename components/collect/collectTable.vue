@@ -5,8 +5,10 @@
     .collect-icon(v-for="item in total", :key= "item")
       .icon-area(v-if="item <= point")
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
-  .exchange-area(v-if="point===10")
+  .exchange-area(v-if="point===10 && isDeal===false")
     .btn-area(@click="IsChange") {{ "立即兌換 ＞" }}
+  .exchange-area(v-if="point===10 && isDeal===true")
+    .btn-deal(@click="IsChange") {{ "已兌換" }}
   CollectModal(:visible="visible" @CloseModal="CloseModal" @SaveModal="SaveModal")
 </template>
 
@@ -20,13 +22,17 @@ export default {
     point:{
       type:Number,
       default:""
+    },
+    isDeal:{
+      type:Boolean,
+      default:""
     }
   },
   data() {
     return {
       // collect: 6,
       total:10,
-      visible:false
+      visible:false,
     };
   },
   methods:{
@@ -94,6 +100,16 @@ export default {
     font-weight: 800;
     text-align: center;
     padding: 12px 0;
+  }
+  .btn-deal{
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+    font-size: 22px;
+    color: white;
+    font-weight: 800;
+    text-align: center;
+    padding: 12px 0;
+    background-color: #D4D4D4;
   }
 }
 </style>

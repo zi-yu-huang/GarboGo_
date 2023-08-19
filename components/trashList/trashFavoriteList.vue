@@ -48,7 +48,118 @@ export default {
         notifyTrashClear: "",
         notifyDontTrash:""
       },
-      likeList: []
+      likeList: [
+        {
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },
+        {
+          region: "南區",
+          streets: [
+            {
+              id:"3",
+              street: "三民路一段142號",
+              isLike: false,
+              notifyTrashClear: true,
+              notifyDontTrash:true
+            },
+            {
+              id:"4",
+              street: "三民路一段12201號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:false
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },{
+          region: "北區",
+          streets: [
+            {
+              id:"1",
+              street: "三民路一段1342號",
+              isLike: false,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+            {
+              id:"2",
+              street: "三民路一段101號",
+              isLike: true,
+              notifyTrashClear: false,
+              notifyDontTrash:true
+            },
+          ],
+        },
+      ],
     };
   },
   computed: {
@@ -60,20 +171,7 @@ export default {
       };
     },
   },
-  mounted(){
-    this.Init();
-  },
   methods: {
-    async Init () {
-      // init data
-
-      // 取得收藏清單
-      const resCategoryData = await this.ApiFavoriteTrashInfo();
-      if (!resCategoryData) {
-        return;
-      }
-      this.likeList = resCategoryData.list;
-    },
     OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
@@ -113,20 +211,7 @@ export default {
           }
         }
       }
-    },
-
-
-
-    // API --------------------------------------------
-    // Api取得使用者收藏清單
-    async ApiFavoriteTrashInfo () {
-      const {
-        data,
-        status: { isPass }
-      } = await this.$api.FavoriteTrashInfo();
-      if (isPass) return data;
-      return false;
-    },
+    }
   },
 };
 </script>

@@ -3,8 +3,8 @@
 #StaffMenuFooter
   .content
     aIcon.icon-content(type="unordered-list", @click="ListMenu")
-    //- aIcon.icon-content(type="heart", @click="HeartMenu")
-    aIcon.icon-content.main-icon(type="scan", @click="ScanMenu")
+    aIcon.icon-content(type="scan", @click="ScanMenu")
+    img.icon-content.main-icon(src="~/static/Logo_GarboGo_wg.png", alt="logo")
     aIcon.icon-content(type="environment", @click="EnvironmentMenu")
     aIcon.icon-content.icon-type(type="question-circle", @click="QuestionMenu")
   Question(v-if="openQuestion")
@@ -75,7 +75,7 @@ export default {
     height: 70px;
     //------------------
 
-    background: #f1fbe4;
+    background-color: #f1fbe4;
     border: 3px solid #8dda1e;
     border-radius: 30px 30px 0 0;
     display: flex;
@@ -85,7 +85,7 @@ export default {
       padding: 5px !important;
       font-size: 56px !important;
       color: white;
-      background: #73aa24;
+      background-color: #8CBA4A;
       border-radius: 5px;
     }
     .icon-content {

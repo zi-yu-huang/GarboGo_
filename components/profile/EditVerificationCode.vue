@@ -172,12 +172,13 @@ export default {
   }
   .verify-text{
     color: white;
+    margin-top: 18px;
     text-align: right;
   }
   .timeClock-text {
     color: white;
     text-align: center;
-    margin-top: 10px;
+    // margin-top: 10px;
     font-size: 18px;
   }
 

@@ -79,7 +79,15 @@ export default {
 
     },
     MenuToUser() {
-      this.$router.push("/member");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){
+        console.log("dfjs")
+        
+        this.$router.push("/member/profile")
+      }
+      else{
+        this.$router.push("/member");
+      }
     },
     MenuToGift() {
       this.$router.push("/collect");
@@ -89,6 +97,16 @@ export default {
     },
     GoBack() {
       this.$router.go(-1);
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
     },
   },
 };

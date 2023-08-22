@@ -3,61 +3,67 @@
 #EditPassword
   .block-area(v-if="visible")
     .content
-      aFormModel.form-area(
-        ref="ruleForm"
-        :model="memberForm"
-        :rules="rules"
-        )
-        aFormModelItem(ref="oldPassword" prop="oldPassword")
+      aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
+        aFormModelItem(ref="oldPassword", prop="oldPassword")
           aInput.input-font(
-            placeholder="請輸入原密碼"
-            v-model="memberForm.oldPassword"
+            type="password",
+            placeholder="請輸入原密碼",
+            v-model="memberForm.oldPassword",
             :maxLength="9"
-            )
-        aFormModelItem(ref="newPassword" prop="newPassword")
+          )
+        aFormModelItem(ref="newPassword", prop="newPassword")
           aInput.input-font(
-            placeholder="請輸入新密碼"
-            v-model="memberForm.newPassword"
+            type="password",
+            placeholder="請輸入新密碼",
+            v-model="memberForm.newPassword",
             :maxLength="9"
-            )
-        aFormModelItem(ref="newPasswordAgain" prop="newPasswordAgain")
+          )
+        aFormModelItem(ref="newPasswordAgain", prop="newPasswordAgain")
           aInput.input-font(
-            placeholder="請再次輸入新密碼"
-            v-model="memberForm.newPasswordAgain"
+            type="password",
+            placeholder="請再次輸入新密碼",
+            v-model="memberForm.newPasswordAgain",
             :maxLength="9"
-            )
+          )
         aFormModelItem
-          aButton.btn-area(type="primary" @click="OnSubmit") {{"確認 "}}
+          aButton.btn-area(type="primary", @click="OnSubmit") {{ "確認 " }}
 </template>
 
 <script>
+import { LoginApi } from "@/services/login.js";
+import { EditUserApi } from "@/services/editUser.js";
+
 export default {
   name: "EditPassword",
-  props:{
-    visible:{
-      type:Boolean,
-      default:""
-    }
+  props: {
+    visible: {
+      type: Boolean,
+      default: "",
+    },
   },
-  data () {
+  data() {
     return {
-      memberForm:{
+      dataPwd: "",
+      dataUname: "",
+      dataEmail: "",
+      memberForm: {
         oldPassword: "",
         newPassword: "",
-        newPasswordAgain:""
+        newPasswordAgain: "",
       },
       rules: {
         oldPassword: [
-          { required: true,message: "不可為空"},
-          { validator: this.rValidataPhoneFormat, trigger: "blur" }
+          { required: true, message: "不可為空" },
+          { validator: this.rValidataPhoneFormat, trigger: "blur" },
         ],
         newPassword: [
-          { required: true,message: "不可為空"},
-          { validator: this.rValidataPhoneFormat, trigger: "blur" }
-        ],        
+          { required: true, message: "不可為空" },
+          { validator: this.rValidataPhoneFormat, trigger: "blur" },
+        ],
         newPasswordAgain: [
-          { required: true,message: "不可為空"},
-          { validator: (rule, value, cbfn) => {
+          { required: true, message: "不可為空" },
+          {
+            validator: (rule, value, cbfn) => {
               const form = this.memberForm;
               if (value && value !== form.newPassword) {
                 cbfn("兩次密碼不一致!");
@@ -65,31 +71,68 @@ export default {
                 cbfn();
               }
             },
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
-  methods:{
-    OnSubmit(){
-      this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          this.memberForm.oldPassword=""
-          this.memberForm.newPassword=""
-          this.memberForm.newPasswordAgain=""
-          this.$emit("donePassword",true)
+  mounted() {
+    this.Init();
+  },
+  methods: {
+    async Init() {
+      await this.GetUserPwdApi();
+    },
+    OnSubmit() {
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (this.dataPwd === this.memberForm.oldPassword) {
+          if (valid) {
+            await this.GetEditUserPwdApi();
+            this.$emit("donePassword", true);
+          }
+        } else {
+          this.$message.error("密碼錯誤");
         }
-      })
-    }
-  }
+      });
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+    //API ------------
+    async GetUserPwdApi() {
+      const email = this.GetCookieValue("email");
+      const response = await LoginApi(email);
+      this.dataPwd = response.pwd;
+      this.dataUname = response.uname;
+      this.dataEmail = response.email;
+    },
+    async GetEditUserPwdApi() {
+      const response = await EditUserApi(
+        this.dataUname,
+        this.dataEmail,
+        this.memberForm.newPassword
+      );
+      if (response.data.status === "success") {
+        this.$message.success("修改成功");
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
 #EditPassword {
-  .block-area{
+  .block-area {
     z-index: 999;
     position: fixed;
     top: 0;
@@ -101,19 +144,19 @@ export default {
     flex-direction: column;
     justify-content: center;
   }
-  .content{
+  .content {
     text-align: center;
-    justify-content: center; 
-      .form-area{
-        display: flex;
-        flex-direction: column;
-        height: 309px;
-        justify-content: center;
+    justify-content: center;
+    .form-area {
+      display: flex;
+      flex-direction: column;
+      height: 309px;
+      justify-content: center;
     }
-    .btn-area{
+    .btn-area {
       width: -webkit-fill-available;
       text-align: center;
-      background-color:  #8DDA1E;
+      background-color: #8dda1e;
       width: -webkit-fill-available;
       text-align: center;
       font-family: Inter;
@@ -130,10 +173,10 @@ export default {
 }
 // 元件
 #EditPassword {
-  .ant-row{
+  .ant-row {
     margin: 0 !important;
   }
-  .content{
+  .content {
     background: black;
     // opacity:80%;
     margin: 0px 21px;
@@ -142,12 +185,12 @@ export default {
     border-radius: 24px;
     padding: 0px 27px;
 
-    .input-font{
+    .input-font {
       margin: 10px 0;
-    height: 50px;
-    border-radius: 14px;
-    font-size: 20px;
-    padding: 0 20px;
+      height: 50px;
+      border-radius: 14px;
+      font-size: 20px;
+      padding: 0 20px;
     }
   }
 }

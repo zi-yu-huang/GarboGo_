@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     async Init() {
-      const userEmail = this.GetCookieValue('email');
+      const userEmail = this.GetCookieValue("email");
       console.log(userEmail);
 
       const data = await this.GetLoginApi(userEmail);
@@ -75,9 +75,15 @@ export default {
     },
     EditName() {
       console.log(this.memberForm.memberName);
+      this.$emit("EditName",this.memberForm.memberName)
     },
     LogOut() {
-      this.$router.push("/member");
+      this.delCookie("id");
+      this.delCookie("email");
+        this.$router.push("/member");
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
     },
     EditPhone() {
       this.$emit("openPhone", true);
@@ -95,6 +101,12 @@ export default {
         }
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+    delCookie(name) {
+      //為了刪除指定名稱的cookie，可以將其過期時間設定為一個過去的時間
+      var date = new Date();
+      date.setTime(date.getTime() - 10000);
+      document.cookie = name + "=a; expires=" + date.toGMTString();
     },
     //API---------------
     async GetLoginApi(uemail) {

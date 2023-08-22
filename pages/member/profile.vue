@@ -6,90 +6,141 @@
       aIcon.icon-area(type="user")
     .user-text {{ "使用者暱稱" }}
   .edit-area
-    ProfileInput(:notEdit="notEdit" @openPhone="OpenPhone" @openPassword="OpenPassword")
+    ProfileInput(
+      :notEdit="notEdit",
+      @openPhone="OpenPhone",
+      @openPassword="OpenPassword"
+      @EditName="EditName"
+    )
     .btn-content
-      aButton.btn-area(type=primary @click="ChangeEditBtn") {{ editText }}
+      aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
-  EditPhone(:visible = "openPhone" @getVerify="GetVerify")
-  EditVerify(:visible="getVerify" @verifyDone="VerifyDone")
-  EditPassword(:visible="openPassword" @donePassword="DonePassword")
+  EditPhone(:visible="openPhone", @getVerify="GetVerify")
+  EditVerify(:visible="getVerify", @verifyDone="VerifyDone")
+  EditPassword(:visible="openPassword", @donePassword="DonePassword")
 </template>
 
 <script>
+import { LoginApi } from "@/services/login.js";
+import { EditUserApi } from "@/services/editUser.js";
 import debounce from "lodash/debounce";
 export default {
-  layout:'default',
-  components:{
-    ProfileInput:()=>import("@/components/profile/profileInput"),
-    EditPhone:()=>import("@/components/profile/EditPhone"),
-    EditVerify:()=>import("@/components/profile/EditVerificationCode"),
-    EditPassword:()=>import("@/components/profile/EditPassword")
-
+  layout: "default",
+  components: {
+    ProfileInput: () => import("@/components/profile/profileInput"),
+    EditPhone: () => import("@/components/profile/EditPhone"),
+    EditVerify: () => import("@/components/profile/EditVerificationCode"),
+    EditPassword: () => import("@/components/profile/EditPassword"),
   },
   name: "MemberProfile",
-  data () {
+  data() {
     return {
-      getVerify:false,
-      openPhone:false,
-      openPassword:false,
-      notEdit:true,
-      editText:""
+      dataPwd:"",
+      dataEmail:"",
+      editName:"",
+      getVerify: false,
+      openPhone: false,
+      openPassword: false,
+      notEdit: true,
+      editText: "",
     };
   },
-  mounted () {
+  mounted() {
     this.MountedActivated();
   },
-  activated () {
+  activated() {
     this.MountedActivated();
   },
-  deactivated () {
+  deactivated() {
     this.DeactivatedDestory();
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.DeactivatedDestory();
   },
-  computed:{
-    changeEdit(){
-      if(this.notEdit === true){
-        this.editText="修改"
-        return "edit"
+  computed: {
+    changeEdit() {
+      if (this.notEdit === true) {
+        this.editText = "修改";
+        return "edit";
+      } else {
+        this.editText = "儲存";
+        return "save";
       }
-      else{
-        this.editText="儲存"
-        return "save"
-      }
-    }
+    },
+  },
+  mounted(){
+    this.Init();
   },
   methods: {
     MountedActivated: debounce(function () {
       // init
     }, 10),
-    DeactivatedDestory () {
+    DeactivatedDestory() {
       // destory
     },
-    ChangeEditBtn(){
-      if(this.notEdit ===true){
-        this.notEdit = false
+    async Init(){
+      await this.GetUserPwdApi();
+    },
+    async ChangeEditBtn() {
+      if (this.notEdit === true) {
+        this.notEdit = false;
+      } else {
+        this.notEdit = true;
+        await this.GetUserNameApi();
       }
-      else this.notEdit =true
     },
-    OpenPhone(val){
-      this.openPhone = val
+    OpenPhone(val) {
+      this.openPhone = val;
     },
-    GetVerify(val){
-      this.getVerify = val
-      this.openPhone = false
+    GetVerify(val) {
+      this.getVerify = val;
+      this.openPhone = false;
     },
-    VerifyDone(){
-      this.getVerify = false
+    VerifyDone() {
+      this.getVerify = false;
     },
-    OpenPassword(val){
-      this.openPassword= val
+    OpenPassword(val) {
+      this.openPassword = val;
     },
-    DonePassword(){
-      this.openPassword = false
+    DonePassword() {
+      this.openPassword = false;
+      this.$nextTick(() => {
+          this.Init();
+        });
+    },
+    EditName(val){
+      this.editName = val
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+    //API ------------
+    async GetUserPwdApi() {
+      console.log("erew")
+      
+      const email = this.GetCookieValue("email");
+      const response = await LoginApi(email);
+      this.dataPwd = response.pwd;
+      this.dataEmail = response.email
+    },
+
+
+    // API----------
+    async GetUserNameApi(){
+      const response =await EditUserApi( this.editName,this.dataEmail,this.dataPwd)
+      if(response.data.status === "success"){
+        this.$message.success('修改成功');
+      }
     }
-  }
+  },
 };
 </script>
 
@@ -97,13 +148,12 @@ export default {
 // 排版
 #MemberProfile {
   background-color: white;
-  .user-area{
-  background-color: white;
-  padding-bottom: 20px;
+  .user-area {
+    background-color: white;
+    padding-bottom: 20px;
+  }
 
-}
-
-  .btn-content{
+  .btn-content {
     bottom: 90px;
     position: absolute;
     width: 100%;
@@ -115,42 +165,42 @@ export default {
 }
 // 元件
 #MemberProfile {
-  .user-area{
+  .user-area {
     display: flex;
     padding-top: 14%;
     flex-direction: column;
     align-items: center;
-    .circle-area{
+    .circle-area {
       width: 85px;
       height: 85px;
       border-radius: 50%;
-      background-color: #DBEFBF;
+      background-color: #dbefbf;
       display: flex;
       align-items: center;
       justify-content: center;
-      .icon-area{
+      .icon-area {
         align-items: center;
         font-size: 55px;
         color: black;
         margin-bottom: 10px;
       }
     }
-    .user-text{
+    .user-text {
       font-size: 24px;
       color: black;
     }
   }
-  
-  .btn-area{
+
+  .btn-area {
     border-radius: 30px;
     height: 47px;
     color: black;
     font-size: 20px;
     padding: 0 10px;
-    border: 3px solid #68B000;
+    border: 3px solid #68b000;
   }
 }
-.html{
- background-color: rgb(255, 0, 0) !important; 
+.html {
+  background-color: rgb(255, 0, 0) !important;
 }
 </style>

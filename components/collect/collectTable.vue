@@ -8,7 +8,7 @@
   .exchange-area(v-if="point===10 && isDeal===false")
     .btn-area(@click="IsChange") {{ "立即兌換 ＞" }}
   .exchange-area(v-if="point===10 && isDeal===true")
-    .btn-deal(@click="IsChange") {{ "已兌換" }}
+    .btn-deal() {{ "已兌換" }}
   CollectModal(:visible="visible" @CloseModal="CloseModal" @SaveModal="SaveModal")
 </template>
 
@@ -48,9 +48,11 @@ export default {
     },
     SaveModal(){
       this.visible = false
+      this.$emit("ChangePoint")
       console.log("save")
       
-    }
+    },
+    
   }
 };
 </script>

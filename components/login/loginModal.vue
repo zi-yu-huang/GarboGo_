@@ -6,51 +6,73 @@
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-            placeholder="abcd@gmail.com",
-            v-model="memberForm.memberEmail",
-        )      
+          placeholder="abcd@gmail.com",
+          v-model="memberForm.memberEmail"
+        ) 
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
-            placeholder="王小明",
-            v-model="memberForm.memberPassword",
+          type="password",
+          placeholder="請輸入密碼",
+          v-model="memberForm.memberPassword"
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
 </template>
 
 <script>
-import {LoginApi} from "@/services/login.js"
+import { LoginApi } from "@/services/login.js";
 export default {
   name: "LoginModal",
-  data () {
+  data() {
     return {
+      isNotPwd: false,
       memberForm: {
-        memberPassword: "",
-        memberEmail: "",
+        memberPassword: "4C5WE",
+        memberEmail: "john0001@gmail.com",
       },
       rules: {
-        memberPassword: [{ required: true, message: "不可為空" }],
+        memberPassword: [
+          {
+            required: true,
+            message: "不可為空",
+          },
+        ],
         memberEmail: [
           { required: true, message: "不可為空" },
-          {type: 'email',message: '請輸入有效的信箱'}
+          { type: "email", message: "請輸入有效的信箱" },
         ],
       },
     };
   },
   methods: {
-    OnSubmit() {
-      
-      this.$refs.ruleForm.validate(async(valid) => {
+    async OnSubmit() {
+      const pw = await this.GetLoginApi(this.memberForm.memberEmail);
+      console.log(pw, this.memberForm.memberPassword);
+
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          const a = await LoginApi();
-          console.log(a)
-          
-          console.log("fdjkl")
-          this.memberForm.memberPassword = "";
-          this.memberForm.memberEmail = "";
-          this.$router.push('/member/profile')
+          if (pw === this.memberForm.memberPassword) {
+            console.log("fdjkl");
+            this.memberForm.memberPassword = "";
+            this.memberForm.memberEmail = "";
+            this.$router.push("/member/profile");
+          } else {
+            console.log(this.isNotPwd);
+
+            this.$message.error("密碼錯誤")
+
+          }
         }
       });
+    },
+    //API---------------------------
+    async GetLoginApi(uemail) {
+      console.log(uemail);
+
+      const response = await LoginApi(uemail);
+      document.cookie = `email=${response.email}`;
+      document.cookie = `id=${response.uid}`;
+      return response.pwd;
     },
   },
 };
@@ -69,9 +91,8 @@ export default {
     align-items: center;
   }
   @media (min-width: 769px) {
-    .form-area{
+    .form-area {
       width: 600px;
-
     }
   }
 }
@@ -99,11 +120,28 @@ export default {
     border-radius: 14px;
     height: 45px;
   }
-  .input-font{
+  .input-font {
     height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-}
+  }
+  .alert-area {
+    z-index: 999;
+    position: absolute;
+    width: 100vw;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .alert-text {
+    width: 169px;
+    height: 56px;
+    justify-content: flex-start;
+    background-color: white;
+    border: 1px solid white;
+    display: flex;
+  }
 }
 </style>

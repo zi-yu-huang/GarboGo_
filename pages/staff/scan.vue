@@ -22,7 +22,6 @@ export default {
   layout:'staff',
   components: {
     QrcodeStream,
-    
     MenuList: () => import("@/components/footer/menuList"),
     MenuFooter: () => import("@/components/footer/MenuFooter"),
   },

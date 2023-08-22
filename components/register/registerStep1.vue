@@ -5,21 +5,19 @@
     .title-content 註冊
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberName", prop="memberName")
-        aInput.input-font(
-            placeholder="王小明",
-            v-model="memberForm.memberName",
-        )
+        aInput.input-font(placeholder="王曉明", v-model="memberForm.memberName")
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-            placeholder="abcd@gmail.com",
-            v-model="memberForm.memberEmail",
-            :maxLength="9"
+          placeholder="abcd@gmail.com",
+          v-model="memberForm.memberEmail"
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
 </template>
 
 <script>
+import { CreateUserNameApi } from "@/services/editUser";
+
 export default {
   name: "RegisterStep1",
   data() {
@@ -32,20 +30,32 @@ export default {
         memberName: [{ required: true, message: "不可為空" }],
         memberEmail: [
           { required: true, message: "不可為空" },
-          {type: 'email',message: '請輸入有效的信箱'}
+          { type: "email", message: "請輸入有效的信箱" },
         ],
       },
     };
   },
   methods: {
-    OnSubmit() {
-      this.$refs.ruleForm.validate((valid) => {
+    async OnSubmit() {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          this.memberForm.memberName = "";
-          this.memberForm.memberEmail = "";
-          this.$emit("DoneStep1",true)
+          const data = await this.GetCreateUserApi();
+          if (data.status === "error") {
+            this.$message.error(data.message)
+          }
+          else{
+            this.$emit("DoneStep1",true,this.memberForm)
+          }
+          // this.memberForm.memberEmail = "";
+          // this.memberForm.memberName = "";
         }
       });
+    },
+
+    // API ---------------
+    async GetCreateUserApi() {
+      const response = await CreateUserNameApi(this.memberForm.memberName);
+      return response.data;
     },
   },
 };
@@ -65,7 +75,6 @@ export default {
 }
 // 元件
 #RegisterStep1 {
-
   .title-content {
     color: white;
     font-size: 35px;
@@ -89,12 +98,11 @@ export default {
     border-radius: 14px;
     height: 45px;
   }
-  .input-font{
+  .input-font {
     height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-
   }
 }
 </style>

@@ -6,6 +6,7 @@
 
 
 <script>
+import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
 import dummytrashcan from "@/components/map/map.json";
@@ -22,12 +23,14 @@ export default {
         lat: null,
         lng: null,
       },
+      trashcanList:[],
       trashcan: [],
     };
   },
   async mounted() {
     // 先取得當前位置資訊
     await this.getCurrentLocation();
+    await this.Init();
     this.initMap();
     // 取得餐廳假資料
     this.fetchtrashcan();
@@ -35,10 +38,15 @@ export default {
     this.setMarker();
   },
   methods: {
+    async Init(){
+      await this.GetTrashListApi();
+    },
     fetchtrashcan() {
-      this.trashcan = dummytrashcan.trashcan;
-      this.currentLocation.lat = dummytrashcan.center.lat;
-      this.currentLocation.lng = dummytrashcan.center.lng;
+      console.log(dummytrashcan.trashcan )
+      
+      this.trashcan = this.trashcanList.trashcan;
+      this.currentLocation.lat = null;
+      this.currentLocation.lng = null;
     },
     initMap() {
       this.map = new google.maps.Map(document.getElementById("map"), {
@@ -148,6 +156,15 @@ export default {
           reject();
         }
       });
+    },
+
+    // API--------------------------------------
+    async GetTrashListApi() {
+      const response = await TrashcanListApi();
+      console.log(response);
+      this.trashcanList = response;
+      console.log(this.trashcanList.trashcan)
+      
     },
   },
 };

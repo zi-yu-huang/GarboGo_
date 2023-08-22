@@ -54,9 +54,9 @@ export default {
     this.Init();
   },
   methods: {
-    Init() {
-      this.GetTrashListApi();
-      this.GetLikeTrashApi();
+    async Init() {
+      await this.GetTrashListApi();
+      await this.GetLikeTrashApi();
     },
     OpenModal(street) {
       console.log(street);
@@ -84,6 +84,10 @@ export default {
 
       this.visible = false;
       this.GetCreateFavoriteApi(2, changeToLike.tname);
+      this.$nextTick(() => {
+        this.Init();
+      });
+      // await this.GetTrashListApi();
     },
 
     //API----------------------------------------------

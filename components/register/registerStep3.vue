@@ -6,12 +6,14 @@
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="Password" prop="Password")
         aInput.input-font(
+          type="password"
           placeholder="請輸入密碼"
           v-model="memberForm.Password"
           :maxLength="9"
           )
       aFormModelItem(ref="PasswordAgain" prop="PasswordAgain")
         aInput.input-font(
+          type="password"
           placeholder="請再次輸入密碼"
           v-model="memberForm.PasswordAgain"
           :maxLength="9"
@@ -54,9 +56,9 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.memberForm.Password = "";
-          this.memberForm.PasswordAgain = "";
-          this.$emit("DoneStep3", true);
+          this.$emit("DoneStep3", true,this.memberForm);
+          // this.memberForm.Password = "";
+          // this.memberForm.PasswordAgain = "";
         }
       });
     },

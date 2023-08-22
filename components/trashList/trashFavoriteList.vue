@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
+import { LikeListApi } from "@/services/likeList.js"
 export default {
   name: "TrashFavoriteList",
   components: {
@@ -42,124 +44,15 @@ export default {
       changeToLike: {
         id: "",
         isLike: "",
+        tname:""
       },
       notifyList:{
         id:"",
         notifyTrashClear: "",
         notifyDontTrash:""
       },
-      likeList: [
-        {
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },
-        {
-          region: "南區",
-          streets: [
-            {
-              id:"3",
-              street: "三民路一段142號",
-              isLike: false,
-              notifyTrashClear: true,
-              notifyDontTrash:true
-            },
-            {
-              id:"4",
-              street: "三民路一段12201號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:false
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },
-      ],
+      likeList: [],
+      originalData:[]
     };
   },
   computed: {
@@ -171,25 +64,41 @@ export default {
       };
     },
   },
+  mounted(){
+    this.Init();
+  },
   methods: {
-    OpenModal(street) {
+    async Init(){
+      await this.GetTrashListApi();
+      await this.GetLikeListApi(2);
+    },
+    async OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
+      console.log(this.changeToLike,street)
+      
       this.visible = true;
+      await this.GetNewList()
     },
     CloseModal(val, like) {
       this.visible = val;
     },
-    SaveModal(visible, changeToLike) {
-      for (let i = 0; i < this.likeList.length; i++) {
-        const streets = this.likeList[i].streets;
-        for (let j = 0; j < streets.length; j++) {
-          if (streets[j].id === changeToLike.id) {
-            streets[j].isLike = changeToLike.isLike;
-          }
-        }
-      }
+    async SaveModal(visible) {
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === changeToLike.id) {
+      //       streets[j].isLike = changeToLike.isLike;
+      //     }
+      //   }
+      // }
       this.visible = visible;
+      
+      await this.GetCreateFavoriteApi(2, this.changeToLike.tname);
+      console.log(this.changeToLike)
+      this.$nextTick(() => {
+        this.Init();
+      });
     },
     OpenNotifyModal(street){
       this.notifyList.id=street.id
@@ -211,6 +120,43 @@ export default {
           }
         }
       }
+    },
+
+
+
+    //API---------------------
+    async GetTrashListApi() {
+      const response = await TrashcanListApi();
+      console.log(response);
+      this.originalData = response;
+    },
+    async GetLikeListApi(uid){
+      const response = await LikeListApi(uid);
+      console.log(response)
+      this.likeList = response.likeList
+    },
+    async GetCreateFavoriteApi(uid, tname) {
+      try {
+        const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
+        console.log(responseData);
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    },
+
+
+
+    //
+    async GetNewList(){
+      for(const item of this.originalData.trashcan){
+        const tname = item.tname
+        if(this.changeToLike.id == item.Recycle.tid || this.changeToLike.id == item.General.tid){
+          console.log(this.changeToLike.id,tname)
+          this.changeToLike.tname = tname
+        }
+        
+      }
+
     }
   },
 };

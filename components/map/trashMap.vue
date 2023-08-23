@@ -1,7 +1,7 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #MapIndex
-  #map.google-map
+  #map.google-map(ref="mapRef")
 </template>
 
 
@@ -9,7 +9,7 @@
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
-import dummytrashcan from "@/components/map/map.json";
+// import dummytrashcan from "@/components/map/map.json";
 export default {
   name: "MapIndex",
   components: {
@@ -17,13 +17,14 @@ export default {
   },
   data() {
     return {
+      marker: { position: { lat: 10, lng: 10 } },
       visible: false,
       map: null,
       currentLocation: {
         lat: null,
         lng: null,
       },
-      trashcanList:[],
+      trashcanList: [],
       trashcan: [],
     };
   },
@@ -32,18 +33,34 @@ export default {
     await this.getCurrentLocation();
     await this.Init();
     this.initMap();
+
+
+    const customIcon = {
+    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // 内置蓝色图标
+    scaledSize: new google.maps.Size(40, 40), // 设置图标大小
+    origin: new google.maps.Point(0, 0), // 设置图标原点
+    anchor: new google.maps.Point(20, 40), // 设置图标锚点
+  };
+    // 在当前位置上创建标记
+    const currentLocationMarker = new google.maps.Marker({
+      position: this.currentLocation,
+      map: this.map,
+      icon:customIcon
+    });
+
     // 取得餐廳假資料
     this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
+    console.log(this.currentLocation);
   },
   methods: {
-    async Init(){
+    async Init() {
       await this.GetTrashListApi();
     },
     fetchtrashcan() {
-      console.log(dummytrashcan.trashcan )
-      
+      console.log(this.currentLocation);
+
       this.trashcan = this.trashcanList.trashcan;
       this.currentLocation.lat = null;
       this.currentLocation.lng = null;
@@ -60,11 +77,12 @@ export default {
         streetViewControl: false,
         mapTypeControl: false,
       });
-      console.log(this.currentLocation);
     },
     setMarker() {
+      console.log(this.currentLocation);
+
       this.trashcan.forEach((location) => {
-        console.log(location.General);
+        // console.log(location.General);
 
         // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
         // 為每間餐廳都建立地標、訊息視窗、事件監聽
@@ -118,29 +136,33 @@ export default {
     //   });
     // },
     getCurrentLocation() {
+      console.log(this.currentLocation);
+
       return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
               const geocoder = new google.maps.Geocoder();
+
               const latLng = new google.maps.LatLng(
                 position.coords.latitude,
                 position.coords.longitude
               );
+              // 設定為該餐廳的座標
 
               geocoder.geocode({ location: latLng }, (results, status) => {
-                console.log("sdfjsk");
-
                 if (status === "OK" && results[0]) {
                   this.currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                   };
-                  console.log(this.currentLocation);
+                  console.log("fkjw", position.coords.latitude);
 
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
+                  console.log(this.currentLocation);
+
                   console.log("無法獲取當前位置");
                   reject();
                 }
@@ -163,8 +185,7 @@ export default {
       const response = await TrashcanListApi();
       console.log(response);
       this.trashcanList = response;
-      console.log(this.trashcanList.trashcan)
-      
+      console.log(this.trashcanList.trashcan);
     },
   },
 };

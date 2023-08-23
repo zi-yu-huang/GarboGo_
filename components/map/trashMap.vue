@@ -36,7 +36,7 @@ export default {
 
 
     const customIcon = {
-    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // 内置蓝色图标
+    url: 'http://maps.google.com/mapfiles/kml/shapes/man.png', // 内置蓝色图标
     scaledSize: new google.maps.Size(40, 40), // 设置图标大小
     origin: new google.maps.Point(0, 0), // 设置图标原点
     anchor: new google.maps.Point(20, 40), // 设置图标锚点

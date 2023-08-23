@@ -193,5 +193,14 @@ export default {
       padding: 0 20px;
     }
   }
+  @media (min-width: 769px) {
+    .block-area{
+          align-items: center;
+
+    }
+    .content{
+      width:600px
+    }
+  }
 }
 </style>

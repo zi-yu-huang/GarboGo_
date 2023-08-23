@@ -163,5 +163,12 @@ export default {
   .ant-form-item {
     margin-bottom: 0 !important;
   }
+  @media (min-width: 769px) {
+    border-radius:  0;
+
+    .form-grid {
+      width: 600px;
+    }
+  }
 }
 </style>

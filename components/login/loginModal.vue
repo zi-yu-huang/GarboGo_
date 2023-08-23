@@ -27,8 +27,8 @@ export default {
     return {
       isNotPwd: false,
       memberForm: {
-        memberPassword: "4C5WE",
-        memberEmail: "john0001@gmail.com",
+        memberPassword: "33",
+        memberEmail: "22@dd.eee",
       },
       rules: {
         memberPassword: [
@@ -88,10 +88,14 @@ export default {
     text-align: center;
     height: 70vh;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
   }
   @media (min-width: 769px) {
+    .content-area {
+      align-items: center;
+    }
     .form-area {
+
       width: 600px;
     }
   }

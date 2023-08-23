@@ -9,7 +9,7 @@
     ProfileInput(
       :notEdit="notEdit",
       @openPhone="OpenPhone",
-      @openPassword="OpenPassword"
+      @openPassword="OpenPassword",
       @EditName="EditName"
     )
     .btn-content
@@ -35,9 +35,9 @@ export default {
   name: "MemberProfile",
   data() {
     return {
-      dataPwd:"",
-      dataEmail:"",
-      editName:"",
+      dataPwd: "",
+      dataEmail: "",
+      editName: "",
       getVerify: false,
       openPhone: false,
       openPassword: false,
@@ -68,7 +68,7 @@ export default {
       }
     },
   },
-  mounted(){
+  mounted() {
     this.Init();
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
     DeactivatedDestory() {
       // destory
     },
-    async Init(){
+    async Init() {
       await this.GetUserPwdApi();
     },
     async ChangeEditBtn() {
@@ -105,11 +105,11 @@ export default {
     DonePassword() {
       this.openPassword = false;
       this.$nextTick(() => {
-          this.Init();
-        });
+        this.Init();
+      });
     },
-    EditName(val){
-      this.editName = val
+    EditName(val) {
+      this.editName = val;
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -124,22 +124,25 @@ export default {
 
     //API ------------
     async GetUserPwdApi() {
-      console.log("erew")
-      
+      console.log("erew");
+
       const email = this.GetCookieValue("email");
       const response = await LoginApi(email);
       this.dataPwd = response.pwd;
-      this.dataEmail = response.email
+      this.dataEmail = response.email;
     },
 
-
     // API----------
-    async GetUserNameApi(){
-      const response =await EditUserApi( this.editName,this.dataEmail,this.dataPwd)
-      if(response.data.status === "success"){
-        this.$message.success('修改成功');
+    async GetUserNameApi() {
+      const response = await EditUserApi(
+        this.editName,
+        this.dataEmail,
+        this.dataPwd
+      );
+      if (response.data.status === "success") {
+        this.$message.success("變更成功");
       }
-    }
+    },
   },
 };
 </script>
@@ -199,8 +202,13 @@ export default {
     padding: 0 10px;
     border: 3px solid #68b000;
   }
-}
-.html {
-  background-color: rgb(255, 0, 0) !important;
+  @media (min-width: 769px) {
+    .user-area {
+      padding-top: 7%;
+    }
+    .btn-content {
+      bottom: 350px;
+    }
+  }
 }
 </style>

@@ -112,6 +112,15 @@ export default {
     height: 70vh;
     justify-content: center;
   }
+  @media (min-width: 769px) {
+    .content-area {
+      align-items: center;
+    }
+    .form-area {
+
+      width: 600px;
+    }
+  }
 }
 // 元件
 #RegisterStep2 {

@@ -35,19 +35,46 @@ export default {
   },
   methods: {
     ListMenu() {
-      this.$router.push("/list");
+      const cookie = this.GetCookieValue("email")
+      if(cookie){
+        this.$router.push("/list");
+      }
+      else this.$router.push("/member")
     },
     HeartMenu() {
-      this.$router.push("/favorite");
+      const cookie = this.GetCookieValue("email")
+      if(cookie){
+        this.$router.push("/favorite");
+      }
+      else this.$router.push("/member")
     },
     ScanMenu() {
-      this.$router.push("/scan");
+      const cookie = this.GetCookieValue("email")
+      if(cookie){
+        this.$router.push("/scan");
+      }
+      else this.$router.push("/member")
     },
     EnvironmentMenu() {
-      this.$router.push("/map");
+      const cookie = this.GetCookieValue("email")
+      if(cookie){
+        this.$router.push("/map");
+      }
+      else this.$router.push("/member")
     },
     QuestionMenu() {
       this.openQuestion = this.openQuestion === true ? false : true;
+    },
+
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
     },
   },
 };
@@ -100,7 +127,8 @@ export default {
       position: fixed; /* 子元素使用绝对定位 */
       left: 50%; /* 将子元素的左侧定位到父元素中心 */
       transform: translate(-50%, -50%); /* 使用 transform 居中子元素 */
-      bottom: 50px;
+      // TODO
+      // bottom: 50px;
       width: 700px;
       border-radius: 30px;
     }

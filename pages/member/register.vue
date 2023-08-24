@@ -2,7 +2,7 @@
 //- 註冊頁面
 #MemberRegister
   RegisterStep1(v-if="current == 'page1'", @DoneStep1="DoneStep1")
-  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2")
+  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2" :otpId = "otpId")
   RegisterStep3(v-if="current == 'page3'", @DoneStep3="DoneStep3")
   DoneVerify(v-if="current == 'page4'")
 </template>
@@ -24,6 +24,7 @@ export default {
       doneStep1: "",
       doneStep2: "",
       doneStep3: "",
+      otpId:"",
       memberForm: {
         memberName: "",
         memberEmail: "",
@@ -64,9 +65,10 @@ export default {
     DeactivatedDestory() {
       // destory
     },
-    DoneStep1(val, data) {
+    DoneStep1(val, data,otpId) {
       this.memberForm.memberEmail = data.memberEmail;
       this.memberForm.memberName = data.memberName;
+      this.otpId = otpId
 
       this.doneStep1 = val;
     },

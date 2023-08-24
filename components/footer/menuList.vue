@@ -90,10 +90,18 @@ export default {
       }
     },
     MenuToGift() {
-      this.$router.push("/collect");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){
+        this.$router.push("/collect");
+      }
+      else this.$router.push("/member");
     },
     MenuToSetting() {
-      this.$router.push("/setting");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){
+        this.$router.push("/setting");
+      }
+      else this.$router.push("/member");
     },
     GoBack() {
       this.$router.go(-1);
@@ -106,6 +114,7 @@ export default {
           return decodeURIComponent(cookie.substring(cookieName.length + 1));
         }
       }
+      
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
   },

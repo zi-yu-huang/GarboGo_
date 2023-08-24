@@ -14,7 +14,7 @@
         Button.btn-area(type="primary", @click="OnSubmit") {{ "下一步 " }}
       .verify-text(@click="OpenModal") {{ "未收到驗證碼?" }}
       div {{ timeClock }}
-          .timeClock-text {{ min+"’"+sec }}
+        .timeClock-text {{ min + "’" + sec }}
 
       DemoModal(
         :visible="isVisible",
@@ -25,13 +25,21 @@
 </template>
 
 <script>
+import { OtpTextApi } from "@/services/sendEmail";
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
   },
+  props: {
+    otpId: {
+      type: Number,
+      default: "",
+    },
+  },
   name: "RegisterStep2",
   data() {
     return {
+      otpText: "",
       timer: null,
       time: 600,
       min: "",
@@ -63,14 +71,31 @@ export default {
       }
     },
   },
+  mounted() {
+    this.Init();
+  },
   methods: {
+    async Init() {
+      console.log(this.otpId);
+      const response = await this.GetOtpTextApi(this.otpId);
+      console.log(response);
+      this.otpText = response;
+    },
     OnSubmit() {
-      this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          this.memberForm.memberVerify = "";
-          this.$emit("DoneStep2", true);
+      console.log(this.memberForm.memberVerify,this.otpText)
+      
+      if (this.otpText === this.memberForm.memberVerify) {
+        console.log("dsjfksd");
+
+        console.log("suecccceessssss");
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+
+        // this.memberForm.memberVerify = "";
+        this.$emit("DoneStep2", true);
         }
-      });
+        });
+      }
     },
     OpenModal() {
       this.isVisible = true;
@@ -93,6 +118,13 @@ export default {
     },
     CloseModal() {
       this.isVisible = false;
+    },
+    //API------------
+    async GetOtpTextApi(id) {
+      console.log(id)
+      
+      const response = await OtpTextApi(id);
+      return response;
     },
   },
   beforeDestroy() {
@@ -117,7 +149,6 @@ export default {
       align-items: center;
     }
     .form-area {
-
       width: 600px;
     }
   }

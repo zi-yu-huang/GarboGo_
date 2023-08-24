@@ -207,7 +207,7 @@ export default {
       padding-top: 7%;
     }
     .btn-content {
-      bottom: 350px;
+      bottom: 18%;
     }
   }
 }

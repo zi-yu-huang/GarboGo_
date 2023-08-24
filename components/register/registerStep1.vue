@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { SendEmailApi } from "@/services/sendEmail";
 import { CreateUserNameApi } from "@/services/editUser";
 
 export default {
@@ -41,10 +42,13 @@ export default {
         if (valid) {
           const data = await this.GetCreateUserApi();
           if (data.status === "error") {
-            this.$message.error(data.message)
-          }
-          else{
-            this.$emit("DoneStep1",true,this.memberForm)
+            this.$message.error(data.message);
+          } else {
+            const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
+            const otpId = otp.data.message
+            console.log(otpId)
+            
+            this.$emit("DoneStep1", true, this.memberForm,otpId);
           }
           // this.memberForm.memberEmail = "";
           // this.memberForm.memberName = "";
@@ -56,6 +60,12 @@ export default {
     async GetCreateUserApi() {
       const response = await CreateUserNameApi(this.memberForm.memberName);
       return response.data;
+    },
+    async GetSendEmailApi(email) {
+      const response = await SendEmailApi(email);
+      console.log(response)
+      
+      return response;
     },
   },
 };
@@ -77,7 +87,6 @@ export default {
       align-items: center;
     }
     .form-area {
-
       width: 600px;
     }
   }

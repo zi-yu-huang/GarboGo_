@@ -2,8 +2,7 @@ export const LoginApi = async (uemail) => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/user/?email=${uemail}`)
-    console.log(response)
-    return response.data
+     return response.data
 
   } catch {
     return {

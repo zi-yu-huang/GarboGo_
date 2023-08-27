@@ -59,7 +59,6 @@ export default {
         streetViewControl: false,
         mapTypeControl: false,
       });
-      console.log(this.currentLocation);
     },
     setMarker() {
       this.trashcan.forEach((location) => {
@@ -129,14 +128,12 @@ export default {
               );
 
               geocoder.geocode({ location: latLng }, (results, status) => {
-                console.log("sdfjsk");
 
                 if (status === "OK" && results[0]) {
                   this.currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                   };
-                  console.log(this.currentLocation);
 
                   // this.center = this.currentLocation;
                   resolve();

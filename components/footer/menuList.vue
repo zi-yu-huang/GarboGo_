@@ -64,7 +64,6 @@ export default {
   methods: {
     OpenMenu() {
       this.visible = this.visible === true ? false : true;
-      console.log(this.visible);
       // $(document).ready(() => {
       //   if (this.visible === true) {
       //     console.log("sdfjlks");
@@ -80,9 +79,7 @@ export default {
     },
     MenuToUser() {
       const uemail = this.GetCookieValue("email")
-      if(uemail){
-        console.log("dfjs")
-        
+      if(uemail){        
         this.$router.push("/member/profile")
       }
       else{

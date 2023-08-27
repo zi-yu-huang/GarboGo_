@@ -92,9 +92,7 @@ export default {
       this.min = parseInt(this.time / 60)
       
       this.sec = this.time%60
-      console.log(this.min, this.sec)
       this.time --;
-      console.log(this.time)
       if(this.time<0){
         clearInterval(this.timer)
       }

@@ -82,18 +82,12 @@ export default {
       this.otpText = response;
     },
     OnSubmit() {
-      console.log(this.memberForm.memberVerify,this.otpText)
-      
-      if (this.otpText === this.memberForm.memberVerify) {
-        console.log("dsjfksd");
 
-        console.log("suecccceessssss");
+      if (this.otpText === this.memberForm.memberVerify) {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-
-        // this.memberForm.memberVerify = "";
-        this.$emit("DoneStep2", true);
-        }
+            this.$emit("DoneStep2", true);
+          }
         });
       }
     },
@@ -105,9 +99,7 @@ export default {
       this.min = parseInt(this.time / 60);
 
       this.sec = this.time % 60;
-      console.log(this.min, this.sec);
       this.time--;
-      console.log(this.time);
       if (this.time < 0) {
         clearInterval(this.timer);
       }
@@ -121,8 +113,6 @@ export default {
     },
     //API------------
     async GetOtpTextApi(id) {
-      console.log(id)
-      
       const response = await OtpTextApi(id);
       return response;
     },

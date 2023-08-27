@@ -130,5 +130,14 @@ export default {
       border-radius: 0 0 20px 0;
     }
   }
+  @media( min-width: 1296px) {
+  .block-area{
+          align-items: center;
+
+    }
+  .block{
+    width: 400px;
+  }
+}
 }
 </style>

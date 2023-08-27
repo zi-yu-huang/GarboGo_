@@ -92,6 +92,15 @@ export default {
         grid-template-columns: 1fr auto;
         gap: 25px;
       }
+      @media (min-width: 769px) {
+    .block-area{
+          align-items: center;
+
+    }
+    .block{
+      width:400px
+    }
+  }
 }
 // 元件
 #NotifyModal {

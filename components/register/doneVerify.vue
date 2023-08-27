@@ -16,7 +16,7 @@ export default {
   },
   methods:{
     ToMap(){
-      this.$router.push('/')
+      this.$router.push('/map')
     }
   }
 };

@@ -51,6 +51,8 @@ export default {
 #ListIndex {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
+    //TODO
+    height: 100vh;
     padding: 40px 30px 90px 30px;
     text-align: center;
     display: flex;
@@ -87,5 +89,18 @@ export default {
     line-height: 42px;
     letter-spacing: 0em;
   }
+  @media (min-width: 769px) {
+
+    display: flex;
+    justify-content: center;
+    .article {
+      width: 900px;
+      height: 100vh;
+      padding: 40px 30px 120px 30px;
+    }
+  }
+  ::-webkit-scrollbar {
+  width: 7px;
+}
 }
 </style>

@@ -75,7 +75,6 @@ export default {
     async OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
-      console.log(this.changeToLike,street)
       
       this.visible = true;
       await this.GetNewList()
@@ -95,7 +94,6 @@ export default {
       this.visible = visible;
       
       await this.GetCreateFavoriteApi(2, this.changeToLike.tname);
-      console.log(this.changeToLike)
       this.$nextTick(() => {
         this.Init();
       });
@@ -127,20 +125,16 @@ export default {
     //API---------------------
     async GetTrashListApi() {
       const response = await TrashcanListApi();
-      console.log(response);
       this.originalData = response;
     },
     async GetLikeListApi(uid){
       const response = await LikeListApi(uid);
-      console.log(response)
       this.likeList = response.likeList
     },
     async GetCreateFavoriteApi(uid, tname) {
       try {
         const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-        console.log(responseData);
       } catch (error) {
-        console.error("An error occurred:", error);
       }
     },
 
@@ -151,7 +145,6 @@ export default {
       for(const item of this.originalData.trashcan){
         const tname = item.tname
         if(this.changeToLike.id == item.Recycle.tid || this.changeToLike.id == item.General.tid){
-          console.log(this.changeToLike.id,tname)
           this.changeToLike.tname = tname
         }
         

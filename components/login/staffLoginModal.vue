@@ -11,7 +11,8 @@
         )      
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
-            placeholder="王小明",
+            type="password"
+            placeholder="請輸入密碼",
             v-model="memberForm.memberPassword",
             :maxLength="9"
         )

@@ -63,7 +63,6 @@ export default {
     },
     async GetSendEmailApi(email) {
       const response = await SendEmailApi(email);
-      console.log(response)
       
       return response;
     },

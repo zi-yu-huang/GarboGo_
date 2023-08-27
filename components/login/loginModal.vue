@@ -47,20 +47,15 @@ export default {
   methods: {
     async OnSubmit() {
       const pw = await this.GetLoginApi(this.memberForm.memberEmail);
-      console.log(pw, this.memberForm.memberPassword);
 
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           if (pw === this.memberForm.memberPassword) {
-            console.log("fdjkl");
             this.memberForm.memberPassword = "";
             this.memberForm.memberEmail = "";
             this.$router.push("/member/profile");
           } else {
-            console.log(this.isNotPwd);
-
-            this.$message.error("密碼錯誤")
-
+            this.$message.error("密碼錯誤");
           }
         }
       });
@@ -95,7 +90,6 @@ export default {
       align-items: center;
     }
     .form-area {
-
       width: 600px;
     }
   }

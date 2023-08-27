@@ -52,14 +52,12 @@ export default {
     this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
-    console.log(this.currentLocation);
   },
   methods: {
     async Init() {
       await this.GetTrashListApi();
     },
     fetchtrashcan() {
-      console.log(this.currentLocation);
 
       this.trashcan = this.trashcanList.trashcan;
       this.currentLocation.lat = null;
@@ -71,16 +69,14 @@ export default {
           lat: this.currentLocation.lat,
           lng: this.currentLocation.lng,
         },
-        zoom: 15,
+        zoom: 18,
         maxZoom: 20,
-        minZoom: 3,
+        minZoom: 10,
         streetViewControl: false,
         mapTypeControl: false,
       });
     },
     setMarker() {
-      console.log(this.currentLocation);
-
       this.trashcan.forEach((location) => {
         // console.log(location.General);
 
@@ -136,8 +132,6 @@ export default {
     //   });
     // },
     getCurrentLocation() {
-      console.log(this.currentLocation);
-
       return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -156,12 +150,10 @@ export default {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                   };
-                  console.log("fkjw", position.coords.latitude);
 
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
-                  console.log(this.currentLocation);
 
                   console.log("無法獲取當前位置");
                   reject();
@@ -183,9 +175,7 @@ export default {
     // API--------------------------------------
     async GetTrashListApi() {
       const response = await TrashcanListApi();
-      console.log(response);
       this.trashcanList = response;
-      console.log(this.trashcanList.trashcan);
     },
   },
 };
@@ -195,7 +185,7 @@ export default {
 <style scoped>
 .google-map {
   width: 100%;
-  height: 95vh;
+  height: 100vh;
 }
 </style>
 

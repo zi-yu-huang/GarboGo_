@@ -2,7 +2,6 @@ export const FavoriteApi = async () => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/getlike/?uid=2`)
-    console.log(response)
     return "success"
 
   } catch {

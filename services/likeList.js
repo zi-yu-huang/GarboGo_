@@ -2,7 +2,6 @@ export const LikeListApi = async (uid) => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/getlike/?uid=${uid}`)
-    console.log("response")
     return response.data
 
   } catch {

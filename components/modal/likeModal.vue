@@ -149,4 +149,13 @@ export default {
     }
   }
 }
+@media( min-width: 769px) {
+  .block-area{
+          align-items: center;
+
+    }
+  .block{
+    width: 400px;
+  }
+}
 </style>

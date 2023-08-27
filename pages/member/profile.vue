@@ -124,8 +124,6 @@ export default {
 
     //API ------------
     async GetUserPwdApi() {
-      console.log("erew");
-
       const email = this.GetCookieValue("email");
       const response = await LoginApi(email);
       this.dataPwd = response.pwd;

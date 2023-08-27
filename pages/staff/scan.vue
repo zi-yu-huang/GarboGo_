@@ -56,13 +56,9 @@ export default {
     OnDecode(result) {
       if (result==='https://1x.antdv.com/components/alert-cn/') {
         this.sucess = true;
-        console.log(result)
         
         this.result = result;
-        console.log("sucess");
-      } else {
         this.isError = true;
-        console.log("error");
       }
 
       // window.location.href=this.result

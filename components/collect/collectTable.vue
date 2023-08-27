@@ -2,58 +2,55 @@
 //- 請填寫功能描述👈
 #CollectTable
   .collect-table
-    .collect-icon(v-for="item in total", :key= "item")
+    .collect-icon(v-for="item in total", :key="item")
       .icon-area(v-if="item <= point")
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
-  .exchange-area(v-if="point===10 && isDeal===false")
+  .exchange-area(v-if="point === 10 && isDeal === false")
     .btn-area(@click="IsChange") {{ "立即兌換 ＞" }}
-  .exchange-area(v-if="point===10 && isDeal===true")
-    .btn-deal() {{ "已兌換" }}
-  CollectModal(:visible="visible" @CloseModal="CloseModal" @SaveModal="SaveModal")
+  .exchange-area(v-if="point === 10 && isDeal === true")
+    .btn-deal {{ "已兌換" }}
+  CollectModal(
+    :visible="visible",
+    @CloseModal="CloseModal",
+    @SaveModal="SaveModal"
+  )
 </template>
 
 <script>
 export default {
-  components:{
-    CollectModal:()=>import("@/components/modal/collectModal")
+  components: {
+    CollectModal: () => import("@/components/modal/collectModal"),
   },
   name: "CollectTable",
-  props:{
-    point:{
-      type:Number,
-      default:""
+  props: {
+    point: {
+      type: Number,
+      default: "",
     },
-    isDeal:{
-      type:Boolean,
-      default:""
-    }
+    isDeal: {
+      type: Boolean,
+      default: "",
+    },
   },
   data() {
     return {
       // collect: 6,
-      total:10,
-      visible:false,
+      total: 10,
+      visible: false,
     };
   },
-  methods:{
-    IsChange(){
-      this.visible =true
-      console.log("sdfjks")
-      
+  methods: {
+    IsChange() {
+      this.visible = true;
     },
-    CloseModal(){
-      this.visible = false
-      console.log("close")
-      
+    CloseModal() {
+      this.visible = false;
     },
-    SaveModal(){
-      this.visible = false
-      this.$emit("ChangePoint")
-      console.log("save")
-      
+    SaveModal() {
+      this.visible = false;
+      this.$emit("ChangePoint");
     },
-    
-  }
+  },
 };
 </script>
 
@@ -75,7 +72,7 @@ export default {
       border: 1px solid #d4d4d4;
     }
   }
-  .icon-area{
+  .icon-area {
     display: flex;
     height: 100%;
     justify-content: center;
@@ -84,17 +81,16 @@ export default {
 }
 // 元件
 #CollectTable {
-
-  img{
-    background-color: rgba(170,216,105,0.4);
+  img {
+    background-color: rgba(170, 216, 105, 0.4);
     height: 60px;
     width: 60px;
     border-radius: 100%;
     padding: 6px;
     text-align: center;
   }
-  .btn-area{
-    background-color: #8CBA4A;
+  .btn-area {
+    background-color: #8cba4a;
     width: 100%;
     border-radius: 0 0 10px 10px;
     font-size: 22px;
@@ -103,7 +99,7 @@ export default {
     text-align: center;
     padding: 12px 0;
   }
-  .btn-deal{
+  .btn-deal {
     width: 100%;
     border-radius: 0 0 10px 10px;
     font-size: 22px;
@@ -111,7 +107,7 @@ export default {
     font-weight: 800;
     text-align: center;
     padding: 12px 0;
-    background-color: #D4D4D4;
+    background-color: #d4d4d4;
   }
 }
 </style>

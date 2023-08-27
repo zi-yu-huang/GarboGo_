@@ -1,73 +1,52 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #StaffList
-  p StaffList
-  //- aTable(:columns="columns" :data-source="data")
-  //-   a(slot="name" slot-scope="text") {{ text }}
-  //-   span(slot="customTitle")
-  //-     aIcon(type="smile-o") {{ Name }}
-  //-   span(slot="tags" slot-scope="tags")
-  //-     aTag( v-for="tag in tags" :key="tag" :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'") {{ tag.toUpperCase() }}
-  //-   span(slot="action" slot-scope="text, record")
-  //-     a {{Invite 一 {{ record.name }} }}
-  //-     aDivider(type="vertical")
-  //-     a {{Delete}}
-  //-     aDivider(type="vertical")
-  //-     a(class="ant-dropdown-link") {{ "More actions "aIcon(type="down")}}
+  aTable(:columns="columns" :data-source="data" :pagination="false")
+    span(slot="general" slot-scope="general")
+      aIcon(type="delete", theme="filled") 
+    span(slot="recycle" slot-scope="recycle")
+      aIcon(type="delete", theme="filled") 
 </template>
 
 <script>
 const columns = [
   {
-    dataIndex: 'name',
-    key: 'name',
-    slots: { title: 'customTitle' },
-    scopedSlots: { customRender: 'name' },
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
+    title: '設置地點',
     dataIndex: 'address',
     key: 'address',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    scopedSlots: { customRender: 'tags' },
+    title: '一般',
+    dataIndex: 'general',
+    key: 'general',
+    scopedSlots: { customRender: 'general' },
   },
   {
-    title: 'Action',
-    key: 'action',
-    scopedSlots: { customRender: 'action' },
-  },
+    title: '回收',
+    key: 'recycle',
+    dataIndex: 'recycle',
+    scopedSlots: { customRender: 'recycle' },
+  }
 ];
 
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    address: "美德街78號",
+    recycle: "100",
+    general: "49",
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    address: "美德街78號",
+    recycle: "39",
+    general: "94",
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    address: "美德街78號",
+    recycle: "14",
+    general: "56",
   },
 ];
 export default {

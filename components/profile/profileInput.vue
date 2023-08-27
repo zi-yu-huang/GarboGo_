@@ -65,16 +65,13 @@ export default {
   methods: {
     async Init() {
       const userEmail = this.GetCookieValue("email");
-      console.log(userEmail);
 
       const data = await this.GetLoginApi(userEmail);
-      console.log(data);
       this.memberForm.memberEmail = data.email;
       this.memberForm.memberName = data.uname;
       this.memberForm.memberPassword = data.pwd;
     },
     EditName() {
-      console.log(this.memberForm.memberName);
       this.$emit("EditName",this.memberForm.memberName)
     },
     LogOut() {

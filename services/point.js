@@ -2,8 +2,7 @@ export const PointApi = async () => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/usertotalpoint/`)
-    console.log(response)
-    return response
+     return response
 
   } catch {
     return [{
@@ -84,7 +83,6 @@ export const InsertPointApi = async (uid) => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/insertpoint/?uid=${uid}&point=10`)
-    console.log(response)
     return response
 
   } catch {
@@ -96,7 +94,6 @@ export const UpdataPointApi = async (uid,point) => {
   const axios = (await import("axios")).default
   try {
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/updateUserPoint/?uid=${uid}&changepoint=${point}`)
-    console.log(response)
     return response
 
   } catch {

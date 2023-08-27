@@ -59,7 +59,6 @@ export default {
       await this.GetLikeTrashApi();
     },
     OpenModal(street) {
-      console.log(street);
       this.changeToLike.tplace = street.tplace;
       this.changeToLike.tname = street.tname;
       this.changeToLike.isLike = street.isLike;
@@ -69,7 +68,6 @@ export default {
       this.visible = val;
     },
     async SaveModal(visible, changeToLike) {
-      console.log(changeToLike);
 
       // for (let i = 0; i < this.likeList.length; i++) {
       //   const streets = this.likeList[i].streets;
@@ -93,12 +91,10 @@ export default {
     //API----------------------------------------------
     async GetTrashListApi() {
       const response = await TrashcanListApi();
-      console.log(response);
       this.originalData = response;
     },
     async GetLikeTrashApi() {
       const likeTrashList = await LikeTrashApi(2);
-      console.log(likeTrashList);
       this.likeTrash = likeTrashList;
       this.GetList();
     },
@@ -140,7 +136,6 @@ export default {
       for (const item of newList) {
         for (const itemPlace of item.streets) {
           for (const list in this.likeTrash) {
-            // console.log(this.likeTrash[list])
             if (itemPlace.tplace == this.likeTrash[list]) {
               itemPlace.isLike = true;
             }
@@ -149,14 +144,11 @@ export default {
       }
       // if(this.likeTrash ==)
       this.likeList = newList;
-      console.log(this.likeList);
     },
     async GetCreateFavoriteApi(uid, tname) {
       try {
         const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-        console.log(responseData);
       } catch (error) {
-        console.error("An error occurred:", error);
       }
     },
   },
@@ -203,5 +195,6 @@ export default {
     font-weight: 800;
     line-height: 19px;
   }
+
 }
 </style>

@@ -85,7 +85,6 @@ export default {
     //API--------------------
     async GetCreateUserApi(data){
       const response = await CreateUserApi(data.memberName,data.memberEmail,data.memberPwd)
-      console.log(response)
       return response
       
     }

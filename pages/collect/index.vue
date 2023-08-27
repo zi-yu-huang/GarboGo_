@@ -3,12 +3,13 @@
 #CollectIndex
   .article
     .title-size {{ "印花集章" }}
-    div(v-if="lastPoint > 0")
-      CollectTable(:point="lastPoint", :isDeal="false")
-    .table-area(v-for="(item, index) in card", :key="item.id")
-      CollectTable(:point="10", :isDeal="false", @ChangePoint="ChangePoint")
-    .table-area(v-for="(item, index) in exchange_ticket", :key="item")
-      CollectTable(:point="10", :isDeal="true")
+    .article_area
+      div(v-if="lastPoint > 0")
+        CollectTable(:point="lastPoint", :isDeal="false")
+      .table-area(v-for="(item, index) in card", :key="item.id")
+        CollectTable(:point="10", :isDeal="false", @ChangePoint="ChangePoint")
+      .table-area(v-for="(item, index) in exchange_ticket", :key="item")
+        CollectTable(:point="10", :isDeal="true")
 </template>
 
 <script>
@@ -94,7 +95,7 @@ export default {
     async GetInsertPointApi(uid) {
       const insert = await InsertPointApi(uid);
       if (insert.data.status === "success") {
-        this.$message.success('兌換成功');
+        this.$message.success("兌換成功");
         await this.GetUpdatePointApi(uid, -10);
         this.$nextTick(() => {
           this.Init();
@@ -119,6 +120,7 @@ export default {
     text-align: center;
     display: flex;
     flex-direction: column;
+    height: 100vh;
   }
   .table-area {
     margin-top: 20px;
@@ -132,6 +134,22 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
+  }
+  @media (min-width: 769px) {
+    .table-area {
+      width: 400px;
+    }
+    .article {
+      padding: 40px 30px 120px 30px;
+    }
+    .article_area {
+      display: grid;
+      grid-gap: 20px;
+      gap: 20px;
+      grid-template-columns: 450px 450px 450px;
+      justify-items: center;
+      justify-content: center;
+    }
   }
 }
 </style>

@@ -51,7 +51,6 @@ export default {
   methods: {
     OpenMenu() {
       this.visible = this.visible === true ? false : true;
-      console.log(this.visible);
       // $(document).ready(() => {
       //   if (this.visible === true) {
       //     console.log("sdfjlks");

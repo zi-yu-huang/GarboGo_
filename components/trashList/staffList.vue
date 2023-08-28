@@ -1,49 +1,57 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #StaffList
-  aTable(:columns="columns" :data-source="data" :pagination="false")
-    span(slot="general" slot-scope="general")
-      aIcon(type="delete", theme="filled") 
-    span(slot="recycle" slot-scope="recycle")
-      aIcon(type="delete", theme="filled") 
+  aTable(:columns="columns", :data-source="data", :pagination="false")
+    span(slot="general", slot-scope="general")
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(general) }"
+      ) 
+    span(slot="recycle", slot-scope="recycle")
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(recycle) }"
+      ) 
 </template>
 
 <script>
 const columns = [
   {
-    title: '設置地點',
-    dataIndex: 'address',
-    key: 'address',
+    title: "設置地點",
+    dataIndex: "address",
+    key: "address",
   },
   {
-    title: '一般',
-    dataIndex: 'general',
-    key: 'general',
-    scopedSlots: { customRender: 'general' },
+    title: "一般",
+    dataIndex: "general",
+    key: "general",
+    scopedSlots: { customRender: "general" },
   },
   {
-    title: '回收',
-    key: 'recycle',
-    dataIndex: 'recycle',
-    scopedSlots: { customRender: 'recycle' },
-  }
+    title: "回收",
+    key: "recycle",
+    dataIndex: "recycle",
+    scopedSlots: { customRender: "recycle" },
+  },
 ];
 
 const data = [
   {
-    key: '1',
+    key: "1",
     address: "美德街78號",
     recycle: "100",
     general: "49",
   },
   {
-    key: '2',
+    key: "2",
     address: "美德街78號",
     recycle: "39",
     general: "94",
   },
   {
-    key: '3',
+    key: "3",
     address: "美德街78號",
     recycle: "14",
     general: "56",
@@ -90,6 +98,27 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    trashColor() {
+      return (value) => {
+        // 在这里实现根据 value 返回对应的颜色逻辑
+        // 例如使用 switch/case 或 if/else 来根据具体值返回颜色
+        // 示例：
+        if (value < 50) {
+          return "#84ce19";
+        } else if (value < 75) {
+          return "#ece200";
+        } else if (value <= 90) {
+          return "#e70000";
+        } else if (value <= 100) {
+          return "#a005d7";
+        } else {
+          return "#000000"; // 默认颜色
+        }
+      };
+    },
   },
 };
 </script>

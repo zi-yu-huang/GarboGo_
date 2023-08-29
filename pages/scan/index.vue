@@ -1,7 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #Scan
-  MenuList
   .sucess-mask(v-if="sucess")
     .sucess-text {{ "已成功連線至垃圾桶!" }}
   .alert-area(v-if="isError")
@@ -12,13 +11,13 @@
       .camera-mask
       qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
 
-  MenuFooter
 </template>
 
 <script>
 import debounce from "lodash/debounce";
 import { QrcodeStream } from "vue-qrcode-reader";
 export default {
+  layout:'default',
   components: {
     QrcodeStream,
     

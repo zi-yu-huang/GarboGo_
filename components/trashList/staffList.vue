@@ -1,7 +1,12 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #StaffList
-  aTable(:columns="columns", :data-source="data", :pagination="false")
+  aTable(
+    :columns="columns",
+    :data-source="data",
+    :pagination="false",
+    :rowClassName="rowClassName"
+  )
     span(slot="general", slot-scope="general")
       aIcon.trashIcon(
         :type="'delete'",
@@ -119,6 +124,11 @@ export default {
         }
       };
     },
+  },
+  methods: {
+    // rowClassName(record, index) {
+    //   return index % 2 ? "green" : "black";
+    // },
   },
 };
 </script>

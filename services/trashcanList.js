@@ -177,7 +177,6 @@ export const TrashcanCreateApi = async (uid, tname) => {
   const axios = (await import("axios")).default;
 
   try {
-    uid = 2;
     const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/insertfavorite/?uid=${uid}&tname=${tname}`);
     return response; // 返回响应数据
   } catch (error) {

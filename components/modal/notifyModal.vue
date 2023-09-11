@@ -34,9 +34,10 @@ export default {
     },
     DontClose(){
     },
-    ChangeToClear(){
+    ChangeToClear(){      
       this.notifyList.notifyTrashClear=!this.notifyList.notifyTrashClear
       this.$emit("ChangeSwitch",this.notifyList)
+
     },
     ChangeToDontTrash(){
       this.notifyList.notifyDontTrash=!this.notifyList.notifyDontTrash

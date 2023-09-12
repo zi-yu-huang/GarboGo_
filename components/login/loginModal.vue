@@ -67,6 +67,8 @@ export default {
       const response = await LoginApi(uemail);
       document.cookie = `email=${response.email}`;
       document.cookie = `id=${response.uid}`;
+      console.log(response)
+      
       return response.pwd;
     },
   },

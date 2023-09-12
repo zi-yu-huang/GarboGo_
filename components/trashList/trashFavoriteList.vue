@@ -25,36 +25,43 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  NotifyModal(:notifyVisible="notifyVisible" :notifyList="notifyList" @CloseNotifyModal="CloseNotifyModal" @ChangeSwitch="ChangeSwitch")
+  NotifyModal(
+    :notifyVisible="notifyVisible",
+    :notifyList="notifyList",
+    @CloseNotifyModal="CloseNotifyModal",
+    @ChangeTrashClearSwitch="ChangeTrashClearSwitch",
+    @ChangeDontTrashSwitch="ChangeDontTrashSwitch"
+  )
 </template>
 
 <script>
-import {TrashNotifyApi } from "@/services/trashNotify.js"
+import { TrashNotifyApi } from "@/services/trashNotify.js";
 import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
-import { LikeListApi } from "@/services/likeList.js"
+import { LikeListApi } from "@/services/likeList.js";
+import { LikeTrashApi } from "../../services/likeTrash";
 export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    NotifyModal:()=>import('@/components/modal/notifyModal')
+    NotifyModal: () => import("@/components/modal/notifyModal"),
   },
   data() {
     return {
-      notifyVisible:false,
+      notifyVisible: false,
       visible: false,
-      uid:"",
+      uid: "",
       changeToLike: {
         id: "",
         isLike: "",
-        tname:""
+        tname: "",
       },
-      notifyList:{
-        id:"",
+      notifyList: {
+        id: "",
         notifyTrashClear: "",
-        notifyDontTrash:""
+        notifyDontTrash: "",
       },
       likeList: [],
-      originalData:[]
+      originalData: [],
     };
   },
   computed: {
@@ -66,24 +73,24 @@ export default {
       };
     },
   },
-  mounted(){
+  mounted() {
     this.Init();
   },
   methods: {
-    async Init(){
-      this.uid = this.GetCookieValue("id")
-      console.log(this.uid)
-      
+    async Init() {
+      this.uid = this.GetCookieValue("id");
+      console.log(this.uid);
+
       await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
     },
     OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
-      
+
       this.visible = true;
-      console.log(street)
-      
+      console.log(street);
+
       // await this.GetNewList()
     },
     CloseModal(val, like) {
@@ -99,43 +106,71 @@ export default {
       //   }
       // }
       this.visible = visible;
-      
+
       await this.GetCreateFavoriteApi(this.uid, this.changeToLike.tname);
       this.$nextTick(() => {
         this.Init();
       });
     },
-    OpenNotifyModal(street){
-      console.log(street)
+    OpenNotifyModal(street) {
+      console.log(street);
 
-      this.notifyList.id=street.id
-      this.notifyList.notifyDontTrash=street.notifyDontTrash
-      this.notifyList.notifyTrashClear=street.notifyTrashClear
-      
-      this.notifyVisible =true
+      this.notifyList.id = street.id;
+      this.notifyList.notifyDontTrash = street.notifyDontTrash;
+      this.notifyList.notifyTrashClear = street.notifyTrashClear;
+
+      this.notifyVisible = true;
     },
-    CloseNotifyModal(val){
-      this.notifyVisible = val
+    CloseNotifyModal(val) {
+      this.notifyVisible = val;
     },
-    async ChangeSwitch(list){
-      if(list.notifyDontTrash === true){
-        list.notifyDontTrash = 1
-      }else list.notifyDontTrash = 0
-      if(list.notifyTrashClear ===true){
-        list.notifyTrashClear =1
-      }else list.notifyTrashClear = 0
+    async ChangeTrashClearSwitch(list) {
       console.log(list)
       
-      await this.GetTrashNotifyApi(this.uid,list.id);
-      for(let i=0;i<this.likeList.length;i++){
-        const streets = this.likeList[i].streets;
-        for(let j=0;j<streets.length;j++){
-          if(streets[j].id ===list.id){
-            streets[j].notifyDontTrash = list.notifyDontTrash
-            streets[j].notifyTrashClear = list.notifyTrashClear
-          }
-        }
+      if (list.notifyTrashClear === true) {
+        this.notifyList.notifyTrashClear = 1;
+      } else this.notifyList.notifyTrashClear = 0;
+      if (list.notifyDontTrash === true) {
+        this.notifyList.notifyDontTrash = 1;
       }
+      if (list.notifyDontTrash === false) {
+        this.notifyList.notifyDontTrash = 0;
+      }
+      console.log(this.notifyList);
+
+      await this.GetTrashNotifyApi(this.notifyList.id,this.uid,this.notifyList.notifyTrashClear,this.notifyList.notifyDontTrash);
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === list.id) {
+      //       streets[j].notifyDontTrash = list.notifyDontTrash;
+      //       streets[j].notifyTrashClear = list.notifyTrashClear;
+      //     }
+      //   }
+      // }
+    },
+    async ChangeDontTrashSwitch(list) {
+      if (list.notifyDontTrash === true) {
+        this.notifyList.notifyDontTrash = 1;
+      } else this.notifyList.notifyDontTrash = 0;
+      if (list.notifyTrashClear === true) {
+        this.notifyList.notifyTrashClear = 1;
+      }
+      if (list.notifyTrashClear === false) {
+        this.notifyList.notifyTrashClear = 0;
+      }
+      console.log(this.notifyList);
+
+      await this.GetTrashNotifyApi(this.notifyList.id,this.uid,this.notifyList.notifyTrashClear,this.notifyList.notifyDontTrash);
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === list.id) {
+      //       streets[j].notifyDontTrash = list.notifyDontTrash;
+      //       streets[j].notifyTrashClear = list.notifyTrashClear;
+      //     }
+      //   }
+      // }
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -145,44 +180,41 @@ export default {
           return decodeURIComponent(cookie.substring(cookieName.length + 1));
         }
       }
-      
+
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
-
 
     //API---------------------
     async GetTrashListApi() {
       const response = await TrashcanListApi();
       this.originalData = response;
     },
-    async GetLikeListApi(uid){
+    async GetLikeListApi(uid) {
       const response = await LikeListApi(uid);
-      this.likeList = response.likeList
+      this.likeList = response.likeList;
     },
     async GetCreateFavoriteApi(uid, tname) {
       try {
         const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-      } catch (error) {
-      }
+      } catch (error) {}
     },
-    async GetTrashNotifyApi(){
-      const response = await TrashNotifyApi();
-      console.log(response)
+    async GetTrashNotifyApi(tid,uid,trashClear,dontTrash) {
+      const response = await TrashNotifyApi(tid,uid,trashClear,dontTrash);
+      console.log(response);
     },
-
-
 
     //
-    async GetNewList(){
-      for(const item of this.originalData.trashcan){
-        const tname = item.tname
-        if(this.changeToLike.id == item.Recycle.tid || this.changeToLike.id == item.General.tid){
-          this.changeToLike.tname = tname
+    async GetNewList() {
+      for (const item of this.originalData.trashcan) {
+        const tname = item.tname;
+        if (
+          this.changeToLike.id == item.Recycle.tid ||
+          this.changeToLike.id == item.General.tid
+        ) {
+          this.changeToLike.tname = tname;
         }
-        
       }
-
-    }
+    },
   },
 };
 </script>
@@ -229,7 +261,7 @@ export default {
     font-weight: 800;
     line-height: 19px;
   }
-  .ant-divider-horizontal{
+  .ant-divider-horizontal {
     margin: 0 !important;
   }
 }

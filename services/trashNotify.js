@@ -1,7 +1,7 @@
 export const TrashNotifyApi = async (tid,uid,trashClear,dontTrash) => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/insertNotification/?tid=${tid}&uid=${uid}&trashclear=${trashClear}&donttrash=${dontTrash}`)
+    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/insertNotification/?tid=${tid}&uid=${uid}&trashclear=${trashClear}&donttrash=${dontTrash}`)
      return response.data
 
   } catch {

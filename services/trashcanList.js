@@ -1,7 +1,7 @@
 export const TrashcanListApi = async () => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/trashcan/`)
+    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/trashcan/`)
     return response.data
 
   } catch {
@@ -177,7 +177,7 @@ export const TrashcanCreateApi = async (uid, tname) => {
   const axios = (await import("axios")).default;
 
   try {
-    const response = await axios.post(`http://b9bd-163-17-133-147.ngrok-free.app/insertfavorite/?uid=${uid}&tname=${tname}`);
+    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/insertfavorite/?uid=${uid}&tname=${tname}`);
     return response; // 返回响应数据
   } catch (error) {
     throw error; // 抛出错误以供调用方处理

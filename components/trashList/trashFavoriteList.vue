@@ -87,7 +87,7 @@ export default {
     OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
-
+      this.changeToLike.tname = street.street
       this.visible = true;
       console.log(street);
 
@@ -97,11 +97,13 @@ export default {
       this.visible = val;
     },
     async SaveModal(visible) {
+      console.log(this.changeToLike)
+      
       // for (let i = 0; i < this.likeList.length; i++) {
       //   const streets = this.likeList[i].streets;
       //   for (let j = 0; j < streets.length; j++) {
-      //     if (streets[j].id === changeToLike.id) {
-      //       streets[j].isLike = changeToLike.isLike;
+      //     if (streets[j].id === this.changeToLike.id) {
+      //       streets[j].isLike = this.changeToLike.isLike;
       //     }
       //   }
       // }

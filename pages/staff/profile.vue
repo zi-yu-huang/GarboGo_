@@ -88,6 +88,8 @@ export default {
     },
     DonePassword(){
       this.openPassword = false
+      this.notEdit = true
+      // this.ChangeEditBtn()
     }
   }
 };

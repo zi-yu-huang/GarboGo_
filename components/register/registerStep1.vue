@@ -12,7 +12,7 @@
           v-model="memberForm.memberEmail"
         )
       aFormModelItem
-        aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
+        aButton.btn-area(:disabled="btn_stauts" type="primary", @click="OnSubmit") {{ "下一步" }}
 </template>
 
 <script>
@@ -23,6 +23,7 @@ export default {
   name: "RegisterStep1",
   data() {
     return {
+      btn_stauts:false,
       memberForm: {
         memberName: "",
         memberEmail: "",
@@ -44,11 +45,12 @@ export default {
           if (data.status === "error") {
             this.$message.error(data.message);
           } else {
+            this.btn_stauts=true
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
             const otpId = otp.data.message
             console.log(otpId)
-            
             this.$emit("DoneStep1", true, this.memberForm,otpId);
+            
           }
           // this.memberForm.memberEmail = "";
           // this.memberForm.memberName = "";

@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 
@@ -79,17 +78,7 @@ export default {
     };
   },
   mounted() {
-    $(document).click((event) => {
-      if (this.visible === true) {
-        const target = $(event.target);
-        console.log("eruiwo")
-        
-        // const menuIcon = $(".icon-type");
-        // if (!target.closest(menuIcon).length) {
-          this.visible = false;
-        // }
-      }
-    });
+
     this.Init();
   },
   methods: {
@@ -107,6 +96,9 @@ export default {
           this.$message.error("密碼錯誤");
         }
       });
+    },
+    CloseModal() {
+      this.$emit("CloseModal");
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -206,12 +198,11 @@ export default {
     }
   }
   @media (min-width: 769px) {
-    .block-area{
-          align-items: center;
-
+    .block-area {
+      align-items: center;
     }
-    .content{
-      width:600px
+    .content {
+      width: 600px;
     }
   }
 }

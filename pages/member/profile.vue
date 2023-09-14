@@ -17,10 +17,11 @@
         aIcon(:type="changeEdit")
   EditPhone(:visible="openPhone", @getVerify="GetVerify")
   EditVerify(:visible="getVerify", @verifyDone="VerifyDone")
-  EditPassword(:visible="openPassword", @donePassword="DonePassword")
+  EditPassword(:visible="openPassword", @donePassword="DonePassword" @CloseModal="DonePassword")
 </template>
 
 <script>
+import $ from 'jquery'
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 import debounce from "lodash/debounce";
@@ -47,6 +48,19 @@ export default {
   },
   mounted() {
     this.MountedActivated();
+    if (this.openPassword === true) {
+
+    $(document).click((event) => {
+      if (this.openPassword === true) {
+        console.log("fjl")
+        
+        const target = $(event.target);
+        const menuIcon = $(".block-area");
+        if (!target.closest(menuIcon).length) {
+          this.openPassword = false;
+        }
+      }
+    });}
   },
   activated() {
     this.MountedActivated();

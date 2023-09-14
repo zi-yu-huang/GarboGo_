@@ -16,7 +16,7 @@
       aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
   EditPhone(:visible="openPhone", @getVerify="GetVerify")
-  EditVerify(:visible="getVerify", @verifyDone="VerifyDone")
+  EditVerify(:visible="getVerify",:getOptId="getOptId" @verifyDone="VerifyDone")
   EditPassword(:visible="openPassword", @donePassword="DonePassword" @CloseModal="DonePassword")
 </template>
 
@@ -40,6 +40,7 @@ export default {
       dataEmail: "",
       editName: "",
       getVerify: false,
+      getOptId:null,
       openPhone: false,
       openPassword: false,
       notEdit: true,
@@ -52,7 +53,6 @@ export default {
 
     $(document).click((event) => {
       if (this.openPassword === true) {
-        console.log("fjl")
         
         const target = $(event.target);
         const menuIcon = $(".block-area");
@@ -106,8 +106,11 @@ export default {
     OpenPhone(val) {
       this.openPhone = val;
     },
-    GetVerify(val) {
+    GetVerify(val,otpId) {
       this.getVerify = val;
+      console.log(otpId)
+      
+      this.getOptId = otpId
       this.openPhone = false;
     },
     VerifyDone() {

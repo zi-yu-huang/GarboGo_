@@ -59,7 +59,6 @@ export default {
     DontClose(){
     },
     ChangeToClear(){      
-      console.log(this.notifyList)
       
       this.notifyList.notifyTrashClear=!this.notifyList.notifyTrashClear
       this.$emit("ChangeTrashClearSwitch",this.notifyList)

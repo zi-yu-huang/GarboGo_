@@ -87,7 +87,6 @@ export default {
       this.changeToLike.isLike = street.isLike;
       this.changeToLike.tname = street.street;
       this.visible = true;
-      console.log(street);
 
       await this.GetNewList()
     },
@@ -95,7 +94,6 @@ export default {
       this.visible = val;
     },
     async SaveModal(visible) {
-      console.log(this.uid, this.changeToLike.tname);
 
       // for (let i = 0; i < this.likeList.length; i++) {
       //   const streets = this.likeList[i].streets;
@@ -108,14 +106,12 @@ export default {
       this.visible = visible;
 
       await this.GetCreateFavoriteApi(this.uid, this.changeToLike.tname);
-      console.log(this.uid, this.changeToLike.tname);
 
       this.$nextTick(() => {
         this.Init();
       });
     },
     OpenNotifyModal(street) {
-      console.log(street);
 
       this.notifyList.id = street.id;
       this.notifyList.notifyDontTrash = street.notifyDontTrash;
@@ -127,7 +123,6 @@ export default {
       this.notifyVisible = val;
     },
     async ChangeTrashClearSwitch(list) {
-      console.log(list);
 
       if (list.notifyTrashClear === true) {
         this.notifyList.notifyTrashClear = 1;
@@ -138,7 +133,6 @@ export default {
       if (list.notifyDontTrash === false) {
         this.notifyList.notifyDontTrash = 0;
       }
-      console.log(this.notifyList);
 
       await this.GetTrashNotifyApi(
         this.notifyList.id,
@@ -166,7 +160,6 @@ export default {
       if (list.notifyTrashClear === false) {
         this.notifyList.notifyTrashClear = 0;
       }
-      console.log(this.notifyList);
 
       await this.GetTrashNotifyApi(
         this.notifyList.id,
@@ -208,12 +201,10 @@ export default {
     async GetCreateFavoriteApi(uid, tname) {
       
       const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-      console.log(responseData)
       
     },
     async GetTrashNotifyApi(tid, uid, trashClear, dontTrash) {
       const response = await TrashNotifyApi(tid, uid, trashClear, dontTrash);
-      console.log(response);
     },
 
     //
@@ -225,7 +216,6 @@ export default {
           this.changeToLike.id == item.General.tid
         ) {
           this.changeToLike.tname = tname;
-          console.log(this.changeToLike)
           
         }
       }

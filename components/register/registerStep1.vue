@@ -52,8 +52,8 @@ export default {
             this.$emit("DoneStep1", true, this.memberForm,otpId);
             
           }
-          // this.memberForm.memberEmail = "";
-          // this.memberForm.memberName = "";
+          this.memberForm.memberEmail = "";
+          this.memberForm.memberName = "";
         }
       });
     },

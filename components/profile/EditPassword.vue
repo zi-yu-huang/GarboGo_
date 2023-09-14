@@ -91,6 +91,9 @@ export default {
           if (valid) {
             await this.GetEditUserPwdApi();
             this.$emit("donePassword", true);
+            this.memberForm.newPassword=""
+            this.memberForm.newPasswordAgain=""
+            this.memberForm.oldPassword=""
           }
         } else {
           this.$message.error("密碼錯誤");

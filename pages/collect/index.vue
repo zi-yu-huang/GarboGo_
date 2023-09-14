@@ -65,7 +65,6 @@ export default {
 
     GetUserPoint() {
       for (const item of this.userPointList) {
-        console.log(item.uid, this.userId);
 
         if (item.uid === this.userId) {
           this.exchange_ticket = item.exchange_ticket;

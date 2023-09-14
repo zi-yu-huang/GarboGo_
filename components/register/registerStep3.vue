@@ -57,8 +57,8 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.$emit("DoneStep3", true,this.memberForm);
-          // this.memberForm.Password = "";
-          // this.memberForm.PasswordAgain = "";
+          this.memberForm.Password = "";
+          this.memberForm.PasswordAgain = "";
         }
       });
     },

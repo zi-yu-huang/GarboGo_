@@ -51,7 +51,6 @@ export default {
     },
     async Init() {
       this.uemail = this.GetCookieValue("email");
-      console.log(this.uemail);
       const response = await this.GetLoginApi();
       if (response.CleanAlert === 0) {
         this.CleanAlert = false;
@@ -109,12 +108,10 @@ export default {
     //API-----------
     async GetSettingApi(email, clean, arrive) {
       const response = await SettingApi(email, clean, arrive);
-      console.log(response);
       return response;
     },
     async GetLoginApi() {
       const response = await LoginApi(this.uemail);
-      console.log(response);
       return response;
     },
   },

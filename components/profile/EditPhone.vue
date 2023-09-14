@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import {SendEmailApi} from "@/services/sendEmail.js"
 export default {
   name: "EditPhone",
   props:{
@@ -43,13 +44,22 @@ export default {
   },
   methods:{
     OnSubmit(){
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(async(valid) => {
         if (valid) {
+          const response = await this.GetSendEmailApi(this.memberForm.memberEmail)
           this.memberForm.memberEmail=""
-          this.$emit("getVerify",true)
+          this.$emit("getVerify",true,response)
         }
       })
     },
+
+
+    //API -----------
+    async GetSendEmailApi(email){
+      const response = await SendEmailApi(email);
+      return response.data.message      
+
+    }
   }
 };
 </script>

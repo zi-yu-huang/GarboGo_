@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 
@@ -78,6 +79,17 @@ export default {
     };
   },
   mounted() {
+    $(document).click((event) => {
+      if (this.visible === true) {
+        const target = $(event.target);
+        console.log("eruiwo")
+        
+        // const menuIcon = $(".icon-type");
+        // if (!target.closest(menuIcon).length) {
+          this.visible = false;
+        // }
+      }
+    });
     this.Init();
   },
   methods: {

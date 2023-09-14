@@ -1,15 +1,15 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #Scan
-  .sucess-mask(v-if="sucess")
-    .sucess-text {{ "已成功連線至垃圾桶!" }}
+  .alert-area(v-if="sucess")
+    aAlert.alert-text(message="已成功連線至垃圾桶!", type="success", description=" ", show-icon) 
   .alert-area(v-if="isError")
     aAlert.alert-text(message="連線失敗", type="error", description=" ", show-icon) 
-  div(v-if="!sucess")
-    .scan-mask
-    .saoma
-      .camera-mask
-      qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
+    //- div(v-if="sucess")
+  .scan-mask
+  .saoma
+    .camera-mask
+    qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
 
 </template>
 
@@ -55,10 +55,17 @@ export default {
     OnDecode(result) {
       if (result==='https://1x.antdv.com/components/alert-cn/') {
         this.sucess = true;
+
+        setTimeout(() => {
+          this.$router.push("scan/openTrashcan")
+        }, 1000);
         
         this.result = result;
       } else {
         this.isError = true;
+        setTimeout(()=>{
+          this.isError = false
+        },1000);
       }
 
       // window.location.href=this.result
@@ -168,7 +175,7 @@ export default {
 // 元件
 #Scan {
   .alert-text {
-    width: 169px;
+    width: auto;
     height: 56px;
     justify-content: flex-start;
     background-color: white;

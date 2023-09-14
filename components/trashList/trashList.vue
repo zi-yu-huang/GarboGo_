@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       visible: false,
+      uid:"",
       originalData: [],
       changeToLike: {
         tplace: "",
@@ -55,10 +56,13 @@ export default {
   },
   methods: {
     async Init() {
+      this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeTrashApi();
     },
     OpenModal(street) {
+      console.log(street)
+      
       this.changeToLike.tplace = street.tplace;
       this.changeToLike.tname = street.tname;
       this.changeToLike.isLike = street.isLike;
@@ -69,32 +73,43 @@ export default {
     },
     async SaveModal(visible, changeToLike) {
 
-      // for (let i = 0; i < this.likeList.length; i++) {
-      //   const streets = this.likeList[i].streets;
-      //   console.log(streets)
-      // for (let j = 0; j < streets.length; j++) {
-      // if (streets[j].tplace === changeToLike.tplace) {
-      //   streets[j].isLike = changeToLike.isLike;
-      //   }
-      // }
-      // }
-      // console.log(this.changeToLike);
+      for (let i = 0; i < this.likeList.length; i++) {
+        const streets = this.likeList[i].streets;
+        console.log(streets)
+      for (let j = 0; j < streets.length; j++) {
+      if (streets[j].tplace === changeToLike.tplace) {
+        streets[j].isLike = changeToLike.isLike;
+        }
+      }
+      }
+      console.log(this.changeToLike);
 
       this.visible = false;
-      this.GetCreateFavoriteApi(2, changeToLike.tname);
+      this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
       this.$nextTick(() => {
         this.Init();
       });
       // await this.GetTrashListApi();
     },
 
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
     //API----------------------------------------------
     async GetTrashListApi() {
       const response = await TrashcanListApi();
       this.originalData = response;
     },
     async GetLikeTrashApi() {
-      const likeTrashList = await LikeTrashApi(2);
+      const likeTrashList = await LikeTrashApi(this.uid);
       this.likeTrash = likeTrashList;
       this.GetList();
     },

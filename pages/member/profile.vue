@@ -115,15 +115,22 @@ export default {
     },
     VerifyDone() {
       this.getVerify = false;
+      this.ChangeEditBtn()
+      // this.$nextTick(() => {
+        this.Init();
+      // });
     },
     OpenPassword(val) {
       this.openPassword = val;
     },
     DonePassword() {
       this.openPassword = false;
-      this.$nextTick(() => {
+      this.ChangeEditBtn()
+      // this.$nextTick(() => {
         this.Init();
-      });
+        console.log("shsfd")
+        
+      // });
     },
     EditName(val) {
       this.editName = val;

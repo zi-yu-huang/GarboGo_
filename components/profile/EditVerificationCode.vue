@@ -25,7 +25,7 @@
 </template>
   
 <script>
-import { OtpTextApi } from "@/services/sendEmail";
+import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
@@ -44,9 +44,10 @@ export default {
   data() {
     return {
       timer: null,
-      time: 600,
+      time: 60,
       min: "",
       sec: "",
+      // uemail:"",
       tryAgain: null,
       isVisible: false,
       otpText:"",
@@ -104,6 +105,7 @@ export default {
           }
         });
       }
+      else this.$message.error("驗證碼錯誤");
     },
     OpenModal() {
       this.isVisible = true;
@@ -118,13 +120,27 @@ export default {
         clearInterval(this.timer);
       }
     },
-    SaveModal() {
+    async SaveModal() {
       this.isVisible = false;
       this.tryAgain = true;
+      this.getOptId = await this.GetSendEmailApi();
+      this.Init();
+
     },
     CloseModal() {
       this.isVisible = false;
     },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
 
     // API ------------------
     async GetOtpTextApi(otpId) {
@@ -132,6 +148,14 @@ export default {
       this.otpText = response
       console.log(response);
     },
+    async GetSendEmailApi(){
+      const uemail = this.GetCookieValue("email")
+      const response = await SendEmailApi(uemail);
+      console.log(response.data.message)
+      
+      return response.data.message      
+
+    }
   },
   beforeDestroy() {
     clearInterval(this.timer);

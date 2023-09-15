@@ -128,9 +128,6 @@ export default {
         this.dataEmail,
         this.memberForm.newPassword
       );
-      if (response.data.status === "success") {
-        this.$message.success("修改成功");
-      }
     },
   },
 };

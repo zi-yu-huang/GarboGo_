@@ -23,15 +23,15 @@ export default {
   data() {
     return {
       uemail: "",
-      CleanAlert: false,
-      ArriveAlert: false,
+      CleanAlert: 0,
+      ArriveAlert: 0,
       clean:null,
       arrive:null
     };
   },
   mounted() {
-    this.MountedActivated();
     this.Init();
+    this.MountedActivated();
   },
   activated() {
     this.MountedActivated();

@@ -43,6 +43,7 @@ export default {
   },
   data() {
     return {
+      uid:"",
       dataPwd: "",
       dataUname: "",
       dataEmail: "",
@@ -118,12 +119,14 @@ export default {
     async GetUserPwdApi() {
       const email = this.GetCookieValue("email");
       const response = await LoginApi(email);
+      this.uid = response.uid
       this.dataPwd = response.pwd;
       this.dataUname = response.uname;
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
       const response = await EditUserApi(
+        this.uid,
         this.dataUname,
         this.dataEmail,
         this.memberForm.newPassword

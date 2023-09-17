@@ -1,5 +1,5 @@
 <template lang="pug">
-//- 請填寫頁面👈
+//- memberProfile
 #MemberProfile
   .user-area
     .circle-area
@@ -8,6 +8,7 @@
   .edit-area
     ProfileInput(
       :notEdit="notEdit",
+      :getInit="getInit",
       @openPhone="OpenPhone",
       @openPassword="OpenPassword",
       @EditName="EditName"
@@ -16,12 +17,20 @@
       aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
   EditPhone(:visible="openPhone", @getVerify="GetVerify")
-  EditVerify(:visible="getVerify",:getOptId="getOptId" @verifyDone="VerifyDone")
-  EditPassword(:visible="openPassword", @donePassword="DonePassword" @CloseModal="DonePassword")
+  EditVerify(
+    :visible="getVerify",
+    :getOptId="getOptId",
+    @verifyDone="VerifyDone"
+  )
+  EditPassword(
+    :visible="openPassword",
+    @donePassword="DonePassword",
+    @CloseModal="DonePassword"
+  )
 </template>
 
 <script>
-import $ from 'jquery'
+import $ from "jquery";
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 import debounce from "lodash/debounce";
@@ -36,11 +45,12 @@ export default {
   name: "MemberProfile",
   data() {
     return {
+      getInit: false,
       dataPwd: "",
       dataEmail: "",
       editName: "",
       getVerify: false,
-      getOptId:null,
+      getOptId: null,
       openPhone: false,
       openPassword: false,
       notEdit: true,
@@ -50,17 +60,16 @@ export default {
   mounted() {
     this.MountedActivated();
     if (this.openPassword === true) {
-
-    $(document).click((event) => {
-      if (this.openPassword === true) {
-        
-        const target = $(event.target);
-        const menuIcon = $(".block-area");
-        if (!target.closest(menuIcon).length) {
-          this.openPassword = false;
+      $(document).click((event) => {
+        if (this.openPassword === true) {
+          const target = $(event.target);
+          const menuIcon = $(".block-area");
+          if (!target.closest(menuIcon).length) {
+            this.openPassword = false;
+          }
         }
-      }
-    });}
+      });
+    }
   },
   activated() {
     this.MountedActivated();
@@ -106,31 +115,26 @@ export default {
     OpenPhone(val) {
       this.openPhone = val;
     },
-    GetVerify(val,otpId) {
+    GetVerify(val, otpId) {
       this.getVerify = val;
-      console.log(otpId)
-      
-      this.getOptId = otpId
+      console.log(otpId);
+
+      this.getOptId = otpId;
       this.openPhone = false;
     },
     VerifyDone() {
       this.getVerify = false;
-      this.ChangeEditBtn()
-      // this.$nextTick(() => {
-        this.Init();
-      // });
+      this.ChangeEditBtn();
+      this.getInit = true;
     },
     OpenPassword(val) {
       this.openPassword = val;
     },
     DonePassword() {
       this.openPassword = false;
-      this.ChangeEditBtn()
-      // this.$nextTick(() => {
-        this.Init();
-        console.log("shsfd")
-        
-      // });
+      this.ChangeEditBtn();
+      this.getInit = true;
+
     },
     EditName(val) {
       this.editName = val;

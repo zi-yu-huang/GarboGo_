@@ -8,7 +8,7 @@
   .edit-area
     ProfileInput(
       :notEdit="notEdit",
-      @openPhone="OpenPhone",
+      :getInit="getInit"
       @openPassword="OpenPassword"
     )
     .btn-content

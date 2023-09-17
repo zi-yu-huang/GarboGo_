@@ -45,10 +45,13 @@ export default {
       type: Boolean,
       default: "",
     },
+    getInit:{
+      type:Boolean,
+      default:""
+    }
   },
   data() {
     return {
-      // notEdit:true,
       memberForm: {
         memberName: "",
         memberEmail: "",
@@ -58,6 +61,17 @@ export default {
         memberName: [{ required: true, message: "不可為空" }],
       },
     };
+  },
+  computed:{
+    getInit(){
+      console.log("fdjls")
+      
+      if(this.getInit ===true){
+        this.Init();
+        console.log("tjsdl")
+        
+      }
+    }
   },
   mounted() {
     this.Init();

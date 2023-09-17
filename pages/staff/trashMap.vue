@@ -9,7 +9,7 @@ import debounce from "lodash/debounce";
 export default {
   name: "StaffMap",
   components:{
-    TrashMap:()=>import('@/components/map/trashMap.vue')
+    TrashMap:()=>import('@/components/map/TrashTimeMap.vue')
   },
   layout: "staff",
   data () {

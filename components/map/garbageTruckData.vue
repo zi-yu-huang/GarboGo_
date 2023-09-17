@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
-#TrashTimeMap
+#GarbageTruckData
   #mapStaff.google-map(ref="mapRef")
 </template>
 
@@ -9,9 +9,9 @@
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
-// import dummytrashcan from "@/components/map/map.json";
+import garbageTruckData from "@/components/map/garbageTruckData.json";
 export default {
-  name: "TrashTimeMap",
+  name: "GarbageTruckData",
   components: {
     GarbageModal: () => import("@/components/modal/garbageModal"),
   },
@@ -34,19 +34,34 @@ export default {
     await this.Init();
     this.initMap();
 
-
     const customIcon = {
-    url: 'http://maps.google.com/mapfiles/kml/shapes/man.png', // 内置蓝色图标
-    scaledSize: new google.maps.Size(40, 40), // 设置图标大小
-    origin: new google.maps.Point(0, 0), // 设置图标原点
-    anchor: new google.maps.Point(20, 40), // 设置图标锚点
-  };
+      url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
+      scaledSize: new google.maps.Size(40, 40), // 设置图标大小
+      origin: new google.maps.Point(0, 0), // 设置图标原点
+      anchor: new google.maps.Point(20, 40), // 设置图标锚点
+    };
     // 在当前位置上创建标记
     const currentLocationMarker = new google.maps.Marker({
       position: this.currentLocation,
       map: this.map,
-      icon:customIcon
+      icon: customIcon,
     });
+
+    this.garbageTruckMarker = new google.maps.Marker({
+      map: this.map,
+      icon: "http://maps.google.com/mapfiles/kml/shapes/truck.png", // 垃圾车的图标URL
+    });
+
+    // 启动定时器，每隔一段时间更新垃圾车位置
+    setInterval(() => {
+      // 假设JSON文件的格式为 { "lat": 12.34, "lng": 56.78 }
+      const { lat, lng } = garbageTruckData;
+
+      // 更新垃圾车标记的位置
+      const newPosition = new google.maps.LatLng(lat, lng);
+      this.garbageTruckMarker.setPosition(newPosition);
+    }, 5000); // 5000毫秒（5秒）更新一次
+
 
     // 取得餐廳假資料
     this.fetchtrashcan();
@@ -58,7 +73,6 @@ export default {
       await this.GetTrashListApi();
     },
     fetchtrashcan() {
-
       this.trashcan = this.trashcanList.trashcan;
       this.currentLocation.lat = null;
       this.currentLocation.lng = null;
@@ -132,7 +146,6 @@ export default {
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
-
                   console.log("無法獲取當前位置");
                   reject();
                 }

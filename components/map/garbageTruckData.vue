@@ -9,7 +9,6 @@
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
-import garbageTruckData from "@/components/map/garbageTruckData.json";
 export default {
   name: "GarbageTruckData",
   components: {
@@ -26,6 +25,7 @@ export default {
       },
       trashcanList: [],
       trashcan: [],
+      garbageTruckData:[]
     };
   },
   async mounted() {
@@ -33,6 +33,18 @@ export default {
     await this.getCurrentLocation();
     await this.Init();
     this.initMap();
+
+    try {
+      const axios = (await import("axios")).default;
+      // 发送HTTP请求获取JSON数据
+      const response = await axios.get(
+        "https://datacenter.taichung.gov.tw/swagger/OpenData/c923ad20-2ec6-43b9-b3ab-54527e99f7bc"
+      );
+      this.garbageTruckData = response.data
+      console.log(this.garbageTruckData);
+    } catch (error) {
+      console.error("发生错误：", error);
+    }
 
     const customIcon = {
       url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
@@ -47,26 +59,11 @@ export default {
       icon: customIcon,
     });
 
-    this.garbageTruckMarker = new google.maps.Marker({
-      map: this.map,
-      icon: "http://maps.google.com/mapfiles/kml/shapes/truck.png", // 垃圾车的图标URL
-    });
-
-    // 启动定时器，每隔一段时间更新垃圾车位置
-    setInterval(() => {
-      // 假设JSON文件的格式为 { "lat": 12.34, "lng": 56.78 }
-      const { lat, lng } = garbageTruckData;
-
-      // 更新垃圾车标记的位置
-      const newPosition = new google.maps.LatLng(lat, lng);
-      this.garbageTruckMarker.setPosition(newPosition);
-    }, 5000); // 5000毫秒（5秒）更新一次
-
-
     // 取得餐廳假資料
     this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
+    this.setGarbageMarker();
   },
   methods: {
     async Init() {
@@ -119,6 +116,16 @@ export default {
 
           // 開啟 infowindow
           infowindow.open(this.map, marker);
+        });
+      });
+    },
+
+    setGarbageMarker() {
+      this.garbageTruckData.forEach((location) => {
+        const marker = new google.maps.Marker({
+          position: { lat: parseFloat(location.Y), lng: parseFloat(location.X) },
+          map: this.map,
+          icon:"http://maps.google.com/mapfiles/kml/shapes/truck.png",
         });
       });
     },

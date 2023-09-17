@@ -6,9 +6,9 @@
       div.title-size {{"設定"}}
       .setting-area
         .setting-content
-          .text-area {{"垃圾桶清空通知"}}
+          .text-area {{"垃圾桶滿溢警告"}}
           aSwitch.text-area
-          .text-area {{"垃圾車到點通知"}}
+          .text-area {{"行徑路線變更通知"}}
           aSwitch.text-area
 </template>
 

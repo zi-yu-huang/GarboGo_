@@ -27,37 +27,27 @@ export default {
     visible:{
         type:Boolean,
         default:""
-    },
-    changeToLike:{
-      type:Object,
-      default:""
     }
   },
   data () {
   return {
-      visible2:""
+      // visible:""
   };
   },
     // computed:{
     // visibleC(){
-    //     return this.visible2 = this.visible;
+    //     return this.visible = this.visible;
     // }
     // },
     methods:{
       CloseModal(){
-        this.visible2=false;
-        this.$emit("CloseModal",this.visible2)
+        // this.visible=false;
+        this.$emit("CloseModal",this.visible)
       },
       SaveModal(){
-        this.visible2=false;
-        if(this.changeToLike.isLike === true){
-          this.changeToLike.isLike = false
-          this.$emit("SaveModal",this.visible2,this.changeToLike)
-        }
-        else{ 
-          this.changeToLike.isLike = true
-          this.$emit("SaveModal",this.visible2,this.changeToLike)
-        }
+        // this.visible=false;
+          this.$emit("SaveModal",this.visible)
+
       }
     }
 };
@@ -140,5 +130,14 @@ export default {
       border-radius: 0 0 20px 0;
     }
   }
+  @media( min-width: 1296px) {
+  .block-area{
+          align-items: center;
+
+    }
+  .block{
+    width: 400px;
+  }
+}
 }
 </style>

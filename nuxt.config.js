@@ -1,5 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  env: {
+    TEST_MODE: process.env.TEST_MODE || "T", // 測試模式
+  },
   head: {
     title: 'GarboGo',
     htmlAttrs: {
@@ -13,6 +16,13 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      {
+        src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCsZGzHWmtJDj2WWp7BIOJiD3XSc7IIu3U&libraries=places',
+        defer: true,
+        async: true
+      }
     ]
   },
 

@@ -64,7 +64,6 @@ export default {
   methods: {
     OpenMenu() {
       this.visible = this.visible === true ? false : true;
-      console.log(this.visible);
       // $(document).ready(() => {
       //   if (this.visible === true) {
       //     console.log("sdfjlks");
@@ -79,16 +78,41 @@ export default {
 
     },
     MenuToUser() {
-      this.$router.push("/member");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){        
+        this.$router.push("/member/profile")
+      }
+      else{
+        this.$router.push("/member");
+      }
     },
     MenuToGift() {
-      this.$router.push("/collect");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){
+        this.$router.push("/collect");
+      }
+      else this.$router.push("/member");
     },
     MenuToSetting() {
-      this.$router.push("/setting");
+      const uemail = this.GetCookieValue("email")
+      if(uemail){
+        this.$router.push("/setting");
+      }
+      else this.$router.push("/member");
     },
     GoBack() {
       this.$router.go(-1);
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      
+      return null; // 如果找不到对应的 Cookie，则返回 null
     },
   },
 };

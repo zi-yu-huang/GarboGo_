@@ -16,7 +16,7 @@ export default {
   },
   methods:{
     ToMap(){
-      this.$router.push('/')
+      this.$router.push('/map')
     }
   }
 };
@@ -33,6 +33,17 @@ export default {
     height: 70vh;
     justify-content: center;
   }
+  @media (min-width: 769px) {
+    .content-area {
+      align-items: center;
+    }
+    .article{
+      width: 600px;
+    }
+    .btn-area{
+      width: 600px !important;
+    }
+  }
 }
 // 元件
 #DoneVerify {
@@ -44,7 +55,6 @@ export default {
   }
   .btn-area {
     background-color: #241f1f;
-    width: -webkit-fill-available;
     text-align: center;
     font-family: Inter;
     font-size: 24px;

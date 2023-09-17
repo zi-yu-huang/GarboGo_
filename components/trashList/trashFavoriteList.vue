@@ -3,7 +3,7 @@
 #TrashFavoriteList
   .list-area
     .region-area(v-for="item in likeList", :key="item.region")
-      .region-text {{ item.region }}
+      .region-text(v-if="item.streets.length > 0") {{ item.region }}
       .street-area(v-for="street in item.streets", :key="street.street")
         .street-text {{ street.street }}
         aIcon.icon-area(
@@ -25,141 +25,43 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  NotifyModal(:notifyVisible="notifyVisible" :notifyList="notifyList" @CloseNotifyModal="CloseNotifyModal" @ChangeSwitch="ChangeSwitch")
+  NotifyModal(
+    :notifyVisible="notifyVisible",
+    :notifyList="notifyList",
+    @CloseNotifyModal="CloseNotifyModal",
+    @ChangeTrashClearSwitch="ChangeTrashClearSwitch",
+    @ChangeDontTrashSwitch="ChangeDontTrashSwitch"
+  )
 </template>
 
 <script>
+import { TrashNotifyApi } from "@/services/trashNotify.js";
+import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
+import { LikeListApi } from "@/services/likeList.js";
+import { LikeTrashApi } from "../../services/likeTrash";
 export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    NotifyModal:()=>import('@/components/modal/notifyModal')
+    NotifyModal: () => import("@/components/modal/notifyModal"),
   },
   data() {
     return {
-      notifyVisible:false,
+      notifyVisible: false,
       visible: false,
+      uid: "",
       changeToLike: {
         id: "",
         isLike: "",
+        tname: "",
       },
-      notifyList:{
-        id:"",
+      notifyList: {
+        id: "",
         notifyTrashClear: "",
-        notifyDontTrash:""
+        notifyDontTrash: "",
       },
-      likeList: [
-        {
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },
-        {
-          region: "南區",
-          streets: [
-            {
-              id:"3",
-              street: "三民路一段142號",
-              isLike: false,
-              notifyTrashClear: true,
-              notifyDontTrash:true
-            },
-            {
-              id:"4",
-              street: "三民路一段12201號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:false
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },{
-          region: "北區",
-          streets: [
-            {
-              id:"1",
-              street: "三民路一段1342號",
-              isLike: false,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-            {
-              id:"2",
-              street: "三民路一段101號",
-              isLike: true,
-              notifyTrashClear: false,
-              notifyDontTrash:true
-            },
-          ],
-        },
-      ],
+      likeList: [],
+      originalData: [],
     };
   },
   computed: {
@@ -171,47 +73,153 @@ export default {
       };
     },
   },
+  mounted() {
+    this.Init();
+  },
   methods: {
-    OpenModal(street) {
+    async Init() {
+      this.uid = this.GetCookieValue("id");
+      await this.GetTrashListApi();
+      await this.GetLikeListApi(this.uid);
+    },
+    async OpenModal(street) {
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
+      this.changeToLike.tname = street.street;
       this.visible = true;
+
+      await this.GetNewList()
     },
     CloseModal(val, like) {
       this.visible = val;
     },
-    SaveModal(visible, changeToLike) {
-      for (let i = 0; i < this.likeList.length; i++) {
-        const streets = this.likeList[i].streets;
-        for (let j = 0; j < streets.length; j++) {
-          if (streets[j].id === changeToLike.id) {
-            streets[j].isLike = changeToLike.isLike;
-          }
-        }
-      }
+    async SaveModal(visible) {
+
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === this.changeToLike.id) {
+      //       streets[j].isLike = this.changeToLike.isLike;
+      //     }
+      //   }
+      // }
       this.visible = visible;
+
+      await this.GetCreateFavoriteApi(this.uid, this.changeToLike.tname);
+
+      this.$nextTick(() => {
+        this.Init();
+      });
     },
-    OpenNotifyModal(street){
-      this.notifyList.id=street.id
-      this.notifyList.notifyTrashClear=street.notifyTrashClear
-      this.notifyList.notifyDontTrash=street.notifyDontTrash
-      
-      this.notifyVisible =true
+    OpenNotifyModal(street) {
+
+      this.notifyList.id = street.id;
+      this.notifyList.notifyDontTrash = street.notifyDontTrash;
+      this.notifyList.notifyTrashClear = street.notifyTrashClear;
+
+      this.notifyVisible = true;
     },
-    CloseNotifyModal(val){
-      this.notifyVisible = val
+    CloseNotifyModal(val) {
+      this.notifyVisible = val;
     },
-    ChangeSwitch(list){
-      for(let i=0;i<this.likeList.length;i++){
-        const streets = this.likeList[i].streets;
-        for(let j=0;j<streets.length;j++){
-          if(streets[j].id ===list.id){
-            streets[j].notifyDontTrash = list.notifyDontTrash
-            streets[j].notifyTrashClear = list.notifyTrashClear
-          }
+    async ChangeTrashClearSwitch(list) {
+
+      if (list.notifyTrashClear === true) {
+        this.notifyList.notifyTrashClear = 1;
+      } else this.notifyList.notifyTrashClear = 0;
+      if (list.notifyDontTrash === true) {
+        this.notifyList.notifyDontTrash = 1;
+      }
+      if (list.notifyDontTrash === false) {
+        this.notifyList.notifyDontTrash = 0;
+      }
+
+      await this.GetTrashNotifyApi(
+        this.notifyList.id,
+        this.uid,
+        this.notifyList.notifyTrashClear,
+        this.notifyList.notifyDontTrash
+      );
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === list.id) {
+      //       streets[j].notifyDontTrash = list.notifyDontTrash;
+      //       streets[j].notifyTrashClear = list.notifyTrashClear;
+      //     }
+      //   }
+      // }
+    },
+    async ChangeDontTrashSwitch(list) {
+      if (list.notifyDontTrash === true) {
+        this.notifyList.notifyDontTrash = 1;
+      } else this.notifyList.notifyDontTrash = 0;
+      if (list.notifyTrashClear === true) {
+        this.notifyList.notifyTrashClear = 1;
+      }
+      if (list.notifyTrashClear === false) {
+        this.notifyList.notifyTrashClear = 0;
+      }
+
+      await this.GetTrashNotifyApi(
+        this.notifyList.id,
+        this.uid,
+        this.notifyList.notifyTrashClear,
+        this.notifyList.notifyDontTrash
+      );
+      // for (let i = 0; i < this.likeList.length; i++) {
+      //   const streets = this.likeList[i].streets;
+      //   for (let j = 0; j < streets.length; j++) {
+      //     if (streets[j].id === list.id) {
+      //       streets[j].notifyDontTrash = list.notifyDontTrash;
+      //       streets[j].notifyTrashClear = list.notifyTrashClear;
+      //     }
+      //   }
+      // }
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
         }
       }
-    }
+
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+    //API---------------------
+    async GetTrashListApi() {
+      const response = await TrashcanListApi();
+      this.originalData = response;
+    },
+    async GetLikeListApi(uid) {
+      const response = await LikeListApi(uid);
+      this.likeList = response.likeList;
+    },
+    async GetCreateFavoriteApi(uid, tname) {
+      
+      const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
+      
+    },
+    async GetTrashNotifyApi(tid, uid, trashClear, dontTrash) {
+      const response = await TrashNotifyApi(tid, uid, trashClear, dontTrash);
+    },
+
+    //
+    async GetNewList() {
+      for (const item of this.originalData.trashcan) {
+        const tname = item.tname;
+        if (
+          this.changeToLike.id == item.Recycle.tid ||
+          this.changeToLike.id == item.General.tid
+        ) {
+          this.changeToLike.tname = tname;
+          
+        }
+      }
+    },
   },
 };
 </script>
@@ -258,7 +266,7 @@ export default {
     font-weight: 800;
     line-height: 19px;
   }
-  .ant-divider-horizontal{
+  .ant-divider-horizontal {
     margin: 0 !important;
   }
 }

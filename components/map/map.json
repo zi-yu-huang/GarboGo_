@@ -1,0 +1,74 @@
+
+{
+  "trashcan": [
+    {
+      "tname": "國立台中科技大學",
+      "tplace": "台中市北區三民路三段129號",
+      "lat": 24.14930237613381,
+      "lng": 120.68014092604973,
+      "General":{
+        "qrcode": "QR-890123",
+        "tid": 7,
+        "id": 1,
+        "tcapacity":55
+      },
+      "Recycle":{
+        "qrcode": "QR-890333",
+        "tid": 17,
+        "id": 12,
+        "tcapacity":100
+      }
+    },{
+      "tname": "國立台中科技大學",
+      "tplace": "台中市北區三民路三段129號",
+      "lat": 24.149617770896455,
+      "lng": 120.67964605963533,
+      "General":{
+        "qrcode": "QR-890123",
+        "tid": 7,
+        "id": 1,
+        "tcapacity":25
+      },
+      "Recycle":{
+        "qrcode": "QR-890333",
+        "tid": 17,
+        "id": 12,
+        "tcapacity":80
+      }
+    },{
+      "tname": "國立台中科技大學",
+      "tplace": "台中市北區三民路三段129號",
+      "lat": 24.149847716812694, 
+      "lng": 120.68113142022419,
+      "General":{
+        "qrcode": "QR-890123",
+        "tid": 7,
+        "id": 1,
+        "tcapacity":45
+      },
+      "Recycle":{
+        "qrcode": "QR-890333",
+        "tid": 17,
+        "id": 12,
+        "tcapacity":91
+      }
+    },{
+      "tname": "國立台中科技大學",
+      "tplace": "台中市北區三民路三段129號",
+      "lat": 24.1491385955883,
+      "lng": 120.68108763835511,
+      "General":{
+        "qrcode": "QR-890123",
+        "tid": 7,
+        "id": 1,
+        "tcapacity":75
+      },
+      "Recycle":{
+        "qrcode": "QR-890333",
+        "tid": 17,
+        "id": 12,
+        "tcapacity":1
+      }
+    }
+  ]
+}

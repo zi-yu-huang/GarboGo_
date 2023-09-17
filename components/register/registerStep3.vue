@@ -6,18 +6,20 @@
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="Password" prop="Password")
         aInput.input-font(
+          type="password"
           placeholder="請輸入密碼"
           v-model="memberForm.Password"
           :maxLength="9"
           )
       aFormModelItem(ref="PasswordAgain" prop="PasswordAgain")
         aInput.input-font(
+          type="password"
           placeholder="請再次輸入密碼"
           v-model="memberForm.PasswordAgain"
           :maxLength="9"
           )
       aFormModelItem
-        Button.btn-area(type="primary", @click="OnSubmit") {{ "下一步 " }}
+        Button.btn-area(type="primary", @click="OnSubmit") {{ "確認" }}
 </template>
     
     <script>
@@ -54,9 +56,9 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
+          this.$emit("DoneStep3", true,this.memberForm);
           this.memberForm.Password = "";
           this.memberForm.PasswordAgain = "";
-          this.$emit("DoneStep3", true);
         }
       });
     },
@@ -74,6 +76,15 @@ export default {
     text-align: center;
     height: 70vh;
     justify-content: center;
+  }
+  @media (min-width: 769px) {
+    .content-area {
+      align-items: center;
+    }
+    .form-area {
+
+      width: 600px;
+    }
   }
 }
 // 元件
@@ -97,13 +108,15 @@ export default {
     /* line-height: 24px; */
     letter-spacing: 0em;
     color: white;
-    margin-top: 12px;
+    // margin-top: 12px;
     border-radius: 14px;
-    height: 50px;
+    height: 45px;    
+    border: 1px solid black;
+
   }
 
   .input-font{
-    height: 50px;
+    height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;

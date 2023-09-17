@@ -5,48 +5,68 @@
     .title-content 註冊
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberName", prop="memberName")
+        aInput.input-font(placeholder="王曉明", v-model="memberForm.memberName")
+      aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-            placeholder="王小明",
-            v-model="memberForm.memberName",
-            :maxLength="9"
-        )
-      aFormModelItem(ref="memberPhone", prop="memberPhone")
-        aInput.input-font(
-            placeholder="0912345678",
-            v-model="memberForm.memberPhone",
-            :maxLength="9"
+          placeholder="abcd@gmail.com",
+          v-model="memberForm.memberEmail"
         )
       aFormModelItem
-        aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
+        aButton.btn-area(:disabled="btn_stauts" type="primary", @click="OnSubmit") {{ "下一步" }}
 </template>
 
 <script>
+import { SendEmailApi } from "@/services/sendEmail";
+import { CreateUserNameApi } from "@/services/editUser";
+
 export default {
   name: "RegisterStep1",
   data() {
     return {
+      btn_stauts:false,
       memberForm: {
         memberName: "",
-        memberPhone: "",
+        memberEmail: "",
       },
       rules: {
         memberName: [{ required: true, message: "不可為空" }],
-        memberPhone: [
+        memberEmail: [
           { required: true, message: "不可為空" },
-          { min: 9, message: "手機號碼格式錯誤", trigger: "blur" },
+          { type: "email", message: "請輸入有效的信箱" },
         ],
       },
     };
   },
   methods: {
-    OnSubmit() {
-      this.$refs.ruleForm.validate((valid) => {
+    async OnSubmit() {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
+          const data = await this.GetCreateUserApi();
+          if (data.status === "error") {
+            this.$message.error(data.message);
+          } else {
+            this.btn_stauts=true
+            const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
+            const otpId = otp.data.message
+            console.log(otpId)
+            this.$emit("DoneStep1", true, this.memberForm,otpId);
+            
+          }
+          this.memberForm.memberEmail = "";
           this.memberForm.memberName = "";
-          this.memberForm.memberPhone = "";
-          this.$emit("DoneStep1",true)
         }
       });
+    },
+
+    // API ---------------
+    async GetCreateUserApi() {
+      const response = await CreateUserNameApi(this.memberForm.memberName);
+      return response.data;
+    },
+    async GetSendEmailApi(email) {
+      const response = await SendEmailApi(email);
+      
+      return response;
     },
   },
 };
@@ -63,10 +83,17 @@ export default {
     height: 70vh;
     justify-content: center;
   }
+  @media (min-width: 769px) {
+    .content-area {
+      align-items: center;
+    }
+    .form-area {
+      width: 600px;
+    }
+  }
 }
 // 元件
 #RegisterStep1 {
-
   .title-content {
     color: white;
     font-size: 35px;
@@ -88,14 +115,13 @@ export default {
     color: white;
     margin-top: 12px;
     border-radius: 14px;
-    height: 50px;
+    height: 45px;
   }
-  .input-font{
-    height: 50px;
+  .input-font {
+    height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-
   }
 }
 </style>

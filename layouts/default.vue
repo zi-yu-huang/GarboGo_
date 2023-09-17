@@ -2,11 +2,7 @@
   <div class="wrapper">
     <!-- 放置共用的導覽列 -->
     <MenuList />
-    <nav>
-      <ul>
-        <!-- 加入其他導覽連結 -->
-      </ul>
-    </nav>
+
 
     <!-- 頁面內容 -->
     <nuxt />

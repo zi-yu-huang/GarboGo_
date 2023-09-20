@@ -131,7 +131,7 @@ export default {
       const currentOldTime = new Date();
 
       // // 增加10分钟
-      currentNewTime.setMinutes(currentNewTime.getMinutes() + 5);
+      currentNewTime.setMinutes(currentNewTime.getMinutes() + 3);
       currentOldTime.setMinutes(currentOldTime.getMinutes() - 5);
 
       // // 将结果以本地时间字符串形式显示
@@ -154,7 +154,7 @@ export default {
       }
 
       // // 使用模板字符串构建所需的格式
-      const formatOldTime = `${yearOld}/${monthOld}/${dayOld} ${hoursOld}:${minutesOld}:${secondsOld}`;
+      const formatOldTime = new Date(`${yearOld}/${monthOld}/${dayOld} ${hoursOld}:${minutesOld}:${secondsOld}`);
 
       console.log(formatOldTime); // 输出 "2023/9/19 13:31:30"
 
@@ -175,7 +175,7 @@ export default {
         secondsNew = `0${secondsNew}`;
       }
       // 使用模板字符串构建所需的格式
-      const formatNewTime = `${yearNew}/${monthNew}/${dayNew} ${hoursNew}:${minutesNew}:${secondsNew}`;
+      const formatNewTime = new Date( `${yearNew}/${monthNew}/${dayNew} ${hoursNew}:${minutesNew}:${secondsNew}`);
 
       console.log(formatNewTime); // 输出 "2023/9/19 13:31:30"
 
@@ -198,7 +198,7 @@ export default {
         secondsNow = `0${secondsNow}`;
       }
       // // 使用模板字符串构建所需的格式
-      const formatNowTime = `${yearNow}/${monthNow}/${dayNow} ${hoursNow}:${minutesNow}:${secondsNow}`;
+      const formatNowTime = new Date(`${yearNow}/${monthNow}/${dayNow} ${hoursNow}:${minutesNow}:${secondsNow}`);
 
       console.log(formatNowTime); // 输出 "2023/9/19 13:31:30"
 
@@ -213,14 +213,16 @@ export default {
         if (noon !== "上午" && parseInt(hr) !== 12) {
           hr = `${parseInt(hr) + 12}`;
         }
-        const locationDateString = `${date} ${hr}:${min}:${sec}`;
-        console.log(formatNewTime,locationDateString,formatOldTime,formatNowTime);
-
+        const locationDateString = new Date(`${date} ${hr}:${min}:${sec}`);
+        
         if ((location.car = "KED-9066")) {
           if (
-            formatNewTime >= locationDateString &&
-            locationDateString >= formatOldTime
+            formatOldTime <= locationDateString
+            // &&
+            // locationDateString >= formatOldTime
           ) {
+            console.log(formatNewTime,locationDateString)
+            
             console.log(location);
 
             const marker = new google.maps.Marker({
@@ -238,10 +240,11 @@ export default {
               content: `
           <div id="content">
             <p id="firstHeading" class="firstHeading">${location.car}</p>
+            <p id="firstHeading" class="firstHeading">${location.time}</p>
           </div>
         `,
               // 設定訊息視窗最大寬度
-              maxWidth: 200,
+              // maxWidth: 200,
             });
             // 在地標上監聽點擊事件
             marker.addListener("click", () => {

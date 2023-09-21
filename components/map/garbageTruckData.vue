@@ -46,6 +46,7 @@ export default {
       );
       this.garbageTruckData = response.data;
       console.log(this.garbageTruckData);
+
     } catch (error) {
       console.error("发生错误：", error);
     }
@@ -148,15 +149,17 @@ export default {
 
       if (minutesOld < 10) {
         minutesOld = `0${minutesOld}`;
-      }   
-       if (secondsOld < 10) {
+      }
+      if (secondsOld < 10) {
         secondsOld = `0${secondsOld}`;
       }
 
       // // 使用模板字符串构建所需的格式
-      const formatOldTime = new Date(`${yearOld}/${monthOld}/${dayOld} ${hoursOld}:${minutesOld}:${secondsOld}`);
+      const formatOldTime = new Date(
+        `${yearOld}/${monthOld}/${dayOld} ${hoursOld}:${minutesOld}:${secondsOld}`
+      );
 
-      console.log(formatOldTime); // 输出 "2023/9/19 13:31:30"
+      // console.log(formatOldTime); // 输出 "2023/9/19 13:31:30"
 
       const newTime = currentNewTime;
       const inputDateNew = new Date(newTime);
@@ -175,10 +178,11 @@ export default {
         secondsNew = `0${secondsNew}`;
       }
       // 使用模板字符串构建所需的格式
-      const formatNewTime = new Date( `${yearNew}/${monthNew}/${dayNew} ${hoursNew}:${minutesNew}:${secondsNew}`);
+      const formatNewTime = new Date(
+        `${yearNew}/${monthNew}/${dayNew} ${hoursNew}:${minutesNew}:${secondsNew}`
+      );
 
-      console.log(formatNewTime); // 输出 "2023/9/19 13:31:30"
-
+      // console.log(formatNewTime); // 输出 "2023/9/19 13:31:30"
 
       const NowTime = currentNowTime;
       const inputDateNow = new Date(NowTime);
@@ -198,13 +202,11 @@ export default {
         secondsNow = `0${secondsNow}`;
       }
       // // 使用模板字符串构建所需的格式
-      const formatNowTime = new Date(`${yearNow}/${monthNow}/${dayNow} ${hoursNow}:${minutesNow}:${secondsNow}`);
+      const formatNowTime = new Date(
+        `${yearNow}/${monthNow}/${dayNow} ${hoursNow}:${minutesNow}:${secondsNow}`
+      );
 
-      console.log(formatNowTime); // 输出 "2023/9/19 13:31:30"
-
-
-
-
+      // console.log(formatNowTime); // 输出 "2023/9/19 13:31:30"
 
       this.garbageTruckData.forEach((location) => {
         const [date, noon, time] = location.time.split(" ");
@@ -214,16 +216,16 @@ export default {
           hr = `${parseInt(hr) + 12}`;
         }
         const locationDateString = new Date(`${date} ${hr}:${min}:${sec}`);
-        
-        if ((location.car = "KED-9066")) {
-          if (
-            formatOldTime <= locationDateString
-            // &&
-            // locationDateString >= formatOldTime
-          ) {
-            console.log(formatNewTime,locationDateString)
-            
-            console.log(location);
+
+        if ((location.car === "KEB-1538")) {
+        //   if (
+        //     formatOldTime <= locationDateString
+        //     // &&
+        //     // locationDateString >= formatOldTime
+        //   ) {
+            // console.log(formatNewTime, locationDateString);
+
+            // console.log(location);
 
             const marker = new google.maps.Marker({
               position: {
@@ -241,6 +243,9 @@ export default {
           <div id="content">
             <p id="firstHeading" class="firstHeading">${location.car}</p>
             <p id="firstHeading" class="firstHeading">${location.time}</p>
+            <p id="firstHeading" class="firstHeading">${location.X}</p>
+            <p id="firstHeading" class="firstHeading">${location.Y}</p>
+
           </div>
         `,
               // 設定訊息視窗最大寬度
@@ -253,7 +258,8 @@ export default {
             });
           }
         }
-      });
+      )
+      // });
     },
 
     getCurrentLocation() {

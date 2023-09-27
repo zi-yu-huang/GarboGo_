@@ -6,6 +6,7 @@
 
 
 <script>
+import garbageTruckData from "@/static/final_data.json";
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
@@ -26,7 +27,6 @@ export default {
       },
       trashcanList: [],
       trashcan: [],
-      garbageTruckData: [],
     };
   },
   async mounted() {
@@ -37,19 +37,6 @@ export default {
     await this.getCurrentLocation();
     await this.Init();
     this.initMap();
-
-    try {
-      const axios = (await import("axios")).default;
-      // 发送HTTP请求获取JSON数据
-      const response = await axios.get(
-        "https://datacenter.taichung.gov.tw/swagger/OpenData/c923ad20-2ec6-43b9-b3ab-54527e99f7bc"
-      );
-      this.garbageTruckData = response.data;
-      console.log(this.garbageTruckData);
-
-    } catch (error) {
-      console.error("发生错误：", error);
-    }
 
     const customIcon = {
       url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
@@ -125,113 +112,19 @@ export default {
       });
     },
 
+    // 修改 setGarbageMarker 方法以建立行徑路線
     setGarbageMarker() {
-      // 获取当前时间
-      const currentNowTime = new Date();
-      const currentNewTime = new Date();
-      const currentOldTime = new Date();
+      const routeCoordinates = []; // 用於儲存路線的座標點
 
-      // // 增加10分钟
-      currentNewTime.setMinutes(currentNewTime.getMinutes() + 3);
-      currentOldTime.setMinutes(currentOldTime.getMinutes() - 5);
-
-      // // 将结果以本地时间字符串形式显示
-
-      const oldTime = currentOldTime;
-      const inputDateOld = new Date(oldTime);
-
-      const yearOld = inputDateOld.getFullYear();
-      const monthOld = inputDateOld.getMonth() + 1; // 月份是从 0 开始的，所以要加 1
-      const dayOld = inputDateOld.getDate();
-      const hoursOld = inputDateOld.getHours();
-      let minutesOld = inputDateOld.getMinutes();
-      let secondsOld = inputDateOld.getSeconds();
-
-      if (minutesOld < 10) {
-        minutesOld = `0${minutesOld}`;
-      }
-      if (secondsOld < 10) {
-        secondsOld = `0${secondsOld}`;
-      }
-
-      // // 使用模板字符串构建所需的格式
-      const formatOldTime = new Date(
-        `${yearOld}/${monthOld}/${dayOld} ${hoursOld}:${minutesOld}:${secondsOld}`
-      );
-
-      // console.log(formatOldTime); // 输出 "2023/9/19 13:31:30"
-
-      const newTime = currentNewTime;
-      const inputDateNew = new Date(newTime);
-      const yearNew = inputDateNew.getFullYear();
-      const monthNew = inputDateNew.getMonth() + 1; // 月份是从 0 开始的，所以要加 1
-      const dayNew = inputDateNew.getDate();
-      const hoursNew = inputDateNew.getHours();
-      let minutesNew = inputDateNew.getMinutes();
-      let secondsNew = inputDateNew.getSeconds();
-
-      if (minutesNew < 10) {
-        minutesNew = `0${minutesNew}`;
-      }
-
-      if (secondsNew < 10) {
-        secondsNew = `0${secondsNew}`;
-      }
-      // 使用模板字符串构建所需的格式
-      const formatNewTime = new Date(
-        `${yearNew}/${monthNew}/${dayNew} ${hoursNew}:${minutesNew}:${secondsNew}`
-      );
-
-      // console.log(formatNewTime); // 输出 "2023/9/19 13:31:30"
-
-      const NowTime = currentNowTime;
-      const inputDateNow = new Date(NowTime);
-
-      const yearNow = inputDateNow.getFullYear();
-      const monthNow = inputDateNow.getMonth() + 1; // 月份是从 0 开始的，所以要加 1
-      const dayNow = inputDateNow.getDate();
-      const hoursNow = inputDateNow.getHours();
-      let minutesNow = inputDateNow.getMinutes();
-      let secondsNow = inputDateNow.getSeconds();
-
-      if (minutesNow < 10) {
-        minutesNow = `0${minutesNow}`;
-      }
-
-      if (secondsNow < 10) {
-        secondsNow = `0${secondsNow}`;
-      }
-      // // 使用模板字符串构建所需的格式
-      const formatNowTime = new Date(
-        `${yearNow}/${monthNow}/${dayNow} ${hoursNow}:${minutesNow}:${secondsNow}`
-      );
-
-      // console.log(formatNowTime); // 输出 "2023/9/19 13:31:30"
-
-      this.garbageTruckData.forEach((location) => {
-        const [date, noon, time] = location.time.split(" ");
-        let [hr, min, sec] = time.split(":");
-
-        if (noon !== "上午" && parseInt(hr) !== 12) {
-          hr = `${parseInt(hr) + 12}`;
-        }
-        const locationDateString = new Date(`${date} ${hr}:${min}:${sec}`);
-
-        if ((location.car === "KEB-1538")) {
-        //   if (
-        //     formatOldTime <= locationDateString
-        //     // &&
-        //     // locationDateString >= formatOldTime
-        //   ) {
-            // console.log(formatNewTime, locationDateString);
-
-            // console.log(location);
+      for (const item of garbageTruckData) {
+        if (item.car === "KED-3010") {
+          for (const index of item.detail) {
+            const lat = parseFloat(index.Y);
+            const lng = parseFloat(index.X);
+            routeCoordinates.push({ lat, lng });
 
             const marker = new google.maps.Marker({
-              position: {
-                lat: parseFloat(location.Y),
-                lng: parseFloat(location.X),
-              },
+              position: { lat, lng },
               map: this.map,
               icon: "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png",
             });
@@ -241,25 +134,37 @@ export default {
               // 設定想要顯示的內容
               content: `
           <div id="content">
-            <p id="firstHeading" class="firstHeading">${location.car}</p>
-            <p id="firstHeading" class="firstHeading">${location.time}</p>
-            <p id="firstHeading" class="firstHeading">${location.X}</p>
-            <p id="firstHeading" class="firstHeading">${location.Y}</p>
-
+            <p id="firstHeading" class="firstHeading">${index.car}</p>
+            <p id="firstHeading" class="firstHeading">${index.time}</p>
+            <p id="firstHeading" class="firstHeading">${index.location}</p>
           </div>
-        `,
-              // 設定訊息視窗最大寬度
-              // maxWidth: 200,
+         `,
             });
-            // 在地標上監聽點擊事件
+
+            // 在地標上監聽點擊事件;
             marker.addListener("click", () => {
-              // 指定在哪個地圖和地標上開啟訊息視窗
+              // 如果目前有開啟中的訊息視窗，先將其關閉
+              if (this.infowindow) this.infowindow.close();
+              // 顯示被點擊地標的訊息視窗
               infowindow.open(this.map, marker);
+              // 存入目前開啟的訊息視窗
+              this.infowindow = infowindow;
             });
           }
         }
-      )
-      // });
+      }
+
+      // 創建行徑路線
+      const routePath = new google.maps.Polyline({
+        path: routeCoordinates,
+        geodesic: true, // 使用大地曲線
+        strokeColor: "#FF0000", // 路線的顏色
+        strokeOpacity: 1.0, // 路線的不透明度（1.0 表示完全不透明）
+        strokeWeight: 2, // 路線的寬度
+      });
+
+      // 將行徑路線添加到地圖
+      routePath.setMap(this.map);
     },
 
     getCurrentLocation() {

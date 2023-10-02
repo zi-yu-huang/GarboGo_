@@ -79,7 +79,6 @@ export default {
     };
   },
   mounted() {
-
     this.Init();
   },
   methods: {
@@ -118,8 +117,9 @@ export default {
     //API ------------
     async GetUserPwdApi() {
       const email = this.GetCookieValue("email");
+      this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
-      this.uid = response.uid
+      console.log(this.uid)
       this.dataPwd = response.pwd;
       this.dataUname = response.uname;
       this.dataEmail = response.email;

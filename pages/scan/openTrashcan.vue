@@ -6,11 +6,10 @@
       .mic-area
       .phone-text {{ "垃圾桶遙控器" }}
       .btn-area
-        .open-btn {{ "開啟" }}
-        .close-btn {{ "關閉" }}
+        .open-btn(@click="OpenBtn") {{ "開啟" }}
+        .close-btn(@click="CloseBtn") {{ "關閉" }}
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
-
 </template>
 
 <script>
@@ -37,6 +36,19 @@ export default {
     MountedActivated: debounce(function () {
       // init
     }, 10),
+    OpenBtn() {
+      // 在 Vue.js 组件或普通的 JavaScript 中
+      window.location.href = "https://www.yahoo.com";
+
+      // this.$router.push('https://www.yahoo.com');
+      console.log("fd");
+    },
+    CloseBtn() {
+      window.location.href = "https://www.google.com.tw/";
+
+      // this.$router.push('https://www.yahoo.com');
+      console.log("fd");
+    },
     DeactivatedDestory() {
       // destory
     },
@@ -100,13 +112,13 @@ export default {
       /* text-align: center; */
       align-items: center;
       display: flex;
-      
+
       justify-content: center;
     }
     .close-btn {
       width: 80%;
       height: 150px;
-      background-color: #E32E2E;
+      background-color: #e32e2e;
       border-radius: 19px;
       color: #ffffff;
       font-size: 30px;

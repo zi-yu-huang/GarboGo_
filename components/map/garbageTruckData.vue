@@ -30,8 +30,7 @@ export default {
     };
   },
   async mounted() {
-    this.dateTime = new Date().toLocaleString();
-    console.log(this.dateTime);
+
 
     // 先取得當前位置資訊
     await this.getCurrentLocation();
@@ -55,6 +54,7 @@ export default {
     this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
+    
     this.setGarbageMarker();
   },
   methods: {
@@ -117,54 +117,53 @@ export default {
       const routeCoordinates = []; // 用於儲存路線的座標點
 
       for (const item of garbageTruckData) {
-        if (item.car === "KED-3010") {
+        if (item.car === "KED-1385") {
+          const nowTime = new Date()
+          console.log(nowTime)
+          
           for (const index of item.detail) {
-            const lat = parseFloat(index.Y);
-            const lng = parseFloat(index.X);
-            routeCoordinates.push({ lat, lng });
-
-            const marker = new google.maps.Marker({
-              position: { lat, lng },
-              map: this.map,
-              icon: "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png",
-            });
-
-            // 透過 InfoWindow 物件建構子建立新訊息視窗
-            const infowindow = new google.maps.InfoWindow({
-              // 設定想要顯示的內容
-              content: `
-          <div id="content">
-            <p id="firstHeading" class="firstHeading">${index.car}</p>
-            <p id="firstHeading" class="firstHeading">${index.time}</p>
-            <p id="firstHeading" class="firstHeading">${index.location}</p>
-          </div>
-         `,
-            });
-
-            // 在地標上監聽點擊事件;
-            marker.addListener("click", () => {
-              // 如果目前有開啟中的訊息視窗，先將其關閉
-              if (this.infowindow) this.infowindow.close();
-              // 顯示被點擊地標的訊息視窗
-              infowindow.open(this.map, marker);
-              // 存入目前開啟的訊息視窗
-              this.infowindow = infowindow;
+            routeCoordinates.push({
+              lat: parseFloat(index.Y),
+              lng: parseFloat(index.X),
             });
           }
         }
       }
 
-      // 創建行徑路線
-      const routePath = new google.maps.Polyline({
-        path: routeCoordinates,
-        geodesic: true, // 使用大地曲線
-        strokeColor: "#FF0000", // 路線的顏色
-        strokeOpacity: 1.0, // 路線的不透明度（1.0 表示完全不透明）
-        strokeWeight: 2, // 路線的寬度
+      // 呼叫顯示路線的方法
+      // this.displayRoute(routeCoordinates);
+    },
+    displayRoute(routeCoordinates) {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer({
+        map: this.map,
       });
 
-      // 將行徑路線添加到地圖
-      routePath.setMap(this.map);
+      // 創建一個 DirectionsRequest 物件
+      const request = {
+        travelMode: google.maps.TravelMode.DRIVING, // 或其他適合的 travel mode
+        waypoints: [],
+        optimizeWaypoints: true, // 是否優化路徑
+        origin: routeCoordinates[0], // 起始點
+        destination: routeCoordinates[routeCoordinates.length - 1], // 終點
+      };
+
+      // 將中間座標作為路線上的途徑點
+      for (let i = 1; i < routeCoordinates.length - 1; i++) {
+        request.waypoints.push({
+          location: routeCoordinates[i],
+          stopover: true, // 是否在這個點停留
+        });
+      }
+
+      // 使用 DirectionsService 請求路線
+      directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          directionsRenderer.setDirections(result);
+        } else {
+          console.error("無法顯示路線：" + status);
+        }
+      });
     },
 
     getCurrentLocation() {

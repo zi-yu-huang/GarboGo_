@@ -89,6 +89,7 @@ export default {
       this.$refs.ruleForm.validate(async (valid) => {
         if (this.dataPwd === this.memberForm.oldPassword) {
           if (valid) {
+            console.log("1111")
             await this.GetEditUserPwdApi();
             this.$emit("donePassword", true);
             this.memberForm.newPassword=""
@@ -125,6 +126,8 @@ export default {
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
+      console.log(this.uid)
+      
       const response = await EditUserApi(
         this.uid,
         this.dataUname,

@@ -45,6 +45,7 @@ export default {
   name: "MemberProfile",
   data() {
     return {
+      uid:"",
       getInit: false,
       dataPwd: "",
       dataEmail: "",
@@ -153,14 +154,19 @@ export default {
     //API ------------
     async GetUserPwdApi() {
       const email = this.GetCookieValue("email");
+      this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
+      this.editName = response.uname
       this.dataPwd = response.pwd;
       this.dataEmail = response.email;
     },
 
     // API----------
     async GetUserNameApi() {
+      console.log(this.editName)
+      
       const response = await EditUserApi(
+        this.uid,
         this.editName,
         this.dataEmail,
         this.dataPwd

@@ -131,7 +131,7 @@ export default {
       }
 
       // 呼叫顯示路線的方法
-      // this.displayRoute(routeCoordinates);
+      this.displayRoute(routeCoordinates);
     },
     displayRoute(routeCoordinates) {
       const directionsService = new google.maps.DirectionsService();

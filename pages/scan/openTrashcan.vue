@@ -38,13 +38,13 @@ export default {
     }, 10),
     OpenBtn() {
       // 在 Vue.js 组件或普通的 JavaScript 中
-      window.location.href = "https://www.yahoo.com";
+      window.location.href = ":http://192.168.100.149/open";
 
       // this.$router.push('https://www.yahoo.com');
       console.log("fd");
     },
     CloseBtn() {
-      window.location.href = "https://www.google.com.tw/";
+      window.location.href = "http://192.168.100.149/close";
 
       // this.$router.push('https://www.yahoo.com');
       console.log("fd");

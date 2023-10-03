@@ -63,7 +63,7 @@ export default {
     };
   },
   computed:{
-    getInit(){
+    initialized(){
       console.log("fdjls")
       
       if(this.getInit ===true){

@@ -1,7 +1,7 @@
 export const LoginApi = async (uemail) => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/user/?email=${uemail}`)
+    const response = await axios.post(`s.ngrok-free.app/user/?email=${uemail}`)
     
      return response.data
 

@@ -79,7 +79,6 @@ export default {
     };
   },
   mounted() {
-
     this.Init();
   },
   methods: {
@@ -90,6 +89,7 @@ export default {
       this.$refs.ruleForm.validate(async (valid) => {
         if (this.dataPwd === this.memberForm.oldPassword) {
           if (valid) {
+            console.log("1111")
             await this.GetEditUserPwdApi();
             this.$emit("donePassword", true);
             this.memberForm.newPassword=""
@@ -118,13 +118,16 @@ export default {
     //API ------------
     async GetUserPwdApi() {
       const email = this.GetCookieValue("email");
+      this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
-      this.uid = response.uid
+      console.log(this.uid)
       this.dataPwd = response.pwd;
       this.dataUname = response.uname;
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
+      console.log(this.uid)
+      
       const response = await EditUserApi(
         this.uid,
         this.dataUname,

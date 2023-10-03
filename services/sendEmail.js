@@ -1,7 +1,7 @@
 export const SendEmailApi = async (uemail) => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/sendotptext/?email=${uemail}`)
+    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/sendotptext/?email=${uemail}`)
     return response
 
   } catch {
@@ -15,7 +15,7 @@ export const SendEmailApi = async (uemail) => {
 export const OtpTextApi = async (id) => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/otptext/?otpid=${id}`)
+    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/otptext/?otpid=${id}`)
     return response.data.otpname
 
   } catch {

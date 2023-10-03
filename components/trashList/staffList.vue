@@ -7,18 +7,18 @@
     :pagination="false",
     :rowClassName="rowClassName"
   )
-    span(slot="general", slot-scope="general")
-      aIcon.trashIcon(
-        :type="'delete'",
-        :theme="'filled'",
-        :style="{ color: trashColor(general) }"
-      ) 
-    span(slot="recycle", slot-scope="recycle")
-      aIcon.trashIcon(
-        :type="'delete'",
-        :theme="'filled'",
-        :style="{ color: trashColor(recycle) }"
-      ) 
+    //- span(slot="general", slot-scope="general")
+      //- aIcon.trashIcon(
+      //-   :type="'delete'",
+      //-   :theme="'filled'",
+      //-   :style="{ color: trashColor(general) }"
+      //- ) 
+    //- span(slot="recycle", slot-scope="recycle")
+    //-   aIcon.trashIcon(
+    //-     :type="'delete'",
+    //-     :theme="'filled'",
+    //-     :style="{ color: trashColor(recycle) }"
+    //-   ) 
 </template>
 
 <script>
@@ -126,16 +126,25 @@ export default {
     },
   },
   methods: {
-    // rowClassName(record, index) {
-    //   return index % 2 ? "green" : "black";
-    // },
+    rowClassName(record, index) {
+      // 自定义隔行变色的逻辑
+      return index % 2 === 0 ? 'even-row' : 'odd-row';
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 // 排版
 #StaffList {
+  /* 样式表中的样式规则 */
+.even-row {
+  background-color: #ffffff; /* 奇数行的背景色 */
+}
+
+.odd-row {
+  background-color: #F1FBE4; /* 偶数行的背景色 */
+}
 }
 // 元件
 #StaffList {

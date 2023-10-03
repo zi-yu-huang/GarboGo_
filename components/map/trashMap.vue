@@ -34,18 +34,17 @@ export default {
     await this.Init();
     this.initMap();
 
-
     const customIcon = {
-    url: 'http://maps.google.com/mapfiles/kml/shapes/man.png', // 内置蓝色图标
-    scaledSize: new google.maps.Size(40, 40), // 设置图标大小
-    origin: new google.maps.Point(0, 0), // 设置图标原点
-    anchor: new google.maps.Point(20, 40), // 设置图标锚点
-  };
+      url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
+      scaledSize: new google.maps.Size(40, 40), // 设置图标大小
+      origin: new google.maps.Point(0, 0), // 设置图标原点
+      anchor: new google.maps.Point(20, 40), // 设置图标锚点
+    };
     // 在当前位置上创建标记
     const currentLocationMarker = new google.maps.Marker({
       position: this.currentLocation,
       map: this.map,
-      icon:customIcon
+      icon: customIcon,
     });
 
     // 取得餐廳假資料
@@ -58,7 +57,6 @@ export default {
       await this.GetTrashListApi();
     },
     fetchtrashcan() {
-
       this.trashcan = this.trashcanList.trashcan;
       this.currentLocation.lat = null;
       this.currentLocation.lng = null;
@@ -109,6 +107,13 @@ export default {
 
           // 開啟 infowindow
           infowindow.open(this.map, marker);
+
+          // 如果目前有開啟中的訊息視窗，先將其關閉
+          if (this.infowindow) this.infowindow.close();
+          // 顯示被點擊地標的訊息視窗
+          infowindow.open(this.map, marker);
+          // 存入目前開啟的訊息視窗
+          this.infowindow = infowindow;
         });
       });
     },
@@ -154,7 +159,6 @@ export default {
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
-
                   console.log("無法獲取當前位置");
                   reject();
                 }

@@ -19,7 +19,7 @@ export default {
     ],
     script: [
       {
-        src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCsZGzHWmtJDj2WWp7BIOJiD3XSc7IIu3U&libraries=places',
+        src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCts8rcKuPCUuLcU5pTj7YLiYRHQnEDY5Q&libraries=places',
         defer: true,
         async: true
       }

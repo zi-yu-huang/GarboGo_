@@ -1,7 +1,7 @@
 export const FavoriteApi = async () => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`http://large-lovely-woodcock.ngrok-free.app/getlike/?uid=2`)
+    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/getlike/?uid=2`)
     return "success"
 
   } catch {

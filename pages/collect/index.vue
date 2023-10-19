@@ -3,22 +3,25 @@
 #CollectIndex
   .article
     .title-size {{ "印花集章" }}
-    .article_area
-      div(v-if="lastPoint > 0")
-        CollectTable(:point="lastPoint", :isDeal="false")
-      .table-area(v-for="(item, index) in card", :key="item.id")
-        CollectTable(:point="10", :isDeal="false", @ChangePoint="ChangePoint")
-      .table-area(v-for="(item, index) in exchange_ticket", :key="item")
-        CollectTable(:point="10", :isDeal="true")
+  .tab-article
+    aTabs.tabs-area(type="card", @change="callback")
+      aTabPane.tab1-block(key="1", tab="集章紀錄")
+        .calendar-area
+          CA
+      aTabPane(key="2", tab="兌換卷")
+        PointCard
 </template>
 
 <script>
 import { PointApi, InsertPointApi, UpdataPointApi } from "@/services/point";
 import debounce from "lodash/debounce";
+import dayjs, { Dayjs } from "dayjs";
 export default {
   layout: "default",
   components: {
     CollectTable: () => import("@/components/collect/collectTable"),
+    PointCard: () => import("@/components/collect/pointCard"),
+    CA:()=>import("@/components/collect/ca")
   },
   name: "CollectIndex",
   data() {
@@ -52,29 +55,12 @@ export default {
       // destory
     },
     async Init() {
-      await this.GetPointApi();
+      // await this.GetPointApi();
       const id = this.GetCookieValue("id");
       this.userId = parseInt(id);
-
-      this.GetUserPoint();
     },
-    CalculateCard() {
-      this.card = new Array(Math.floor(this.point / 10)).fill(0);
-      this.lastPoint = this.point % 10;
-    },
-
-    GetUserPoint() {
-      for (const item of this.userPointList) {
-
-        if (item.uid === this.userId) {
-          this.exchange_ticket = item.exchange_ticket;
-          this.point = item.total_point - item.exchange_ticket * 10;
-          this.CalculateCard();
-        }
-      }
-    },
-    async ChangePoint() {
-      await this.GetInsertPointApi(this.userId);
+    callback(key) {
+      console.log(key);
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -86,24 +72,44 @@ export default {
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
-    //API------------------
-    async GetPointApi() {
-      const response = await PointApi();
-      this.userPointList = response.data;
-    },
-    async GetInsertPointApi(uid) {
-      const insert = await InsertPointApi(uid);
-      if (insert.data.status === "success") {
-        this.$message.success("兌換成功");
-        await this.GetUpdatePointApi(uid, -10);
-        this.$nextTick(() => {
-          this.Init();
-        });
+
+    getYears(value) {
+      const year = this.value.year();
+      const years = [];
+      for (let i = year - 10; i < year + 10; i += 1) {
+        years.push(i);
       }
+      return years;
     },
-    async GetUpdatePointApi(uid, point) {
-      const update = await UpdataPointApi(uid, point);
+    getMonths(value) {
+      const localeData = this.value.localeData();
+      const months = [];
+      for (let i = 0; i < 12; i++) {
+        months.push(localeData.monthsShort(this.value.month(i)));
+      }
+      return months;
     },
+    onPanelChange(value, mode) {
+      console.log(value, mode);
+    },
+    //API------------------
+    // async GetPointApi() {
+    //   const response = await PointApi();
+    //   this.userPointList = response.data;
+    // },
+    // async GetInsertPointApi(uid) {
+    //   const insert = await InsertPointApi(uid);
+    //   if (insert.data.status === "success") {
+    //     this.$message.success("兌換成功");
+    //     await this.GetUpdatePointApi(uid, -10);
+    //     this.$nextTick(() => {
+    //       this.Init();
+    //     });
+    //   }
+    // },
+    // async GetUpdatePointApi(uid, point) {
+    //   const update = await UpdataPointApi(uid, point);
+    // },
   },
 };
 </script>
@@ -115,14 +121,31 @@ export default {
   // height: 100vh;
   height: fill;
   .article {
-    padding: 40px 30px 90px 30px;
+    padding: 40px 0px 0px 0px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100vh;
   }
-  .table-area {
-    margin-top: 20px;
+  .tab-article {
+    text-align: justify;
+    height: 100vh;
+    background-color: #a1cd7b;
+  }
+  .tabs-area {
+    margin-top: 20px !important;
+  }
+  .tab1-block {
+    width: 100% !important;
+    background-color: #a1cd7b;
+
+    .tab1-area {
+      font-family: Inter;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      letter-spacing: 0em;
+      text-align: left;
+    }
   }
 }
 // 元件
@@ -133,6 +156,9 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
+  }
+  .calendar-area {
+    background-color: white;
   }
   @media (min-width: 769px) {
     .table-area {
@@ -150,5 +176,16 @@ export default {
       justify-content: center;
     }
   }
+}
+::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+  height: 60px;
+  margin: 1px 1px;
+  color: black;
+  background: #a1cd7b;
+  border-color: #a1cd7b;
+  box-shadow: 0px -3px 5px 0px;
+}
+::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  width: 120%;
 }
 </style>

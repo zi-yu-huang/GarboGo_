@@ -7,23 +7,21 @@
     aTabs.tabs-area(type="card", @change="callback")
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
-        div(
-          :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px', backgroundColor: 'white' }"
-        )
-          aIcon(type="info-circle")
-          aCalendar(:fullscreen="false", @panelChange="onPanelChange")
-          aButton {{ "fdkjl" }}
-
-      aTabPane(key="2", tab="兌換卷") {{ "集章紀錄" }}
+          CA
+      aTabPane(key="2", tab="兌換卷")
+        PointCard
 </template>
 
 <script>
 import { PointApi, InsertPointApi, UpdataPointApi } from "@/services/point";
 import debounce from "lodash/debounce";
+import dayjs, { Dayjs } from "dayjs";
 export default {
   layout: "default",
   components: {
     CollectTable: () => import("@/components/collect/collectTable"),
+    PointCard: () => import("@/components/collect/pointCard"),
+    CA:()=>import("@/components/collect/ca")
   },
   name: "CollectIndex",
   data() {
@@ -57,7 +55,7 @@ export default {
       // destory
     },
     async Init() {
-      await this.GetPointApi();
+      // await this.GetPointApi();
       const id = this.GetCookieValue("id");
       this.userId = parseInt(id);
     },
@@ -73,6 +71,26 @@ export default {
         }
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+    getYears(value) {
+      const year = this.value.year();
+      const years = [];
+      for (let i = year - 10; i < year + 10; i += 1) {
+        years.push(i);
+      }
+      return years;
+    },
+    getMonths(value) {
+      const localeData = this.value.localeData();
+      const months = [];
+      for (let i = 0; i < 12; i++) {
+        months.push(localeData.monthsShort(this.value.month(i)));
+      }
+      return months;
+    },
+    onPanelChange(value, mode) {
+      console.log(value, mode);
     },
     //API------------------
     // async GetPointApi() {

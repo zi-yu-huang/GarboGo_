@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { OpenTrashApi } from "../../services/openTrash";
 import debounce from "lodash/debounce";
 export default {
   name: "OpenTrashcan",
@@ -36,16 +37,24 @@ export default {
     MountedActivated: debounce(function () {
       // init
     }, 10),
-    OpenBtn() {
+    async OpenBtn() {
       // 在 Vue.js 组件或普通的 JavaScript 中
-      window.location.href = "http://192.168.100.149/open";
+      await this.GetOpenTrashApi("open")
     },
-    CloseBtn() {
-      window.location.href = "http://192.168.100.149/close";
+    async CloseBtn() {
+      await this.GetOpenTrashApi("close")
     },
     DeactivatedDestory() {
       // destory
     },
+    //API--------
+    async GetOpenTrashApi(stuts){
+      console.log(stuts)
+      
+      const res = await OpenTrashApi(stuts);
+      console.log(res)
+      
+    }
   },
 };
 </script>

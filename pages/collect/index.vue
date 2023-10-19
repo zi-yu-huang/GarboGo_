@@ -15,7 +15,6 @@
 <script>
 import { PointApi, InsertPointApi, UpdataPointApi } from "@/services/point";
 import debounce from "lodash/debounce";
-import dayjs, { Dayjs } from "dayjs";
 export default {
   layout: "default",
   components: {

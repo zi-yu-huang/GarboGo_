@@ -9,9 +9,21 @@
       :value="'2023-10-12'"
     )
       template(v-slot:headerRender="{ value: type }")
-        div(style="padding: 10px; display: grid; grid-template-columns: 1fr 44px")
-          div(style="margin-bottom: '10px'; text-align:center;padding-left:35px") {{"十月 2023"}}
-          aIcon(style="font-size: 10px" type="info-circle", @click="InfoOpen")
+        div(
+          style="padding: 10px; display: grid; grid-template-columns: 1fr 44px"
+        )
+          div(
+            style="margin-bottom: '10px'; text-align: center; padding-left: 35px"
+          ) {{ "十月 2023" }}
+          aIcon(style="font-size: 10px", type="info-circle", @click="InfoOpen")
+      .events(slot="dateCellRender", slot-scope="value")
+        template(v-for="item in getListData(value)")
+          span.restCls(:key="item")
+          //- <a-badge :status="item.type" :text="item.content" />
+      //- div(slot="dateCellRender" slot-scope="value" class="events")
+      //-   template(v-for="item in getrestDay()")
+      //-     span(:key="item.content" class="restCls" v-if="moment(value).format('YYYY-MM-DD')==item.holiday")
+
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
 </template>
 <script>
@@ -23,6 +35,7 @@ export default {
   data() {
     return {
       visible: false,
+      list: [2, 5, 8],
     };
   },
   methods: {
@@ -37,27 +50,49 @@ export default {
     InfoClose() {
       this.visible = false;
     },
-    // headerRender() {
-    //   return (
+    getListData(value) {
 
-    //   <div style="padding: 10px;">
-    //       <div style="margin-bottom: 10px;"> 十月 2023 </div>
-    //       <a-row type="flex" justify="space-between"></a-row>
-    //     </div>
-    //   )
-    // },
+      let listData;
+
+      if (value.date() <= 31) {
+        for (const item of this.list) {
+          console.log(item, value.date());
+          if (value.date() === item) {
+            console.log(item, "dfjkls");
+            listData = [{ content: "" }];
+            break;
+          }
+        }
+      }
+
+      
+      // if (value.date() > 31) {
+      //   return listData || [];
+      // }
+
+      return listData || [];
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 // 排版
 #CA {
-  .title-area{
+  .title-area {
     display: flex;
     justify-content: space-between;
   }
 }
 // 元件
 #CA {
+  .restCls {
+    position: relative;
+    top: -10px;
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    left: 0px;
+    border: 2px solid #f1705e;
+  }
 }
 </style>

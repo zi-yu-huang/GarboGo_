@@ -6,7 +6,7 @@
       :fullscreen="false",
       :header-render="headerRender",
       @panelChange="onPanelChange",
-      :value="'2023-10-12'"
+      :value="selectedDate"
     )
       template(v-slot:headerRender="{ value: type }")
         div(
@@ -14,16 +14,13 @@
         )
           div(
             style="margin-bottom: '10px'; text-align: center; padding-left: 35px"
-          ) {{ "十月 2023" }}
+          ) {{ title }}
           aIcon(style="font-size: 10px", type="info-circle", @click="InfoOpen")
       .events(slot="dateCellRender", slot-scope="value")
-        template(v-for="item in getListData(value)")
-          span.restCls(:key="item")
-          //- <a-badge :status="item.type" :text="item.content" />
-      //- div(slot="dateCellRender" slot-scope="value" class="events")
-      //-   template(v-for="item in getrestDay()")
-      //-     span(:key="item.content" class="restCls" v-if="moment(value).format('YYYY-MM-DD')==item.holiday")
-
+        template(v-for="(item, index) in getListData(value)")
+          span.restCls(:key="index")
+    .btn-area
+      aButton.btn-area(@click="ChangeCard") {{ "快給我兌換卷！" }}
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
 </template>
 <script>
@@ -35,12 +32,13 @@ export default {
   data() {
     return {
       visible: false,
-      list: [2, 5, 8],
+      title: "2023-09",
+      selectedDate: "2023-09",
+      list: ["2023-10-02", "2023-10-05", "2023-10-08"],
     };
   },
   methods: {
     onPanelChange(value, mode) {
-      // eslint-disable-next-line no-console
       console.log(value, mode);
     },
     InfoOpen() {
@@ -51,27 +49,20 @@ export default {
       this.visible = false;
     },
     getListData(value) {
-
       let listData;
-
-      if (value.date() <= 31) {
-        for (const item of this.list) {
-          console.log(item, value.date());
-          if (value.date() === item) {
-            console.log(item, "dfjkls");
-            listData = [{ content: "" }];
-            break;
-          }
+      for (const item of this.list) {
+        if (new Date(value).toISOString().substring(0, 10) === item) {
+          listData = [{ content: "" }];
+          break;
         }
       }
 
-      
-      // if (value.date() > 31) {
-      //   return listData || [];
-      // }
-
       return listData || [];
     },
+    ChangeCard(){
+      console.log("fsjkl")
+      
+    }
   },
 };
 </script>
@@ -93,6 +84,18 @@ export default {
     display: inline-block;
     left: 0px;
     border: 2px solid #f1705e;
+  }
+  .btn-area {
+    width: 100%;
+    height: 40px;
+    background-color: #4a5660;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
   }
 }
 </style>

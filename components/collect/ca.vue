@@ -19,23 +19,40 @@
       .events(slot="dateCellRender", slot-scope="value")
         template(v-for="(item, index) in getListData(value)")
           span.restCls(:key="index")
-    .btn-area
+    .btn-area(v-if="isShowChange")
       aButton.btn-area(@click="ChangeCard") {{ "快給我兌換卷！" }}
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
+  CollectModal(
+    :visibleModal="visibleModal",
+    @CloseModal="CloseModal",
+    @SaveModal="SaveModal"
+  )
 </template>
 <script>
 export default {
   name: "CA",
   components: {
     InfoComponents: () => import("@/components/info/info"),
+    CollectModal:()=>import("@/components/modal/collectModal.vue")
   },
   data() {
     return {
+      visibleModal: false,
       visible: false,
-      title: "2023-09",
+      title: "2023-10",
       selectedDate: "2023-09",
       list: ["2023-10-02", "2023-10-05", "2023-10-08"],
     };
+  },
+  computed:{
+    isShowChange(){
+      const date= new Date().toISOString().substring(0, 7)
+      console.log(date)
+      if(this.title !== date){
+        return true
+      }
+      
+    }
   },
   methods: {
     onPanelChange(value, mode) {
@@ -60,9 +77,14 @@ export default {
       return listData || [];
     },
     ChangeCard(){
-      console.log("fsjkl")
-      
-    }
+      this.visibleModal=true
+    },
+    CloseModal() {
+      this.visibleModal = false;
+    },
+    SaveModal() {
+      this.visibleModal = false;
+    },
   },
 };
 </script>

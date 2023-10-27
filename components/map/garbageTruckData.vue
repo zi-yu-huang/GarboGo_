@@ -116,18 +116,18 @@ export default {
     setGarbageMarker() {
       const routeCoordinates = []; // 用於儲存路線的座標點
 
-      for (const item of garbageTruckData) {
-        if (item.car === "KED-1385") {
-          const nowTime = new Date()
-          console.log(nowTime)
+      for (const item of this.trashcanList.trashcan) {
+        // if (item.car === "KED-1385") {
+        //   const nowTime = new Date()
+        //   console.log(nowTime)
           
-          for (const index of item.detail) {
+        //   for (const index of item.detail) {
             routeCoordinates.push({
-              lat: parseFloat(index.Y),
-              lng: parseFloat(index.X),
+              lat: item.lat,
+              lng: item.lng,
             });
-          }
-        }
+        //   }
+        // }
       }
 
       // 呼叫顯示路線的方法

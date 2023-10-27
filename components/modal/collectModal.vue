@@ -1,7 +1,7 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #CollectModal
-  div(v-if="visible")
+  div(v-if="visibleModal")
     div.mask
     div.block-area
       div.block
@@ -9,7 +9,7 @@
           .title-name
             slot(name="title") 
         .article
-          div(name="article") {{ "確定要兌換獎品嗎?" }}
+          div(name="article") {{ "確定要產生兌換卷嗎？" }}
       
         .footer
           .ok-btn 
@@ -24,29 +24,29 @@ export default {
   components: {
   },
   props:{
-    visible:{
+    visibleModal:{
         type:Boolean,
         default:""
     }
   },
   data () {
   return {
-      // visible:""
+      // visibleModal:""
   };
   },
     // computed:{
-    // visibleC(){
-    //     return this.visible = this.visible;
+    // visibleModalC(){
+    //     return this.visibleModal = this.visibleModal;
     // }
     // },
     methods:{
       CloseModal(){
-        // this.visible=false;
-        this.$emit("CloseModal",this.visible)
+        // this.visibleModal=false;
+        this.$emit("CloseModal",this.visibleModal)
       },
       SaveModal(){
-        // this.visible=false;
-          this.$emit("SaveModal",this.visible)
+        // this.visibleModal=false;
+          this.$emit("SaveModal",this.visibleModal)
 
       }
     }

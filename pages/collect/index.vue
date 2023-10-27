@@ -34,25 +34,9 @@ export default {
     };
   },
   mounted() {
-    this.MountedActivated();
     this.Init();
   },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
-  },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
     async Init() {
       // await this.GetPointApi();
       const id = this.GetCookieValue("id");

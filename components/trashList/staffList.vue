@@ -3,105 +3,56 @@
 #StaffList
   aTable(
     :columns="columns",
-    :data-source="data",
+    :data-source="list",
     :pagination="false",
     :rowClassName="rowClassName"
   )
-    //- span(slot="general", slot-scope="general")
-      //- aIcon.trashIcon(
-      //-   :type="'delete'",
-      //-   :theme="'filled'",
-      //-   :style="{ color: trashColor(general) }"
-      //- ) 
-    //- span(slot="recycle", slot-scope="recycle")
-    //-   aIcon.trashIcon(
-    //-     :type="'delete'",
-    //-     :theme="'filled'",
-    //-     :style="{ color: trashColor(recycle) }"
-    //-   ) 
+    template(slot="title", slot-scope="currentPageData") {{ title }}
+    span(slot="General", slot-scope="General")
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(General.tcapacity) }"
+      ) 
+    span(slot="Recycle", slot-scope="Recycle")
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(Recycle.tcapacity) }"
+      ) 
 </template>
 
 <script>
+import { StaffList } from "../../services/staffList";
 const columns = [
   {
     title: "設置地點",
-    dataIndex: "address",
-    key: "address",
+    dataIndex: "street",
+    key: "street",
   },
   {
     title: "一般",
-    dataIndex: "general",
-    key: "general",
-    scopedSlots: { customRender: "general" },
+    dataIndex: "General",
+    key: "General",
+    scopedSlots: { customRender: "General" },
   },
   {
     title: "回收",
-    key: "recycle",
-    dataIndex: "recycle",
-    scopedSlots: { customRender: "recycle" },
+    key: "Recycle",
+    dataIndex: "Recycle",
+    scopedSlots: { customRender: "Recycle" },
   },
 ];
 
-const data = [
-  {
-    key: "1",
-    address: "美德街78號",
-    recycle: "100",
-    general: "49",
-  },
-  {
-    key: "2",
-    address: "美德街78號",
-    recycle: "39",
-    general: "94",
-  },
-  {
-    key: "3",
-    address: "美德街78號",
-    recycle: "14",
-    general: "56",
-  },
-];
+
 export default {
   name: "StaffList",
   data() {
     return {
-      data,
       columns,
-      list: [
-        {
-          General: {},
-          Recycle: {
-            qrcode: "QR-123456",
-            tcapacity: "100",
-            tid: 1,
-          },
-          lat: "24.17879930",
-          lng: "120.64395080",
-          region: "西屯區",
-          street: "文華路100號",
-          tname: "逢甲大學",
-          tplace: "台中市西屯區文華路100號",
-        },
-        {
-          General: {
-            qrcode: "QR-789012",
-            tcapacity: "80",
-            tid: 2,
-          },
-          Recycle: {
-            qrcode: "QR-520106",
-            tcapacity: "75",
-            tid: 12,
-          },
-          lat: "24.18915570",
-          lng: "120.64154660",
-          region: "西屯區",
-          street: "僑光路100號",
-          tname: "僑光科技大學",
-          tplace: "台中市西屯區僑光路100號",
-        },
-      ],
+      list: [],
+      title: '',
+      originList:{}
     };
   },
 
@@ -125,10 +76,31 @@ export default {
       };
     },
   },
+  mounted() {
+    this.Init();
+  },
   methods: {
+    async Init() {
+      await this.GetStaffList();
+      this.EditList();
+    },
+    EditList() {
+      for(const item in this.originList){
+        this.title = item
+        console.log(this.originList[item])
+        this.list = this.originList[item]
+        
+      }
+    },
     rowClassName(record, index) {
       // 自定义隔行变色的逻辑
-      return index % 2 === 0 ? 'even-row' : 'odd-row';
+      return index % 2 === 0 ? "even-row" : "odd-row";
+    },
+
+    // API---------
+    async GetStaffList() {
+      // const response = await StaffList("JohnCena01");
+      this.originList = response.data;
     },
   },
 };
@@ -138,13 +110,13 @@ export default {
 // 排版
 #StaffList {
   /* 样式表中的样式规则 */
-.even-row {
-  background-color: #ffffff; /* 奇数行的背景色 */
-}
+  .even-row {
+    background-color: #ffffff; /* 奇数行的背景色 */
+  }
 
-.odd-row {
-  background-color: #F1FBE4; /* 偶数行的背景色 */
-}
+  .odd-row {
+    background-color: #f1fbe4; /* 偶数行的背景色 */
+  }
 }
 // 元件
 #StaffList {

@@ -91,7 +91,7 @@ export default {
     LogOut() {
       this.delCookie("id");
       this.delCookie("email");
-        this.$router.push("/member");
+        this.$router.push("/");
         setTimeout(() => {
           window.location.reload();
         }, 300);

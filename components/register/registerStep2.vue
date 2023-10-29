@@ -61,7 +61,6 @@ export default {
     timeClock() {
       if (this.visible === true && this.tryAgain === null) {
         this.timer = setInterval(this.countdown, 1000);
-        console.log("null");
       }
       if (this.tryAgain === true) {
         this.time = 5;
@@ -76,9 +75,7 @@ export default {
   },
   methods: {
     async Init() {
-      console.log(this.otpId);
       const response = await this.GetOtpTextApi(this.otpId);
-      console.log(response);
       this.otpText = response;
     },
     OnSubmit() {

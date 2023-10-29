@@ -21,22 +21,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
-  },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
     async OpenBtn() {
       // 在 Vue.js 组件或普通的 JavaScript 中
       await this.GetOpenTrashApi("open")
@@ -44,15 +29,10 @@ export default {
     async CloseBtn() {
       await this.GetOpenTrashApi("close")
     },
-    DeactivatedDestory() {
-      // destory
-    },
     //API--------
     async GetOpenTrashApi(stuts){
-      console.log(stuts)
       
       const res = await OpenTrashApi(stuts);
-      console.log(res)
       
     }
   },

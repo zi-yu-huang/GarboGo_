@@ -64,11 +64,9 @@ export default {
   },
   computed:{
     initialized(){
-      console.log("fdjls")
       
       if(this.getInit ===true){
         this.Init();
-        console.log("tjsdl")
         
       }
     }
@@ -91,7 +89,7 @@ export default {
     LogOut() {
       this.delCookie("id");
       this.delCookie("email");
-        this.$router.push("/member");
+        this.$router.push("/");
         setTimeout(() => {
           window.location.reload();
         }, 300);

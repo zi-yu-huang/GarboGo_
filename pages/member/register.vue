@@ -32,18 +32,6 @@ export default {
       },
     };
   },
-  mounted() {
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
-  },
   computed: {
     current() {
       if (this.doneStep1 === "" && this.doneStep2 === "") {
@@ -59,12 +47,6 @@ export default {
     },
   },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
     DoneStep1(val, data,otpId) {
       this.memberForm.memberEmail = data.memberEmail;
       this.memberForm.memberName = data.memberName;

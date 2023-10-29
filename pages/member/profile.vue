@@ -59,7 +59,6 @@ export default {
     };
   },
   mounted() {
-    this.MountedActivated();
     if (this.openPassword === true) {
       $(document).click((event) => {
         if (this.openPassword === true) {
@@ -71,15 +70,6 @@ export default {
         }
       });
     }
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
   },
   computed: {
     changeEdit() {
@@ -96,12 +86,6 @@ export default {
     this.Init();
   },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
     async Init() {
       await this.GetUserPwdApi();
     },
@@ -118,7 +102,6 @@ export default {
     },
     GetVerify(val, otpId) {
       this.getVerify = val;
-      console.log(otpId);
 
       this.getOptId = otpId;
       this.openPhone = false;
@@ -131,8 +114,10 @@ export default {
     OpenPassword(val) {
       this.openPassword = val;
     },
-    DonePassword() {
+    DonePassword(val) {
       this.openPassword = false;
+      this.dataPwd = val
+
       this.ChangeEditBtn();
       this.getInit = true;
 
@@ -163,8 +148,6 @@ export default {
 
     // API----------
     async GetUserNameApi() {
-      console.log(this.editName)
-      
       const response = await EditUserApi(
         this.uid,
         this.editName,

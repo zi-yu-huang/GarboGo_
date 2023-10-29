@@ -1,5 +1,5 @@
 <template lang="pug">
-//- 請填寫頁面👈
+//- memberProfile
 #StaffProfile
   .user-area
     .circle-area
@@ -8,18 +8,31 @@
   .edit-area
     ProfileInput(
       :notEdit="notEdit",
-      :getInit="getInit"
-      @openPassword="OpenPassword"
+      :getInit="getInit",
+      @openPhone="OpenPhone",
+      @openPassword="OpenPassword",
+      @EditName="EditName"
     )
     .btn-content
       aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
   EditPhone(:visible="openPhone", @getVerify="GetVerify")
-  EditVerify(:visible="getVerify", @verifyDone="VerifyDone")
-  EditPassword(:visible="openPassword", @donePassword="DonePassword")
+  EditVerify(
+    :visible="getVerify",
+    :getOptId="getOptId",
+    @verifyDone="VerifyDone"
+  )
+  EditPassword(
+    :visible="openPassword",
+    @donePassword="DonePassword",
+    @CloseModal="DonePassword"
+  )
 </template>
-
-<script>
+  
+  <script>
+import $ from "jquery";
+import { LoginApi } from "@/services/login.js";
+import { EditUserApi } from "@/services/editUser.js";
 import debounce from "lodash/debounce";
 export default {
   layout: "staff",
@@ -32,7 +45,13 @@ export default {
   name: "StaffProfile",
   data() {
     return {
+      uid: "",
+      getInit: false,
+      dataPwd: "",
+      dataEmail: "",
+      editName: "",
       getVerify: false,
+      getOptId: null,
       openPhone: false,
       openPassword: false,
       notEdit: true,
@@ -40,16 +59,17 @@ export default {
     };
   },
   mounted() {
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
+    if (this.openPassword === true) {
+      $(document).click((event) => {
+        if (this.openPassword === true) {
+          const target = $(event.target);
+          const menuIcon = $(".block-area");
+          if (!target.closest(menuIcon).length) {
+            this.openPassword = false;
+          }
+        }
+      });
+    }
   },
   computed: {
     changeEdit() {
@@ -62,41 +82,87 @@ export default {
       }
     },
   },
+  mounted() {
+    this.Init();
+  },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
+    async Init() {
+      await this.GetUserPwdApi();
     },
-    ChangeEditBtn() {
+    async ChangeEditBtn() {
       if (this.notEdit === true) {
         this.notEdit = false;
-      } else this.notEdit = true;
+      } else {
+        this.notEdit = true;
+        await this.GetUserNameApi();
+      }
     },
     OpenPhone(val) {
       this.openPhone = val;
     },
-    GetVerify(val) {
+    GetVerify(val, otpId) {
       this.getVerify = val;
+
+      this.getOptId = otpId;
       this.openPhone = false;
     },
     VerifyDone() {
       this.getVerify = false;
+      this.ChangeEditBtn();
+      this.getInit = true;
     },
     OpenPassword(val) {
       this.openPassword = val;
     },
-    DonePassword() {
+    DonePassword(val) {
       this.openPassword = false;
-      this.notEdit = true;
-      // this.ChangeEditBtn()
+      this.dataPwd = val
+      
+      this.ChangeEditBtn();
+      this.getInit = true;
+    },
+    EditName(val) {
+      this.editName = val;
+    },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+    //API ------------
+    async GetUserPwdApi() {
+      const email = this.GetCookieValue("email");
+      this.uid = this.GetCookieValue("id");
+      const response = await LoginApi(email);
+      this.editName = response.uname;
+      this.dataPwd = response.pwd;
+      this.dataEmail = response.email;
+    },
+
+    // API----------
+    async GetUserNameApi() {
+
+      const response = await EditUserApi(
+        this.uid,
+        this.editName,
+        this.dataEmail,
+        this.dataPwd
+      );
+      if (response.data.status === "success") {
+        this.$message.success("變更成功");
+      }
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
+  
+  <style lang="scss" scoped>
 // 排版
 #StaffProfile {
   background-color: white;
@@ -151,8 +217,14 @@ export default {
     padding: 0 10px;
     border: 3px solid #68b000;
   }
-}
-.html {
-  background-color: rgb(255, 0, 0) !important;
+  @media (min-width: 769px) {
+    .user-area {
+      padding-top: 7%;
+    }
+    .btn-content {
+      bottom: 18%;
+    }
+  }
 }
 </style>
+  

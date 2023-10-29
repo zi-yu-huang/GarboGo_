@@ -31,24 +31,8 @@ export default {
   },
   mounted() {
     this.Init();
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
   },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
     async Init() {
       this.uemail = this.GetCookieValue("email");
       const response = await this.GetLoginApi();

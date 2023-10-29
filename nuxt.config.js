@@ -38,7 +38,8 @@ css: [
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/antd-ui',
-    '~/plugins/vue2-google-maps.js'
+    '~/plugins/vue2-google-maps.js',
+    '@/plugins/moments'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

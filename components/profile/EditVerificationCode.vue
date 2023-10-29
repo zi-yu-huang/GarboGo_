@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     async Init() {
-      console.log(this.getOptId);
       await this.GetOtpTextApi(this.getOptId);
     },
     OnSubmit() {
@@ -99,7 +98,6 @@ export default {
 
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            console.log(this.memberForm.verificationCode);
             this.memberForm.verificationCode = "";
             this.$emit("verifyDone", true);
           }
@@ -146,12 +144,10 @@ export default {
     async GetOtpTextApi(otpId) {
       const response = await OtpTextApi(otpId);
       this.otpText = response
-      console.log(response);
     },
     async GetSendEmailApi(){
       const uemail = this.GetCookieValue("email")
       const response = await SendEmailApi(uemail);
-      console.log(response.data.message)
       
       return response.data.message      
 

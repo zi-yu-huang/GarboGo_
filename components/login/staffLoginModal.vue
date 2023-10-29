@@ -6,47 +6,62 @@
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-            placeholder="abcd@gmail.com",
-            v-model="memberForm.memberEmail",
-        )      
+          placeholder="abcd@gmail.com",
+          v-model="memberForm.memberEmail"
+        ) 
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
-            type="password"
-            placeholder="請輸入密碼",
-            v-model="memberForm.memberPassword",
-            :maxLength="9"
+          type="password",
+          placeholder="請輸入密碼",
+          v-model="memberForm.memberPassword",
+          :maxLength="9"
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
 </template>
 
 <script>
+import { LoginApi } from "../../services/login";
 export default {
   name: "StaffLoginModal",
-  data () {
+  data() {
     return {
       memberForm: {
-        memberPassword: "",
-        memberEmail: "",
+        memberPassword: "8S5D1",
+        memberEmail: "kevin0008@gmail.com",
       },
       rules: {
         memberPassword: [{ required: true, message: "不可為空" }],
         memberEmail: [
           { required: true, message: "不可為空" },
-          {type: 'email',message: '請輸入有效的信箱'}
+          { type: "email", message: "請輸入有效的信箱" },
         ],
       },
     };
   },
   methods: {
-    OnSubmit() {
+    async OnSubmit() {
+      const response = await this.GetLoginApi(this.memberForm.memberEmail);
+      
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.memberForm.memberPassword = "";
-          this.memberForm.memberEmail = "";
-          this.$router.push('/staff/profile')
+          if (response.pwd == this.memberForm.memberPassword && response.isCleaner==1) {
+            this.memberForm.memberPassword = "";
+            this.memberForm.memberEmail = "";
+            this.$router.push("/staff/profile");
+          }else {
+            this.$message.error("密碼或帳號錯誤");
+          }
         }
       });
+    },
+
+    //API-------
+    async GetLoginApi(uemail) {
+      const response = await LoginApi(uemail);
+      document.cookie = `email=${response.email}`;
+      document.cookie = `id=${response.uid}`;
+      return response;
     },
   },
 };
@@ -88,11 +103,11 @@ export default {
     border-radius: 14px;
     height: 45px;
   }
-  .input-font{
+  .input-font {
     height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
-}
+  }
 }
 </style>

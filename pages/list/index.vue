@@ -22,26 +22,7 @@ export default {
       
     };
   },
-  mounted() {
-
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
-  },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
   },
 };
 </script>

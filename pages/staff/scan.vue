@@ -34,25 +34,7 @@ export default {
       error: "", //錯誤訊息
     };
   },
-  mounted() {
-    this.MountedActivated();
-  },
-  activated() {
-    this.MountedActivated();
-  },
-  deactivated() {
-    this.DeactivatedDestory();
-  },
-  beforeDestroy() {
-    this.DeactivatedDestory();
-  },
   methods: {
-    MountedActivated: debounce(function () {
-      // init
-    }, 10),
-    DeactivatedDestory() {
-      // destory
-    },
     OnDecode(result) {
       if (result==='https://1x.antdv.com/components/alert-cn/') {
         this.sucess = true;

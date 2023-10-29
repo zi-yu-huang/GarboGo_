@@ -89,9 +89,8 @@ export default {
       this.$refs.ruleForm.validate(async (valid) => {
         if (this.dataPwd === this.memberForm.oldPassword) {
           if (valid) {
-            console.log("1111")
-            await this.GetEditUserPwdApi();
-            this.$emit("donePassword", true);
+            // await this.GetEditUserPwdApi();
+            this.$emit("donePassword",this.memberForm.newPassword);
             this.memberForm.newPassword=""
             this.memberForm.newPasswordAgain=""
             this.memberForm.oldPassword=""
@@ -120,13 +119,11 @@ export default {
       const email = this.GetCookieValue("email");
       this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
-      console.log(this.uid)
       this.dataPwd = response.pwd;
       this.dataUname = response.uname;
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
-      console.log(this.uid)
       
       const response = await EditUserApi(
         this.uid,

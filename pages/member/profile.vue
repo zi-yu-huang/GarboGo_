@@ -102,7 +102,6 @@ export default {
     },
     GetVerify(val, otpId) {
       this.getVerify = val;
-      console.log(otpId);
 
       this.getOptId = otpId;
       this.openPhone = false;
@@ -149,8 +148,6 @@ export default {
 
     // API----------
     async GetUserNameApi() {
-      console.log(this.editName)
-      
       const response = await EditUserApi(
         this.uid,
         this.editName,

@@ -64,11 +64,9 @@ export default {
   },
   computed:{
     initialized(){
-      console.log("fdjls")
       
       if(this.getInit ===true){
         this.Init();
-        console.log("tjsdl")
         
       }
     }

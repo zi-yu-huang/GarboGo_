@@ -31,10 +31,8 @@ export default {
     },
     //API--------
     async GetOpenTrashApi(stuts){
-      console.log(stuts)
       
       const res = await OpenTrashApi(stuts);
-      console.log(res)
       
     }
   },

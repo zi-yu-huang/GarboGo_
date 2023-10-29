@@ -47,7 +47,6 @@ export default {
   computed:{
     isShowChange(){
       const date= new Date().toISOString().substring(0, 7)
-      console.log(date)
       if(this.title !== date){
         return true
       }
@@ -56,11 +55,9 @@ export default {
   },
   methods: {
     onPanelChange(value, mode) {
-      console.log(value, mode);
     },
     InfoOpen() {
       this.visible = true;
-      console.log(this.visible);
     },
     InfoClose() {
       this.visible = false;

@@ -119,13 +119,11 @@ export default {
       const email = this.GetCookieValue("email");
       this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
-      console.log(this.uid)
       this.dataPwd = response.pwd;
       this.dataUname = response.uname;
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
-      console.log(this.uid)
       
       const response = await EditUserApi(
         this.uid,

@@ -41,18 +41,16 @@ export default {
   },
   methods: {
     async OnSubmit() {
-      const pwd = await this.GetLoginApi(this.memberForm.memberEmail);
-      console.log(pwd)
+      const response = await this.GetLoginApi(this.memberForm.memberEmail);
       
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          if (pwd == this.memberForm.memberPassword) {
-            console.log("sucess");
+          if (response.pwd == this.memberForm.memberPassword && response.isCleaner==1) {
             this.memberForm.memberPassword = "";
             this.memberForm.memberEmail = "";
             this.$router.push("/staff/profile");
           }else {
-            this.$message.error("密碼錯誤");
+            this.$message.error("密碼或帳號錯誤");
           }
         }
       });
@@ -63,7 +61,7 @@ export default {
       const response = await LoginApi(uemail);
       document.cookie = `email=${response.email}`;
       document.cookie = `id=${response.uid}`;
-      return response.pwd;
+      return response;
     },
   },
 };

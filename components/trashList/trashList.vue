@@ -75,7 +75,6 @@ export default {
 
       for (let i = 0; i < this.likeList.length; i++) {
         const streets = this.likeList[i].streets;
-        console.log(streets)
       for (let j = 0; j < streets.length; j++) {
       if (streets[j].tplace === changeToLike.tplace) {
         streets[j].isLike = changeToLike.isLike;

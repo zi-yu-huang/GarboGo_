@@ -44,15 +44,14 @@ const columns = [
   },
 ];
 
-
 export default {
   name: "StaffList",
   data() {
     return {
       columns,
       list: [],
-      title: '',
-      originList:{}
+      title: "",
+      originList: {},
     };
   },
 
@@ -85,11 +84,11 @@ export default {
       this.EditList();
     },
     EditList() {
-      for(const item in this.originList){
-        this.title = item
-        console.log(this.originList[item])
-        this.list = this.originList[item]
-        
+      for (const item in this.originList) {
+        this.list = this.originList[item];
+        for (const index of this.originList[item]) {
+          this.title = index.region;
+        }
       }
     },
     rowClassName(record, index) {
@@ -99,7 +98,7 @@ export default {
 
     // API---------
     async GetStaffList() {
-      // const response = await StaffList("JohnCena01");
+      const response = await StaffList("JohnCena01");
       this.originList = response.data;
     },
   },
@@ -120,5 +119,10 @@ export default {
 }
 // 元件
 #StaffList {
+}
+::v-deep .ant-table-title {
+  font-family: Inter;
+  font-size: 20px !important;
+  font-weight: 800;
 }
 </style>

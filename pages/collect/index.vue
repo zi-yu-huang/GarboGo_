@@ -7,7 +7,8 @@
     aTabs.tabs-area(type="card", @change="callback")
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
-          CA
+          div(v-for="item of dateList")
+            CA(:selectedDate="item.title", :dateList="item.list",:isShowChange="item.isShowChange")
       aTabPane(key="2", tab="兌換卷")
         PointCard
 </template>
@@ -20,13 +21,17 @@ export default {
   components: {
     CollectTable: () => import("@/components/collect/collectTable"),
     PointCard: () => import("@/components/collect/pointCard"),
-    CA:()=>import("@/components/collect/ca")
+    CA: () => import("@/components/collect/ca"),
   },
   name: "CollectIndex",
   data() {
     return {
       point: 0,
       card: 0,
+      dateList: [
+        { title: "2023-09", list: ["2023-09-02", "2023-09-05", "2023-09-08"],isShowChange:true },
+        { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:false },
+      ],
       lastPoint: 0,
       exchange_ticket: 0,
       userPointList: [],
@@ -140,9 +145,9 @@ export default {
     line-height: 42px;
     letter-spacing: 0em;
   }
-  .calendar-area {
-    background-color: white;
-  }
+  // .calendar-area {
+  //   background-color: white;
+  // }
   @media (min-width: 769px) {
     .table-area {
       width: 400px;
@@ -158,6 +163,10 @@ export default {
       justify-items: center;
       justify-content: center;
     }
+  }
+  .cal-area{
+    margin: 20px 20px;
+    border-radius: 10px;
   }
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {

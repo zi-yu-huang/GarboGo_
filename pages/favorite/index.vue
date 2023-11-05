@@ -33,7 +33,7 @@ export default {
 
   .article {
     //TODO
-    height: 100vh;
+    height: 90vh;
     padding: 40px 30px 90px 30px;
     text-align: center;
     display: flex;
@@ -65,7 +65,7 @@ export default {
     display: flex;
     justify-content: center;
     .article {
-      height: 100vh;
+      height: 90vh;
       padding: 40px 30px 120px 30px;
       width: 900px;
     }

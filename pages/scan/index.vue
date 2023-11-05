@@ -96,13 +96,13 @@ export default {
   }
   .saoma {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .camera-mask {
-    z-index: 999;
+    z-index: 998;
     position: absolute;
     height: 300px;
     width: 300px;
@@ -110,7 +110,7 @@ export default {
       57% 75%,
       transparent 0px,
       transparent 100%,
-      white 100%
+      rgb(0, 0, 0) 100%
     );
     border-image-slice: 1;
     border-width: 10px;

@@ -10,7 +10,8 @@
           div(v-for="item of dateList")
             CA(:selectedDate="item.title", :dateList="item.list",:isShowChange="item.isShowChange")
       aTabPane(key="2", tab="兌換卷")
-        PointCard
+        .point-area
+          PointCard
 </template>
 
 <script>
@@ -106,7 +107,7 @@ export default {
 // 排版
 #CollectIndex {
   background-color: rgba(170, 216, 105, 0.8);
-  // height: 100vh;
+  height: 90vh;
   height: fill;
   .article {
     padding: 40px 0px 0px 0px;
@@ -134,6 +135,11 @@ export default {
       letter-spacing: 0em;
       text-align: left;
     }
+  }
+  .point-area{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 // 元件
@@ -179,5 +185,14 @@ export default {
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
   width: 120%;
+}
+::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value{
+  color: rgba(0, 0, 0, 0.65);
+  background: white;
+}
+
+::v-deep .ant-tabs .ant-tabs-top-content, .ant-tabs .ant-tabs-bottom-content {
+  margin-bottom: 110px;
+  background-color: #a1cd7b;
 }
 </style>

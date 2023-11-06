@@ -67,6 +67,18 @@ export default {
       
     }
   },
+  //TODO
+  // mounted() {
+  //   $(document).click((event) => {
+  //     if (this.visible === true) {
+  //       const target = $(event.target);
+  //       const menuIcon = $(".bg-area");
+  //       if (!target.closest(menuIcon).length) {
+  //         this.visible = false;
+  //       }
+  //     }
+  //   });
+  // },
   methods: {
     onPanelChange(value, mode) {
     },

@@ -14,6 +14,7 @@
   // ------------------------------------
 
   .goback-area 
+    |
     aIcon(v-if="goBack", type="swap-left", @click="GoBack")
   .menu-article
     .icon-type(:style="styleComputed")
@@ -22,7 +23,7 @@
       .content-area
         aIcon.icon-content(type="user", @click="MenuToUser")
         aIcon.icon-content(type="gift", @click="MenuToGift")
-        aIcon.icon-content(type="setting", @click="MenuToSetting")
+        img.img-content(src="~static/Logo_GarboGo_line2.png", alt="logo" @click="MenuToAbout")
 </template>
 
 <script>
@@ -75,30 +76,26 @@ export default {
       //     });
       //   }
       // });
-
     },
     MenuToUser() {
-      const uemail = this.GetCookieValue("email")
-      if(uemail){        
-        this.$router.push("/member/profile")
-      }
-      else{
+      const uemail = this.GetCookieValue("email");
+      if (uemail) {
+        this.$router.push("/member/profile");
+      } else {
         this.$router.push("/member");
       }
     },
     MenuToGift() {
-      const uemail = this.GetCookieValue("email")
-      if(uemail){
+      const uemail = this.GetCookieValue("email");
+      if (uemail) {
         this.$router.push("/collect");
-      }
-      else this.$router.push("/member");
+      } else this.$router.push("/member");
     },
-    MenuToSetting() {
-      const uemail = this.GetCookieValue("email")
-      if(uemail){
+    MenuToAbout() {
+      const uemail = this.GetCookieValue("email");
+      if (uemail) {
         this.$router.push("/setting");
-      }
-      else this.$router.push("/member");
+      } else this.$router.push("/member");
     },
     GoBack() {
       this.$router.go(-1);
@@ -111,7 +108,7 @@ export default {
           return decodeURIComponent(cookie.substring(cookieName.length + 1));
         }
       }
-      
+
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
   },
@@ -167,6 +164,10 @@ export default {
     .icon-content {
       font-size: 33px;
       margin: 20px 0 20px 0;
+    }
+    .img-content {
+      width: 35px;
+      margin: 20px 0 25px 9px;
     }
   }
 }

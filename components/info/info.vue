@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#InfoComponents(v-if="visible")
+#InfoComponents(v-if="visible" )
   .bg-area
     div
       div.title-area {{ "獎勵機制說明" }}

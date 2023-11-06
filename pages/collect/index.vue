@@ -7,9 +7,11 @@
     aTabs.tabs-area(type="card", @change="callback")
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
-          CA
+          div(v-for="item of dateList")
+            CA(:selectedDate="item.title", :dateList="item.list",:isShowChange="item.isShowChange")
       aTabPane(key="2", tab="兌換卷")
-        PointCard
+        .point-area
+          PointCard
 </template>
 
 <script>
@@ -20,13 +22,17 @@ export default {
   components: {
     CollectTable: () => import("@/components/collect/collectTable"),
     PointCard: () => import("@/components/collect/pointCard"),
-    CA:()=>import("@/components/collect/ca")
+    CA: () => import("@/components/collect/ca"),
   },
   name: "CollectIndex",
   data() {
     return {
       point: 0,
       card: 0,
+      dateList: [
+        { title: "2023-09", list: ["2023-09-02", "2023-09-05", "2023-09-08"],isShowChange:true },
+        { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:false },
+      ],
       lastPoint: 0,
       exchange_ticket: 0,
       userPointList: [],
@@ -101,7 +107,7 @@ export default {
 // 排版
 #CollectIndex {
   background-color: rgba(170, 216, 105, 0.8);
-  // height: 100vh;
+  height: 90vh;
   height: fill;
   .article {
     padding: 40px 0px 0px 0px;
@@ -130,6 +136,11 @@ export default {
       text-align: left;
     }
   }
+  .point-area{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 }
 // 元件
 #CollectIndex {
@@ -140,9 +151,9 @@ export default {
     line-height: 42px;
     letter-spacing: 0em;
   }
-  .calendar-area {
-    background-color: white;
-  }
+  // .calendar-area {
+  //   background-color: white;
+  // }
   @media (min-width: 769px) {
     .table-area {
       width: 400px;
@@ -159,6 +170,10 @@ export default {
       justify-content: center;
     }
   }
+  .cal-area{
+    margin: 20px 20px;
+    border-radius: 10px;
+  }
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
   height: 60px;
@@ -170,5 +185,14 @@ export default {
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
   width: 120%;
+}
+::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value{
+  color: rgba(0, 0, 0, 0.65);
+  background: white;
+}
+
+::v-deep .ant-tabs .ant-tabs-top-content, .ant-tabs .ant-tabs-bottom-content {
+  margin-bottom: 110px;
+  background-color: #a1cd7b;
 }
 </style>

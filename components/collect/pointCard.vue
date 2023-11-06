@@ -45,7 +45,7 @@ export default {
   <style lang="scss" scoped>
 #PointCard {
   .coupon {
-    width: 300px;
+    width: 350px;
     height: 100px;
     text-align: center;
     position: relative;
@@ -118,8 +118,8 @@ export default {
   }
   img {
     // background-color: rgba(170, 216, 105, 0.4);
-    height: 60px;
-    width: 60px;
+    height: 70px;
+    width: 70px;
     border-radius: 100%;
     padding: 6px;
     text-align: center;

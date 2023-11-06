@@ -1,7 +1,7 @@
 <template lang="pug">
 #CA
   //- aIcon.icon-area(type="info-circle", @click="InfoOpen")
-  div(style="border: 1px solid #d9d9d9; border-radius: 4px")
+  div(style="border: 1px solid #d9d9d9; border-radius: 14px")
     a-calendar(
       :fullscreen="false",
       :header-render="headerRender",
@@ -14,8 +14,8 @@
         )
           div(
             style="margin-bottom: '10px'; text-align: center; padding-left: 35px"
-          ) {{ title }}
-          aIcon(style="font-size: 10px", type="info-circle", @click="InfoOpen")
+          ) {{ selectedDate }}
+          aIcon(style="font-size: 22px", type="info-circle", @click="InfoOpen")
       .events(slot="dateCellRender", slot-scope="value")
         template(v-for="(item, index) in getListData(value)")
           span.restCls(:key="index")
@@ -35,24 +35,50 @@ export default {
     InfoComponents: () => import("@/components/info/info"),
     CollectModal:()=>import("@/components/modal/collectModal.vue")
   },
+  props:{
+    selectedDate:{
+      type:String,
+      default:""
+    },
+    dateList:{
+      type:String,
+      default:""
+    },
+    isShowChange:{
+      type:Boolean,
+      default:""
+    }
+  },
   data() {
     return {
       visibleModal: false,
       visible: false,
-      title: "2023-10",
-      selectedDate: "2023-09",
-      list: ["2023-10-02", "2023-10-05", "2023-10-08"],
+      // title: "2023-10",
+      // selectedDate: "2023-09",
+      // dateList: ["2023-10-02", "2023-10-05", "2023-10-08"],
     };
   },
   computed:{
-    isShowChange(){
+    isShowChange(){      
       const date= new Date().toISOString().substring(0, 7)
-      if(this.title !== date){
+      if(this.selectedDate !== date){
         return true
       }
       
     }
   },
+  //TODO
+  // mounted() {
+  //   $(document).click((event) => {
+  //     if (this.visible === true) {
+  //       const target = $(event.target);
+  //       const menuIcon = $(".bg-area");
+  //       if (!target.closest(menuIcon).length) {
+  //         this.visible = false;
+  //       }
+  //     }
+  //   });
+  // },
   methods: {
     onPanelChange(value, mode) {
     },
@@ -64,7 +90,7 @@ export default {
     },
     getListData(value) {
       let listData;
-      for (const item of this.list) {
+      for (const item of this.dateList) {
         if (new Date(value).toISOString().substring(0, 10) === item) {
           listData = [{ content: "" }];
           break;
@@ -95,6 +121,9 @@ export default {
 }
 // 元件
 #CA {
+  background: #ffffff;
+  border-radius: 14px;
+  margin: 10px 20px;
   .restCls {
     position: relative;
     top: -10px;
@@ -103,6 +132,9 @@ export default {
     display: inline-block;
     left: 0px;
     border: 2px solid #f1705e;
+    border-radius: 100px;
+    background: #f1705e ;
+    opacity: 70%;
   }
   .btn-area {
     width: 100%;
@@ -115,6 +147,7 @@ export default {
     line-height: 19px;
     letter-spacing: 0em;
     text-align: center;
+    border-radius: 0 0 14px 14px;
   }
 }
 </style>

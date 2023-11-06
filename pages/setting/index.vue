@@ -3,102 +3,38 @@
 #SettingIndex
   .background
     .article
-      .title-size {{ "設定" }}
+      .title-size {{ "關於我們" }}
       .setting-area
-        .setting-content
-          .text-area {{ "垃圾桶清空通知" }}
-          aSwitch.text-area(v-model="CleanAlert", @change="OnChangeClean")
-          .text-area {{ "垃圾車到點通知" }}
-          aSwitch.text-area(v-model="ArriveAlert", @change="OnChangeArrive")
+        .title-content
+          div {{ "GarboGo" }}
+        .text-content
+          div {{ "指導老師：" }}
+          div {{ "周殷菀" }}
+          div {{ "組員名單：" }}
+          div {{ "陳宣宇" }}
+          div {{ "" }}
+          div {{ "黃子瑜" }}
+          div {{ "" }}
+          div {{ "劉靜緹" }}
+          div {{ "" }}
+          div {{ "戴彣昕" }}
+        .detail-content
+          div {{ "專題簡介" }}
+          div {{ "GarboGo以提高垃圾管理效率和環境衛生水平追目標，此系統通過感應器和網頁技術提供垃圾桶狀態的即時監測和通知服務，為社區居民提供更便捷的垃圾處理方式。" }}
+        .slogan-content 
+          div {{ "垃圾隨心丟，無需快走跑" }}
+          div.width-area {{ "Dump the trash, No more dash." }}
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-import { SettingApi } from "../../services/setting";
-import { LoginApi } from "../../services/login";
 export default {
   layout: "default",
   components: {},
   name: "SettingIndex",
   data() {
-    return {
-      uemail: "",
-      CleanAlert: 0,
-      ArriveAlert: 0,
-      clean:null,
-      arrive:null
-    };
+    return {};
   },
-  mounted() {
-    this.Init();
-  },
-  methods: {
-    async Init() {
-      this.uemail = this.GetCookieValue("email");
-      const response = await this.GetLoginApi();
-      if (response.CleanAlert === 0) {
-        this.CleanAlert = false;
-      }
-      if (response.CleanAlert === 1) {
-        this.CleanAlert = true;
-      }
-      if (response.ArriveAlert === 0) {
-        this.ArriveAlert = false;
-      }
-      if (response.ArriveAlert === 1) {
-        this.ArriveAlert = true;
-      }
-    },
-    async OnChangeClean(val) {
-      if (val === true) {
-        this.clean = 1;
-      } else {
-        this.clean = 0;
-      }
-      if (this.ArriveAlert === false) {
-        this.arrive = 0;
-      }
-      if (this.ArriveAlert === true) {
-        this.arrive = 1;
-      }
-
-      const response = await this.GetSettingApi(this.uemail, this.clean, this.arrive);
-    },
-    async OnChangeArrive(val) {
-      if (val === true) {
-        this.arrive = 1;
-      } else {
-        this.arrive = 0;
-      }
-      if (this.CleanAlert === false) {
-        this.clean = 0;
-      }
-      if (this.CleanAlert === true) {
-        this.clean = 1;
-      }
-
-      const response = await this.GetSettingApi(this.uemail, this.clean, this.arrive);
-    },
-    GetCookieValue(cookieName) {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.startsWith(`${cookieName}=`)) {
-          return decodeURIComponent(cookie.substring(cookieName.length + 1));
-        }
-      }
-      return null; // 如果找不到对应的 Cookie，则返回 null
-    },
-    //API-----------
-    async GetSettingApi(email, clean, arrive) {
-      const response = await SettingApi(email, clean, arrive);
-      return response;
-    },
-    async GetLoginApi() {
-      const response = await LoginApi(this.uemail);
-      return response;
-    },
-  },
+  mounted() {},
 };
 </script>
 
@@ -120,17 +56,51 @@ export default {
       margin: 30px 0px;
       width: 100%;
       border-radius: 15px;
-      .setting-content {
-        padding: 50px 40px;
+      padding: 25px 40px;
+      .title-content {
+        font-family: Inter;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 35px;
+        letter-spacing: 0em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .text-content {
+        display: grid;
+        grid-template-columns: 100px 100px;
         font-family: Inter;
         font-size: 20px;
         font-weight: 500;
-        line-height: 24px;
+        line-height: 30px;
+        letter-spacing: 0em;
+        justify-content: left;
+      }
+      .detail-content {
+        font-family: Inter;
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 30px;
         letter-spacing: 0em;
         text-align: left;
+        margin-top: 15px;
+      }
+      .slogan-content {
+        font-family: Inter;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 35px;
+        letter-spacing: 0em;
+        text-align: center;
+        margin-top: 40px;
+        color: rgba(82, 140, 0, 1);
 
-        display: grid;
-        grid-template-columns: 1fr 0fr;
+        .width-area{
+          font-size: 18px;
+
+                  // width: max-content;
+
+        }
       }
     }
   }
@@ -143,9 +113,6 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
-  }
-  .text-area {
-    margin: 9px 0px;
   }
   .ant-switch {
     background-color: rgba(255, 217, 217, 0.77) !important;

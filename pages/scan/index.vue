@@ -35,7 +35,9 @@ export default {
   },
   methods: {
     OnDecode(result) {
-      if (result==='https://1x.antdv.com/components/alert-cn/') {
+      console.log(result)
+      
+      if (result==='https://key-skink-urgently.ngrok-free.app/scan/openTrashcan') {
         this.sucess = true;
 
         setTimeout(() => {

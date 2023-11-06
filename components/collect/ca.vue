@@ -33,21 +33,21 @@ export default {
   name: "CA",
   components: {
     InfoComponents: () => import("@/components/info/info"),
-    CollectModal:()=>import("@/components/modal/collectModal.vue")
+    CollectModal: () => import("@/components/modal/collectModal.vue"),
   },
-  props:{
-    selectedDate:{
-      type:String,
-      default:""
+  props: {
+    selectedDate: {
+      type: String,
+      default: "",
     },
-    dateList:{
-      type:String,
-      default:""
+    dateList: {
+      type: String,
+      default: "",
     },
-    isShowChange:{
-      type:Boolean,
-      default:""
-    }
+    isShowChange: {
+      type: Boolean,
+      default: "",
+    },
   },
   data() {
     return {
@@ -58,30 +58,17 @@ export default {
       // dateList: ["2023-10-02", "2023-10-05", "2023-10-08"],
     };
   },
-  computed:{
-    isShowChange(){      
-      const date= new Date().toISOString().substring(0, 7)
-      if(this.selectedDate !== date){
-        return true
+  computed: {
+    isShowChange() {
+      const date = new Date().toISOString().substring(0, 7);
+      if (this.selectedDate !== date) {
+        return true;
       }
-      
-    }
-  },
-  //TODO
-  // mounted() {
-  //   $(document).click((event) => {
-  //     if (this.visible === true) {
-  //       const target = $(event.target);
-  //       const menuIcon = $(".bg-area");
-  //       if (!target.closest(menuIcon).length) {
-  //         this.visible = false;
-  //       }
-  //     }
-  //   });
-  // },
-  methods: {
-    onPanelChange(value, mode) {
     },
+  },
+  
+  methods: {
+    onPanelChange(value, mode) {},
     InfoOpen() {
       this.visible = true;
     },
@@ -99,8 +86,8 @@ export default {
 
       return listData || [];
     },
-    ChangeCard(){
-      this.visibleModal=true
+    ChangeCard() {
+      this.visibleModal = true;
     },
     CloseModal() {
       this.visibleModal = false;
@@ -133,7 +120,7 @@ export default {
     left: 0px;
     border: 2px solid #f1705e;
     border-radius: 100px;
-    background: #f1705e ;
+    background: #f1705e;
     opacity: 70%;
   }
   .btn-area {

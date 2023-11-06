@@ -44,7 +44,7 @@ export default {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
     //TODO
-    height: 100vh;
+    height: 90vh;
     padding: 40px 30px 80px 30px;
     // height: 100vh;
     text-align: center;

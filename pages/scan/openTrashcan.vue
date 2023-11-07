@@ -6,8 +6,8 @@
       .mic-area
       .phone-text {{ "垃圾桶遙控器" }}
       .btn-area
-        .open-btn(@click="OpenBtn") {{ "開啟" }}
-        .close-btn(@click="CloseBtn") {{ "關閉" }}
+        .open-btn(@click="OpenBtn" :style="{background:openColor}") {{ "開啟" }}
+        .close-btn(@click="CloseBtn"  :style="{background:closeColor}") {{ "關閉" }}
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
 </template>
@@ -18,19 +18,24 @@ export default {
   name: "OpenTrashcan",
   layout: "default",
   data() {
-    return {};
+    return {
+      openColor:"rgb(134 215 18)",
+      closeColor:"rgb(234 207 207)"
+    };
   },
   methods: {
     async OpenBtn() {
-      // 在 Vue.js 组件或普通的 JavaScript 中
+      this.openColor="rgb(205 231 169)"
+      this.closeColor="#e32e2e"
       await this.GetOpenTrashApi("open")
     },
     async CloseBtn() {
+      this.openColor="rgb(134 215 18)"
+      this.closeColor="rgb(234 207 207)"
       await this.GetOpenTrashApi("close")
     },
     //API--------
     async GetOpenTrashApi(stuts){
-      
       const res = await OpenTrashApi(stuts,0);
       
     }
@@ -44,7 +49,7 @@ export default {
   .sucess-mask {
     z-index: 999;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -53,7 +58,7 @@ export default {
   .phone-area {
     background-color: #d4d4d4;
     width: 90%;
-    height: 70%;
+    height: 75%;
     border-radius: 55px;
     display: flex;
     justify-content: flex-start;
@@ -87,7 +92,7 @@ export default {
     .open-btn {
       width: 80%;
       height: 150px;
-      background-color: #8cba4a;
+      // background-color: #8cba4a;
       border-radius: 19px;
       color: #ffffff;
       font-size: 30px;
@@ -100,7 +105,8 @@ export default {
     .close-btn {
       width: 80%;
       height: 150px;
-      background-color: #e32e2e;
+      // background-color: #d4d4d4;
+      // background-color: #e32e2e;
       border-radius: 19px;
       color: #ffffff;
       font-size: 30px;

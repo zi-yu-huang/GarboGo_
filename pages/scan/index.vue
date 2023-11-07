@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
 import { QrcodeStream } from "vue-qrcode-reader";
 export default {
   layout:'default',

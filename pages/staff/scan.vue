@@ -16,10 +16,9 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
 import { QrcodeStream } from "vue-qrcode-reader";
 export default {
-  layout:'staff',
+  layout: "staff",
   components: {
     QrcodeStream,
     MenuList: () => import("@/components/footer/menuList"),
@@ -36,11 +35,21 @@ export default {
   },
   methods: {
     OnDecode(result) {
-      if (result==='https://1x.antdv.com/components/alert-cn/') {
+      if (
+        result === "https://key-skink-urgently.ngrok-free.app/scan/openTrashcan"
+      ) {
         this.sucess = true;
-        
+
+        setTimeout(() => {
+          this.$router.push("staff/staffOpenTrashcan");
+        }, 1000);
+
         this.result = result;
+      } else {
         this.isError = true;
+        setTimeout(() => {
+          this.isError = false;
+        }, 1000);
       }
 
       // window.location.href=this.result
@@ -158,7 +167,7 @@ export default {
     display: flex;
   }
 }
-// .ant-alert-with-description 
+// .ant-alert-with-description
 .ant-alert-message {
   color: #d30606 !important;
 }

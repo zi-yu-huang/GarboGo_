@@ -18,7 +18,7 @@
           aIcon(style="font-size: 22px", type="info-circle", @click="InfoOpen")
       .events(slot="dateCellRender", slot-scope="value")
         template(v-for="(item, index) in getListData(value)")
-          span.restCls(:key="index")
+          span.restCls
     .btn-area(v-if="isShowChange")
       aButton.btn-area(@click="ChangeCard") {{ "快給我兌換卷！" }}
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
@@ -77,13 +77,15 @@ export default {
     },
     getListData(value) {
       let listData;
+      // if()
       for (const item of this.dateList) {
         if (new Date(value).toISOString().substring(0, 10) === item) {
-          listData = [{ content: "" }];
-          break;
+          
+          // listData = [{ content: "" }];   
+          console.log(listData)
+          // break;
         }
       }
-
       return listData || [];
     },
     ChangeCard() {

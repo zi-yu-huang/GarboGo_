@@ -6,8 +6,8 @@
       .mic-area
       .phone-text {{ "垃圾桶遙控器" }}
       .btn-area
-        .open-btn(@click="OpenBtn" :style="{background:openColor}") {{ "開啟" }}
-        .close-btn(@click="CloseBtn"  :style="{background:closeColor}") {{ "關閉" }}
+        .open-btn(@click="OpenBtn", :style="{ background: openColor }") {{ "開啟" }}
+        .close-btn(@click="CloseBtn", :style="{ background: closeColor }") {{ "關閉" }}
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
 </template>
@@ -19,26 +19,25 @@ export default {
   layout: "default",
   data() {
     return {
-      openColor:"rgb(134 215 18)",
-      closeColor:"rgb(234 207 207)"
+      openColor: "rgb(134 215 18)",
+      closeColor: "rgb(234 207 207)",
     };
   },
   methods: {
     async OpenBtn() {
-      this.openColor="rgb(205 231 169)"
-      this.closeColor="#e32e2e"
-      await this.GetOpenTrashApi("open")
+      this.openColor = "rgb(205 231 169)";
+      this.closeColor = "#e32e2e";
+      await this.GetOpenTrashApi("open");
     },
     async CloseBtn() {
-      this.openColor="rgb(134 215 18)"
-      this.closeColor="rgb(234 207 207)"
-      await this.GetOpenTrashApi("close")
+      this.openColor = "rgb(134 215 18)";
+      this.closeColor = "rgb(234 207 207)";
+      await this.GetOpenTrashApi("close");
     },
     //API--------
-    async GetOpenTrashApi(stuts){
-      const res = await OpenTrashApi(stuts,0);
-      
-    }
+    async GetOpenTrashApi(stuts) {
+      const res = await OpenTrashApi(stuts, 0);
+    },
   },
 };
 </script>
@@ -77,7 +76,7 @@ export default {
     font-size: 30px;
     font-weight: 800;
     color: #ffffff;
-    padding: 30px 0;
+    padding: 10px 0;
   }
   .btn-area {
     background-color: #ffffff;
@@ -88,26 +87,29 @@ export default {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    // gap: 24px;
     .open-btn {
-      width: 80%;
+      width: 70%;
       height: 150px;
       // background-color: #8cba4a;
-      border-radius: 19px;
+      border-radius: 14px;
       color: #ffffff;
       font-size: 30px;
       /* text-align: center; */
       align-items: center;
       display: flex;
+      margin: 10px 0 10px 0;
 
       justify-content: center;
     }
     .close-btn {
-      width: 80%;
+      width: 70%;
       height: 150px;
       // background-color: #d4d4d4;
       // background-color: #e32e2e;
-      border-radius: 19px;
+      border-radius: 14px;
+      margin: 10px 0 10px 0;
+
       color: #ffffff;
       font-size: 30px;
       /* text-align: center; */
@@ -119,10 +121,10 @@ export default {
   img {
     background-color: white;
     margin-top: 10px;
-    width: 75px;
-    height: 75px;
+    width: 42px;
+    height: 42px;
     border-radius: 100%;
-    padding: 10px;
+    padding: 1px;
     text-align: center;
   }
 }

@@ -41,7 +41,7 @@ export default {
         this.sucess = true;
 
         setTimeout(() => {
-          this.$router.push("staff/staffOpenTrashcan");
+          this.$router.push("/staffOpenTrashcan");
         }, 1000);
 
         this.result = result;

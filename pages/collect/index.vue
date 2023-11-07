@@ -29,8 +29,8 @@ export default {
       point: 0,
       card: 0,
       dateList: [
-        { title: "2023-09", list: ["2023-09-02", "2023-09-05", "2023-09-08"],isShowChange:true },
-        { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:false },
+        { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:true },
+        { title: "2023-11", list: ["2023-11-02", "2023-11-05", "2023-11-08"],isShowChange:false },
       ],
       lastPoint: 0,
       exchange_ticket: 0,

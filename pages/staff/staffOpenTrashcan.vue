@@ -44,7 +44,7 @@ export default {
   .sucess-mask {
     z-index: 999;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -53,7 +53,7 @@ export default {
   .phone-area {
     background-color: #d4d4d4;
     width: 90%;
-    height: 70%;
+    height: 75%;
     border-radius: 55px;
     display: flex;
     justify-content: flex-start;

@@ -1,6 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
-#OpenTrashcan
+#StaffOpenTrashcan
   .sucess-mask
     .phone-area
       .mic-area
@@ -15,7 +15,7 @@
 <script>
 import { OpenTrashApi } from "../../services/openTrash";
 export default {
-  name: "OpenTrashcan",
+  name: "StaffOpenTrashcan",
   layout: "default",
   data() {
     return {};
@@ -31,7 +31,7 @@ export default {
     //API--------
     async GetOpenTrashApi(stuts){
       
-      const res = await OpenTrashApi(stuts,0);
+      const res = await OpenTrashApi(stuts,1);
       
     }
   },
@@ -40,7 +40,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#OpenTrashcan {
+#StaffOpenTrashcan {
   .sucess-mask {
     z-index: 999;
     width: 100vw;
@@ -121,6 +121,6 @@ export default {
   }
 }
 // 元件
-#OpenTrashcan {
+#StaffOpenTrashcan {
 }
 </style>

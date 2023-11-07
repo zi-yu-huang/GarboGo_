@@ -16,7 +16,7 @@
 import { OpenTrashApi } from "../../services/openTrash";
 export default {
   name: "StaffOpenTrashcan",
-  layout: "default",
+  layout: "staff",
   data() {
     return {};
   },

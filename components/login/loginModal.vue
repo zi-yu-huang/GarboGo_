@@ -27,7 +27,7 @@ export default {
     return {
       isNotPwd: false,
       memberForm: {
-        memberPassword: "33",
+        memberPassword: "333",
         memberEmail: "22@dd.eee",
       },
       rules: {

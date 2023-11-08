@@ -12,11 +12,13 @@
           style="color: red",
           @click="OpenModal(street)"
         )
-        aIcon.icon-area(
-          type="bell",
-          theme="filled",
-          @click="OpenNotifyModal(street)"
-        )
+        aIcon.trashIcon(
+          :type="'delete'",
+          :theme="'filled'",
+          @click="ShowTrash(item.id)"
+        ) 
+        div(v-if="street.isShow") {{ "hihih" }}
+        //TODO
       a-divider
         //- aIcon.icon-area(type="heart" :theme="iconTheme" :style="{color:iconColor}" @click="OpenModal")
   LikeModal(
@@ -25,13 +27,13 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  NotifyModal(
-    :notifyVisible="notifyVisible",
-    :notifyList="notifyList",
-    @CloseNotifyModal="CloseNotifyModal",
-    @ChangeTrashClearSwitch="ChangeTrashClearSwitch",
-    @ChangeDontTrashSwitch="ChangeDontTrashSwitch"
-  )
+  //- NotifyModal(
+  //-   :notifyVisible="notifyVisible",
+  //-   :notifyList="notifyList",
+  //-   @CloseNotifyModal="CloseNotifyModal",
+  //-   @ChangeTrashClearSwitch="ChangeTrashClearSwitch",
+  //-   @ChangeDontTrashSwitch="ChangeDontTrashSwitch"
+  //- )
 </template>
 
 <script>
@@ -49,6 +51,7 @@ export default {
     return {
       notifyVisible: false,
       visible: false,
+      isShow:false,
       uid: "",
       changeToLike: {
         id: "",
@@ -81,6 +84,7 @@ export default {
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
+      this.GetAllList();
     },
     async OpenModal(street) {
       this.changeToLike.id = street.id;
@@ -88,13 +92,15 @@ export default {
       this.changeToLike.tname = street.street;
       this.visible = true;
 
-      await this.GetNewList()
+      await this.GetNewList();
     },
     CloseModal(val, like) {
       this.visible = val;
     },
+    ShowTrash(id){
+      this.isShow = !this.isShow;
+    },
     async SaveModal(visible) {
-
       // for (let i = 0; i < this.likeList.length; i++) {
       //   const streets = this.likeList[i].streets;
       //   for (let j = 0; j < streets.length; j++) {
@@ -111,72 +117,70 @@ export default {
         this.Init();
       });
     },
-    OpenNotifyModal(street) {
+    // OpenNotifyModal(street) {
+    //   this.notifyList.id = street.id;
+    //   this.notifyList.notifyDontTrash = street.notifyDontTrash;
+    //   this.notifyList.notifyTrashClear = street.notifyTrashClear;
 
-      this.notifyList.id = street.id;
-      this.notifyList.notifyDontTrash = street.notifyDontTrash;
-      this.notifyList.notifyTrashClear = street.notifyTrashClear;
+    //   this.notifyVisible = true;
+    // },
+    // CloseNotifyModal(val) {
+    //   this.notifyVisible = val;
+    // },
+    // async ChangeTrashClearSwitch(list) {
+    //   if (list.notifyTrashClear === true) {
+    //     this.notifyList.notifyTrashClear = 1;
+    //   } else this.notifyList.notifyTrashClear = 0;
+    //   if (list.notifyDontTrash === true) {
+    //     this.notifyList.notifyDontTrash = 1;
+    //   }
+    //   if (list.notifyDontTrash === false) {
+    //     this.notifyList.notifyDontTrash = 0;
+    //   }
 
-      this.notifyVisible = true;
-    },
-    CloseNotifyModal(val) {
-      this.notifyVisible = val;
-    },
-    async ChangeTrashClearSwitch(list) {
+    //   await this.GetTrashNotifyApi(
+    //     this.notifyList.id,
+    //     this.uid,
+    //     this.notifyList.notifyTrashClear,
+    //     this.notifyList.notifyDontTrash
+    //   );
+    //   // for (let i = 0; i < this.likeList.length; i++) {
+    //   //   const streets = this.likeList[i].streets;
+    //   //   for (let j = 0; j < streets.length; j++) {
+    //   //     if (streets[j].id === list.id) {
+    //   //       streets[j].notifyDontTrash = list.notifyDontTrash;
+    //   //       streets[j].notifyTrashClear = list.notifyTrashClear;
+    //   //     }
+    //   //   }
+    //   // }
+    // },
+    // async ChangeDontTrashSwitch(list) {
+    //   if (list.notifyDontTrash === true) {
+    //     this.notifyList.notifyDontTrash = 1;
+    //   } else this.notifyList.notifyDontTrash = 0;
+    //   if (list.notifyTrashClear === true) {
+    //     this.notifyList.notifyTrashClear = 1;
+    //   }
+    //   if (list.notifyTrashClear === false) {
+    //     this.notifyList.notifyTrashClear = 0;
+    //   }
 
-      if (list.notifyTrashClear === true) {
-        this.notifyList.notifyTrashClear = 1;
-      } else this.notifyList.notifyTrashClear = 0;
-      if (list.notifyDontTrash === true) {
-        this.notifyList.notifyDontTrash = 1;
-      }
-      if (list.notifyDontTrash === false) {
-        this.notifyList.notifyDontTrash = 0;
-      }
-
-      await this.GetTrashNotifyApi(
-        this.notifyList.id,
-        this.uid,
-        this.notifyList.notifyTrashClear,
-        this.notifyList.notifyDontTrash
-      );
-      // for (let i = 0; i < this.likeList.length; i++) {
-      //   const streets = this.likeList[i].streets;
-      //   for (let j = 0; j < streets.length; j++) {
-      //     if (streets[j].id === list.id) {
-      //       streets[j].notifyDontTrash = list.notifyDontTrash;
-      //       streets[j].notifyTrashClear = list.notifyTrashClear;
-      //     }
-      //   }
-      // }
-    },
-    async ChangeDontTrashSwitch(list) {
-      if (list.notifyDontTrash === true) {
-        this.notifyList.notifyDontTrash = 1;
-      } else this.notifyList.notifyDontTrash = 0;
-      if (list.notifyTrashClear === true) {
-        this.notifyList.notifyTrashClear = 1;
-      }
-      if (list.notifyTrashClear === false) {
-        this.notifyList.notifyTrashClear = 0;
-      }
-
-      await this.GetTrashNotifyApi(
-        this.notifyList.id,
-        this.uid,
-        this.notifyList.notifyTrashClear,
-        this.notifyList.notifyDontTrash
-      );
-      // for (let i = 0; i < this.likeList.length; i++) {
-      //   const streets = this.likeList[i].streets;
-      //   for (let j = 0; j < streets.length; j++) {
-      //     if (streets[j].id === list.id) {
-      //       streets[j].notifyDontTrash = list.notifyDontTrash;
-      //       streets[j].notifyTrashClear = list.notifyTrashClear;
-      //     }
-      //   }
-      // }
-    },
+    //   await this.GetTrashNotifyApi(
+    //     this.notifyList.id,
+    //     this.uid,
+    //     this.notifyList.notifyTrashClear,
+    //     this.notifyList.notifyDontTrash
+    //   );
+    //   // for (let i = 0; i < this.likeList.length; i++) {
+    //   //   const streets = this.likeList[i].streets;
+    //   //   for (let j = 0; j < streets.length; j++) {
+    //   //     if (streets[j].id === list.id) {
+    //   //       streets[j].notifyDontTrash = list.notifyDontTrash;
+    //   //       streets[j].notifyTrashClear = list.notifyTrashClear;
+    //   //     }
+    //   //   }
+    //   // }
+    // },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
@@ -196,15 +200,28 @@ export default {
     },
     async GetLikeListApi(uid) {
       const response = await LikeListApi(uid);
+      
       this.likeList = response.likeList;
     },
     async GetCreateFavoriteApi(uid, tname) {
-      
       const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-      
     },
     async GetTrashNotifyApi(tid, uid, trashClear, dontTrash) {
       const response = await TrashNotifyApi(tid, uid, trashClear, dontTrash);
+    },
+
+    GetAllList(){
+      for(const item of this.originalData.trashcan){
+        console.log(item)
+        for(const street of this.likeList){
+          console.log(street.streets)
+
+        }
+        
+        this.likeList.General.tcapacity=item.General.tcapacity
+        console.log(this.likeList)
+        
+      }
     },
 
     //
@@ -216,7 +233,6 @@ export default {
           this.changeToLike.id == item.General.tid
         ) {
           this.changeToLike.tname = tname;
-          
         }
       }
     },

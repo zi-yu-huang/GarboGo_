@@ -57,7 +57,7 @@ export default {
   .phone-area {
     background-color: #d4d4d4;
     width: 90%;
-    height: 75%;
+    height: auto;
     border-radius: 55px;
     display: flex;
     justify-content: flex-start;
@@ -76,12 +76,12 @@ export default {
     font-size: 30px;
     font-weight: 800;
     color: #ffffff;
-    padding: 10px 0;
+    padding: 20px 0;
   }
   .btn-area {
     background-color: #ffffff;
     width: 95%;
-    height: 65%;
+    height: 60%;
     border-radius: 19px;
     display: flex;
     justify-content: center;
@@ -90,7 +90,7 @@ export default {
     // gap: 24px;
     .open-btn {
       width: 70%;
-      height: 150px;
+      height: 130px;
       // background-color: #8cba4a;
       border-radius: 14px;
       color: #ffffff;
@@ -104,7 +104,7 @@ export default {
     }
     .close-btn {
       width: 70%;
-      height: 150px;
+      height: 130px;
       // background-color: #d4d4d4;
       // background-color: #e32e2e;
       border-radius: 14px;
@@ -121,8 +121,8 @@ export default {
   img {
     background-color: white;
     margin-top: 10px;
-    width: 42px;
-    height: 42px;
+    width: 75px;
+    height: 75px;
     border-radius: 100%;
     padding: 1px;
     text-align: center;

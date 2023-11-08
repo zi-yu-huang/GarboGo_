@@ -33,6 +33,7 @@ export default {
       this.openColor = "rgb(134 215 18)";
       this.closeColor = "rgb(234 207 207)";
       await this.GetOpenTrashApi("close");
+      this.$router.push("/collect");
     },
     //API--------
     async GetOpenTrashApi(stuts) {

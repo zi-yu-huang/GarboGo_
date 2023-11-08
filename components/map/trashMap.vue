@@ -6,6 +6,7 @@
 
 
 <script>
+import { trashIcon } from "@/style/icon/delete.png";
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
@@ -58,8 +59,8 @@ export default {
     },
     fetchtrashcan() {
       this.trashcan = this.trashcanList.trashcan;
-      this.currentLocation.lat = null;
-      this.currentLocation.lng = null;
+      // this.currentLocation.lat = null;
+      // this.currentLocation.lng = null;
     },
     initMap() {
       this.map = new google.maps.Map(document.getElementById("map"), {
@@ -72,70 +73,109 @@ export default {
         minZoom: 10,
         streetViewControl: false,
         mapTypeControl: false,
+        fullscreenControl: false,
+        zoomControl: false,
+        styles: [
+          {
+            featureType: "poi.business",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+        ],
       });
     },
     setMarker() {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer({
+        map: this.map,
+        polylineOptions: {
+          strokeColor: "purple",
+        },
+        suppressMarkers: true,
+      });
       this.trashcan.forEach((location) => {
-        // console.log(location.General);
-
-        // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-        // 為每間餐廳都建立地標、訊息視窗、事件監聽
+        let iconUrl = require("@/style/icon/red.png"); // 默认图标 URL
+        if (location.General.tcapacity < 50) {
+          iconUrl = require("@/style/icon/green.png");
+        } else if (location.General.tcapacity < 75) {
+          iconUrl = require("@/style/icon/yellow.png");
+        } else if (location.General.tcapacity <= 90) {
+          iconUrl = require("@/style/icon/red.png");
+        } else if (location.General.tcapacity <= 100) {
+          iconUrl = require("@/style/icon/purple.png");
+        } else {
+          iconUrl = require("@/style/icon/green.png");
+        }
         const marker = new google.maps.Marker({
-          // 設定為該餐廳的座標
           position: { lat: location.lat, lng: location.lng },
           map: this.map,
-          // icon:trashCanIcon,
+          icon: {
+            url: iconUrl,
+            scaledSize: new google.maps.Size(32, 32),
+          },
         });
+        console.log(this.trashcan);
 
-        // 綁定點擊事件監聽
         marker.addListener("click", () => {
-          // 建立 infowindow
           const infowindow = new google.maps.InfoWindow({
-            maxWidth: 200,
+            maxWidth: 250,
           });
 
-          // 使用 GarbageModal 元件
-          const garbageModalComponent = new Vue({
-            render: (h) =>
-              h(GarbageModal, {
-                props: { general: location.General, recycle: location.Recycle },
-              }),
+          const startLocation = new google.maps.LatLng(
+            this.currentLocation.lat,
+            this.currentLocation.lng
+          );
+          const endLocation = new google.maps.LatLng(
+            location.lat,
+            location.lng
+          );
+
+          const request = {
+            origin: startLocation,
+            destination: endLocation,
+            travelMode: google.maps.TravelMode.DRIVING,
+          };
+
+          directionsService.route(request, (result, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+              // 清除上一个路线
+              directionsRenderer.setMap(null);
+
+              // 绘制新路线
+              directionsRenderer.setMap(this.map);
+              directionsRenderer.setDirections(result);
+
+              const garbageModalComponent = new Vue({
+                render: (h) =>
+                  h(GarbageModal, {
+                    props: {
+                      general: location.General,
+                      recycle: location.Recycle,
+                    },
+                  }),
+              });
+
+              // 將 GarbageModal 元件的 HTML 內容放入 infowindow
+              infowindow.setContent(garbageModalComponent.$mount().$el);
+
+              // 開啟 infowindow
+              infowindow.open(this.map, marker);
+
+              // 如果目前有開啟中的訊息視窗，先將其關閉
+              if (this.infowindow) this.infowindow.close();
+              // 顯示被點擊地標的訊息視窗
+              infowindow.open(this.map, marker);
+              // 存入目前開啟的訊息視窗
+              this.infowindow = infowindow;
+            }
           });
-
-          // 將 GarbageModal 元件的 HTML 內容放入 infowindow
-          infowindow.setContent(garbageModalComponent.$mount().$el);
-
-          // 開啟 infowindow
-          infowindow.open(this.map, marker);
-
-          // 如果目前有開啟中的訊息視窗，先將其關閉
-          if (this.infowindow) this.infowindow.close();
-          // 顯示被點擊地標的訊息視窗
-          infowindow.open(this.map, marker);
-          // 存入目前開啟的訊息視窗
-          this.infowindow = infowindow;
         });
       });
     },
 
-    //     // 建立訊息視窗
-    //     const infowindow = new google.maps.InfoWindow({
-    //       content: `
-    //       <div id="Question">
-    //         <p id="firstHeading" class="firstHeading">${location.name}</p>
-    //       </div>
-    //     `,
-
-    //       maxWidth: 200
-    //     });
-    //     // 綁定點擊事件監聽
-    //     marker.addListener("click", () => {
-    //       infowindow.open(this.map, marker);
-    //       console.log("erjei")
-
-    //     });
-    //   });
-    // },
     getCurrentLocation() {
       return new Promise((resolve, reject) => {
         if (navigator.geolocation) {

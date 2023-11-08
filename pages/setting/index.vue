@@ -44,7 +44,7 @@ export default {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
     //TODO
-    height: 85vh;
+    // height: 85vh;
     padding: 40px 30px 80px 30px;
     // height: 100vh;
     text-align: center;
@@ -56,14 +56,14 @@ export default {
       margin: 30px 0px;
       width: 100%;
       border-radius: 15px;
-      padding: 25px 40px;
+      padding: 18px 30px;
       .title-content {
         font-family: Inter;
         font-size: 24px;
         font-weight: 700;
         line-height: 35px;
         letter-spacing: 0em;
-        margin-bottom: 20px;
+        margin-bottom: 14px;
         text-align: center;
       }
       .text-content {
@@ -83,7 +83,7 @@ export default {
         line-height: 30px;
         letter-spacing: 0em;
         text-align: left;
-        margin-top: 15px;
+        margin-top: 5px;
       }
       .slogan-content {
         font-family: Inter;
@@ -92,7 +92,7 @@ export default {
         line-height: 35px;
         letter-spacing: 0em;
         text-align: center;
-        margin-top: 40px;
+        margin-top: 20px;
         color: rgba(82, 140, 0, 1);
 
         .width-area{

@@ -30,7 +30,7 @@ export default {
       card: 0,
       dateList: [
         { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:true },
-        { title: "2023-11", list: ["2023-11-02", "2023-11-05", "2023-11-08"],isShowChange:false },
+        { title: "2023-11", list: ["2023-11-04", "2023-11-10", "2023-11-13"],isShowChange:false },
       ],
       lastPoint: 0,
       exchange_ticket: 0,

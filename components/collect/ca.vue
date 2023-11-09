@@ -66,7 +66,7 @@ export default {
       }
     },
   },
-  
+
   methods: {
     onPanelChange(value, mode) {},
     InfoOpen() {
@@ -76,14 +76,23 @@ export default {
       this.visible = false;
     },
     getListData(value) {
+      const taiwanDate = new Date(value);
+      const isoDateString = taiwanDate
+        .toLocaleDateString("en-US", { timeZone: "Asia/Taipei" })
+        .split("/")
+        .map((part, index) => (index === 0 ? part : part.padStart(2, "0")))
+        .join("-");
+
       let listData;
-      // if()
+
       for (const item of this.dateList) {
-        if (new Date(value).toISOString().substring(0, 10) === item) {
-          
-          listData = [{ content: "" }];   
-          console.log(listData)
-          // break;
+        console.log(isoDateString, item);
+        console.log(isoDateString.substring(0, 5), item.substring(5, 10));
+
+        if (isoDateString.substring(0, 5) === item.substring(5, 10)) {
+          listData = [{ content: "" }];
+          console.log(listData);
+          break;
         }
       }
       return listData || [];

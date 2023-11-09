@@ -84,7 +84,6 @@ export default {
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
-      this.GetAllList();
     },
     async OpenModal(street) {
       this.changeToLike.id = street.id;
@@ -210,20 +209,7 @@ export default {
       const response = await TrashNotifyApi(tid, uid, trashClear, dontTrash);
     },
 
-    GetAllList(){
-      for(const item of this.originalData.trashcan){
-        console.log(item)
-        for(const street of this.likeList){
-          console.log(street.streets)
-
-        }
-        
-        this.likeList.General.tcapacity=item.General.tcapacity
-        console.log(this.likeList)
-        
-      }
-    },
-
+    
     //
     async GetNewList() {
       for (const item of this.originalData.trashcan) {

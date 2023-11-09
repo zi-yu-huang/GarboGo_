@@ -35,17 +35,16 @@ export default {
     await this.Init();
     this.initMap();
 
-    const customIcon = {
-      url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
-      scaledSize: new google.maps.Size(40, 40), // 设置图标大小
-      origin: new google.maps.Point(0, 0), // 设置图标原点
-      anchor: new google.maps.Point(20, 40), // 设置图标锚点
-    };
+    const customIcon = require("@/style/icon/masculine-user.png")
+    
     // 在当前位置上创建标记
     const currentLocationMarker = new google.maps.Marker({
       position: this.currentLocation,
       map: this.map,
-      icon: customIcon,
+      icon: {
+        url:customIcon,
+        scaledSize: new google.maps.Size(50, 50),
+      }
     });
 
     // 取得餐廳假資料

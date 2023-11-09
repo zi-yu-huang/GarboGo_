@@ -6,7 +6,6 @@
 
 
 <script>
-import garbageTruckData from "@/static/final_data.json";
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";

@@ -120,7 +120,7 @@ export default {
 
         marker.addListener("click", () => {
           const infowindow = new google.maps.InfoWindow({
-            maxWidth: auto,
+            maxWidth: 300,
           });
 
           const startLocation = new google.maps.LatLng(

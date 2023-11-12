@@ -183,7 +183,7 @@ export default {
   box-shadow: 0px -3px 5px 0px;
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  width: 120%;
+  width: 115%;
 }
 ::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value{
   color: rgba(0, 0, 0, 0.65);

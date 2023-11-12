@@ -59,13 +59,13 @@ export default {
           transparent 17px,
           #ffffff 0
         )
-        top right/50% 51px no-repeat,
+        top right/51% 51px no-repeat,
       radial-gradient(circle at left bottom, transparent 17px, #ffffff 0) top
-        left/50% 51px no-repeat,
+        left/51% 51px no-repeat,
       radial-gradient(circle at right top, transparent 17px, #ffffff 0) bottom
-        right/50% 51px no-repeat,
+        right/51% 51px no-repeat,
       radial-gradient(circle at left top, transparent 17px, #ffffff 0) bottom
-        left/50% 51px no-repeat;
+        left/51% 51px no-repeat;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
   }
   .text-area {
@@ -141,13 +141,13 @@ export default {
           transparent 17px,
           #ffffff 0
         )
-        top right/50% 220px no-repeat,
+        top right/51% 220px no-repeat,
       radial-gradient(circle at left bottom, transparent 17px, #ffffff 0) top
-        left/50% 220px no-repeat,
+        left/51% 220px no-repeat,
       radial-gradient(circle at right top, transparent 17px, #ffffff 0) bottom
-        right/50% 180px no-repeat,
+        right/51% 182px no-repeat,
       radial-gradient(circle at left top, transparent 17px, #ffffff 0) bottom
-        left/50% 180px no-repeat;
+        left/51% 182px no-repeat;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
   }
   .title-area {

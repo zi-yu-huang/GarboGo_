@@ -1,20 +1,8 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #MenuList
-  //- a-dropdown.icon-type(:trigger="['click']")
-  //-   p(class="ant-dropdown-link" @click="e => e.preventDefault()")
-  //-     aIcon.icon-size(type="menu")
-  //-   a-menu.content-area(slot="overlay")
-  //-     a-menu-item(key="user")
-  //-       aIcon(type="user")
-  //-     a-menu-item(key="gift")
-  //-       aIcon(type="gift")
-  //-     a-menu-item(key="setting")
-  //-       aIcon(type="setting")
-  // ------------------------------------
 
   .goback-area 
-    |
     aIcon(v-if="goBack", type="swap-left", @click="GoBack")
   .menu-article
     .icon-type(:style="styleComputed")

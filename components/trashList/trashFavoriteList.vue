@@ -1,24 +1,41 @@
 <template lang="pug">
 //- 請填寫功能描述👈
+
 #TrashFavoriteList
   .list-area
     .region-area(v-for="item in likeList", :key="item.region")
       .region-text(v-if="item.streets.length > 0") {{ item.region }}
       .street-area(v-for="street in item.streets", :key="street.street")
-        .street-text {{ street.street }}
-        aIcon.icon-area(
-          type="heart",
-          :theme="isLike(street.isLike)",
-          style="color: red",
-          @click="OpenModal(street)"
-        )
-        aIcon.trashIcon(
-          :type="'delete'",
-          :theme="'filled'",
-          @click="ShowTrash(item.id)"
-        ) 
-        div(v-if="street.isShow") {{ "hihih" }}
-        //TODO
+        <a-collapse accordion :bordered="false">
+          <a-collapse-panel :show-arrow="false" :key=street.street :header=street.street  :style="customStyle">
+            div {{ "一般垃圾" }}
+            div {{ "回收垃圾" }}
+
+            aIcon.trashIcon(
+              :type="'delete'",
+              :theme="'filled'",
+              :style="{ color: trashColor(street.General.tcapacity) }"
+            )
+            aIcon.trashIcon(
+              :type="'delete'",
+              :theme="'filled'",
+              :style="{ color: trashColor(street.Recycle.tcapacity) }"
+            ) 
+            aIcon.icon-area(
+              slot="extra",
+              type="heart",
+              :theme="isLike(street.isLike)",
+              style="color: red",
+              @click="OpenModal(street)"
+            )
+            aIcon.trashIcon(
+              slot="extra",
+              :type="'delete'",
+              :theme="'filled'",
+              :style="{ color: trashColor(street.maxtcapacity)}"
+            ) 
+          </a-collapse-panel>
+        </a-collapse>
       a-divider
         //- aIcon.icon-area(type="heart" :theme="iconTheme" :style="{color:iconColor}" @click="OpenModal")
   LikeModal(
@@ -27,31 +44,23 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  //- NotifyModal(
-  //-   :notifyVisible="notifyVisible",
-  //-   :notifyList="notifyList",
-  //-   @CloseNotifyModal="CloseNotifyModal",
-  //-   @ChangeTrashClearSwitch="ChangeTrashClearSwitch",
-  //-   @ChangeDontTrashSwitch="ChangeDontTrashSwitch"
-  //- )
 </template>
 
 <script>
 import { TrashNotifyApi } from "@/services/trashNotify.js";
 import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
 import { LikeListApi } from "@/services/likeList.js";
-import { LikeTrashApi } from "../../services/likeTrash";
+// import { LikeTrashApi } from "../../services/likeTrash";
 export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    NotifyModal: () => import("@/components/modal/notifyModal"),
   },
   data() {
     return {
       notifyVisible: false,
       visible: false,
-      isShow:false,
+      isShow: false,
       uid: "",
       changeToLike: {
         id: "",
@@ -65,6 +74,7 @@ export default {
       },
       likeList: [],
       originalData: [],
+      customStyle: "background: white ;border: 0;overflow: hidden",
     };
   },
   computed: {
@@ -72,6 +82,21 @@ export default {
       return (isLiked) => {
         if (isLiked) {
           return "filled";
+        }
+      };
+    },
+    trashColor() {
+      return (value) => {
+        if (value < 50) {
+          return "#84ce19";
+        } else if (value < 75) {
+          return "#ece200";
+        } else if (value <= 90) {
+          return "#e70000";
+        } else if (value <= 100) {
+          return "#a005d7";
+        } else {
+          return "#000000"; // 默认颜色
         }
       };
     },
@@ -86,9 +111,11 @@ export default {
       await this.GetLikeListApi(this.uid);
     },
     async OpenModal(street) {
+      console.log(street);
+
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
-      this.changeToLike.tname = street.street;
+      this.changeToLike.tname = street.tname;
       this.visible = true;
 
       await this.GetNewList();
@@ -96,90 +123,21 @@ export default {
     CloseModal(val, like) {
       this.visible = val;
     },
-    ShowTrash(id){
+    ShowTrash(id) {
+      console.log(id);
+
       this.isShow = !this.isShow;
     },
-    async SaveModal(visible) {
-      // for (let i = 0; i < this.likeList.length; i++) {
-      //   const streets = this.likeList[i].streets;
-      //   for (let j = 0; j < streets.length; j++) {
-      //     if (streets[j].id === this.changeToLike.id) {
-      //       streets[j].isLike = this.changeToLike.isLike;
-      //     }
-      //   }
-      // }
+    async SaveModal(visible, changeToLike) {
       this.visible = visible;
+      console.log(visible, changeToLike);
 
-      await this.GetCreateFavoriteApi(this.uid, this.changeToLike.tname);
+      await this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
 
       this.$nextTick(() => {
         this.Init();
       });
     },
-    // OpenNotifyModal(street) {
-    //   this.notifyList.id = street.id;
-    //   this.notifyList.notifyDontTrash = street.notifyDontTrash;
-    //   this.notifyList.notifyTrashClear = street.notifyTrashClear;
-
-    //   this.notifyVisible = true;
-    // },
-    // CloseNotifyModal(val) {
-    //   this.notifyVisible = val;
-    // },
-    // async ChangeTrashClearSwitch(list) {
-    //   if (list.notifyTrashClear === true) {
-    //     this.notifyList.notifyTrashClear = 1;
-    //   } else this.notifyList.notifyTrashClear = 0;
-    //   if (list.notifyDontTrash === true) {
-    //     this.notifyList.notifyDontTrash = 1;
-    //   }
-    //   if (list.notifyDontTrash === false) {
-    //     this.notifyList.notifyDontTrash = 0;
-    //   }
-
-    //   await this.GetTrashNotifyApi(
-    //     this.notifyList.id,
-    //     this.uid,
-    //     this.notifyList.notifyTrashClear,
-    //     this.notifyList.notifyDontTrash
-    //   );
-    //   // for (let i = 0; i < this.likeList.length; i++) {
-    //   //   const streets = this.likeList[i].streets;
-    //   //   for (let j = 0; j < streets.length; j++) {
-    //   //     if (streets[j].id === list.id) {
-    //   //       streets[j].notifyDontTrash = list.notifyDontTrash;
-    //   //       streets[j].notifyTrashClear = list.notifyTrashClear;
-    //   //     }
-    //   //   }
-    //   // }
-    // },
-    // async ChangeDontTrashSwitch(list) {
-    //   if (list.notifyDontTrash === true) {
-    //     this.notifyList.notifyDontTrash = 1;
-    //   } else this.notifyList.notifyDontTrash = 0;
-    //   if (list.notifyTrashClear === true) {
-    //     this.notifyList.notifyTrashClear = 1;
-    //   }
-    //   if (list.notifyTrashClear === false) {
-    //     this.notifyList.notifyTrashClear = 0;
-    //   }
-
-    //   await this.GetTrashNotifyApi(
-    //     this.notifyList.id,
-    //     this.uid,
-    //     this.notifyList.notifyTrashClear,
-    //     this.notifyList.notifyDontTrash
-    //   );
-    //   // for (let i = 0; i < this.likeList.length; i++) {
-    //   //   const streets = this.likeList[i].streets;
-    //   //   for (let j = 0; j < streets.length; j++) {
-    //   //     if (streets[j].id === list.id) {
-    //   //       streets[j].notifyDontTrash = list.notifyDontTrash;
-    //   //       streets[j].notifyTrashClear = list.notifyTrashClear;
-    //   //     }
-    //   //   }
-    //   // }
-    // },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
@@ -199,17 +157,14 @@ export default {
     },
     async GetLikeListApi(uid) {
       const response = await LikeListApi(uid);
-      
+      console.log(response);
+
       this.likeList = response.likeList;
     },
     async GetCreateFavoriteApi(uid, tname) {
       const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
     },
-    async GetTrashNotifyApi(tid, uid, trashClear, dontTrash) {
-      const response = await TrashNotifyApi(tid, uid, trashClear, dontTrash);
-    },
 
-    
     //
     async GetNewList() {
       for (const item of this.originalData.trashcan) {
@@ -243,12 +198,8 @@ export default {
     align-items: center;
   }
   .street-area {
-    width: 75%;
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr 30px 30px;
-    margin: 10px 0 15px 0;
-    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 20px;
   }
 }
 // 元件
@@ -271,5 +222,29 @@ export default {
   .ant-divider-horizontal {
     margin: 0 !important;
   }
+  .ant-collapse {
+    font-size: 17px;
+    background-color: white;
+  }
+}
+::v-deep
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  .ant-collapse-extra {
+  display: grid;
+  grid-template-columns: 30px 30px;
+}
+::v-deep
+.ant-collapse-borderless
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding-top: 4px;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
 }
 </style>

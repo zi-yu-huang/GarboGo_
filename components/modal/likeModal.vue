@@ -45,7 +45,7 @@ export default {
     // },
     computed:{
       modalArticle(){
-        if(this.changeToLike.isLike === true){
+        if(this.changeToLike.isLike === 1){
           return "確定要從我的最愛移除嗎?"
         }
         else return "加入我的最愛"
@@ -57,13 +57,15 @@ export default {
         this.$emit("CloseModal",this.visible2)
       },
       SaveModal(){
+        console.log(this.visible2)
+        
         this.visible2=false;
-        if(this.changeToLike.isLike === true){
+        if(this.changeToLike.isLike === 1){
           this.changeToLike.isLike = false
           this.$emit("SaveModal",this.visible2,this.changeToLike)
         }
         else{ 
-          this.changeToLike.isLike = true
+          this.changeToLike.isLike = 1
           this.$emit("SaveModal",this.visible2,this.changeToLike)
         }
       }

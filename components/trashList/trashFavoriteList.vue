@@ -223,7 +223,7 @@ export default {
     margin: 0 !important;
   }
   .ant-collapse {
-    font-size: 17px;
+    font-size: 16px;
     background-color: white;
   }
 }

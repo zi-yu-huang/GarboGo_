@@ -2,6 +2,7 @@
 //- 請填寫功能描述👈
 #StaffMenuList
   .goback-area 
+    |
     aIcon(v-if="goBack", type="swap-left", @click="GoBack")
   .menu-article
     .icon-type(:style="styleComputed")
@@ -9,7 +10,11 @@
     div(v-if="visible")
       .content-area
         aIcon.icon-content(type="user", @click="MenuToUser")
-        aIcon.icon-content(type="setting", @click="MenuToSetting")
+        img.img-content(
+          src="~static/Logo_GarboGo_line2.png",
+          alt="logo",
+          @click="MenuToAbout"
+        )
 </template>
 
 <script>
@@ -62,12 +67,11 @@ export default {
       //     });
       //   }
       // });
-
     },
     MenuToUser() {
       this.$router.push("/staff/profile");
     },
-    MenuToSetting() {
+    MenuToAbout() {
       this.$router.push("/staff/setting");
     },
     GoBack() {
@@ -126,6 +130,11 @@ export default {
     .icon-content {
       font-size: 33px;
       margin: 20px 0 20px 0;
+    }
+
+    .img-content {
+      width: 35px;
+      margin: 20px 0 25px 9px;
     }
   }
 }

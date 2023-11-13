@@ -4,7 +4,7 @@
   .user-area
     .circle-area
       aIcon.icon-area(type="user")
-    .user-text {{ "使用者暱稱" }}
+    .user-text {{ "會員資訊" }}
   .edit-area
     ProfileInput(
       :notEdit="notEdit",

@@ -110,16 +110,19 @@ export default {
       await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
     },
-    async OpenModal(street) {
+    async OpenModal(street,event) {
+      event = event || window.event;
       console.log(street);
-
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
       this.changeToLike.tname = street.tname;
       this.visible = true;
-
+      event.stopPropagation();
       await this.GetNewList();
     },
+    // handleClick(event) {
+    //   // If you don't want click extra trigger collapse, you can prevent this:
+    // },
     CloseModal(val, like) {
       this.visible = val;
     },
@@ -233,7 +236,7 @@ export default {
   > .ant-collapse-header
   .ant-collapse-extra {
   display: grid;
-  grid-template-columns: 30px 30px;
+  grid-template-columns: 35px 35px;
 }
 ::v-deep
 .ant-collapse-borderless

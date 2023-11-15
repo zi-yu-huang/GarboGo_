@@ -63,7 +63,6 @@ export default {
   display: flex;
   justify-content: center;
   gap: 14px;
-  padding: 5px 10px;
   font-size: 12px;
   font-weight: 800;
   .trash-area {

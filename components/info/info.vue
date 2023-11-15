@@ -75,14 +75,16 @@ export default {
 // 排版
 #InfoComponents {
   position: fixed;
-  top: 15%;
-  left: 10%;
-  width: 80%;
-  // height: 70%;
-  z-index: 1;
-  overflow: auto;
-  background-color: white;
-  border-radius: 10px;
+    top: 13%;
+    /* left: 10%; */
+    width: 90%;
+    // height: 77%;
+    z-index: 1;
+    /* overflow: auto; */
+    background-color: white;
+    box-shadow: -1px 3px 15px 1px;
+    
+    border-radius: 10px;
   .bg-area {
     padding: 35px 30px;
     font-size: 14px;

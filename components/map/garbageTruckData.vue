@@ -6,7 +6,7 @@
 
 
 <script>
-import { TrashcanListApi } from "@/services/trashcanList.js";
+import { StaffTrashList } from "@/services/staffTrashList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
 export default {
@@ -29,36 +29,33 @@ export default {
     };
   },
   async mounted() {
-
-
     // 先取得當前位置資訊
     await this.getCurrentLocation();
     await this.Init();
     this.initMap();
 
-    const customIcon = {
-      url: "http://maps.google.com/mapfiles/kml/shapes/man.png", // 内置蓝色图标
-      scaledSize: new google.maps.Size(40, 40), // 设置图标大小
-      origin: new google.maps.Point(0, 0), // 设置图标原点
-      anchor: new google.maps.Point(20, 40), // 设置图标锚点
-    };
+    const customIcon = require("@/style/icon/garbage-truck.png");
+
     // 在当前位置上创建标记
     const currentLocationMarker = new google.maps.Marker({
       position: this.currentLocation,
       map: this.map,
-      icon: customIcon,
+      icon: {
+        url: customIcon,
+        scaledSize: new google.maps.Size(30, 30),
+      },
     });
 
     // 取得餐廳假資料
     this.fetchtrashcan();
     // 使用餐廳假資料建立地標
     this.setMarker();
-    
+
     this.setGarbageMarker();
   },
   methods: {
     async Init() {
-      await this.GetTrashListApi();
+      await this.GetStaffTrashListApi();
     },
     fetchtrashcan() {
       this.trashcan = this.trashcanList.trashcan;
@@ -76,22 +73,49 @@ export default {
         minZoom: 10,
         streetViewControl: false,
         mapTypeControl: false,
+        fullscreenControl: false,
+        zoomControl: false,
+        styles: [
+          {
+            featureType: "poi.business",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+        ],
       });
     },
     setMarker() {
       this.trashcan.forEach((location) => {
+        let iconUrl = require("@/style/icon/red.png"); // 默认图标 URL
+        if (location.General.tcapacity < 50) {
+          iconUrl = require("@/style/icon/green.png");
+        } else if (location.General.tcapacity < 75) {
+          iconUrl = require("@/style/icon/yellow.png");
+        } else if (location.General.tcapacity <= 90) {
+          iconUrl = require("@/style/icon/red.png");
+        } else if (location.General.tcapacity <= 100) {
+          iconUrl = require("@/style/icon/purple.png");
+        } else {
+          iconUrl = require("@/style/icon/green.png");
+        }
         const marker = new google.maps.Marker({
-          // 設定為該餐廳的座標
           position: { lat: location.lat, lng: location.lng },
           map: this.map,
-          // icon:trashCanIcon,
+          icon: {
+            url: iconUrl,
+            scaledSize: new google.maps.Size(32, 32),
+          },
         });
+        console.log(this.trashcan);
 
         // 綁定點擊事件監聽
         marker.addListener("click", () => {
           // 建立 infowindow
           const infowindow = new google.maps.InfoWindow({
-            maxWidth: 200,
+            maxWidth: 400,
           });
 
           // 使用 GarbageModal 元件
@@ -107,6 +131,13 @@ export default {
 
           // 開啟 infowindow
           infowindow.open(this.map, marker);
+
+          // 如果目前有開啟中的訊息視窗，先將其關閉
+          if (this.infowindow) this.infowindow.close();
+          // 顯示被點擊地標的訊息視窗
+          infowindow.open(this.map, marker);
+          // 存入目前開啟的訊息視窗
+          this.infowindow = infowindow;
         });
       });
     },
@@ -119,12 +150,12 @@ export default {
         // if (item.car === "KED-1385") {
         //   const nowTime = new Date()
         //   console.log(nowTime)
-          
+
         //   for (const index of item.detail) {
-            routeCoordinates.push({
-              lat: item.lat,
-              lng: item.lng,
-            });
+        routeCoordinates.push({
+          lat: item.lat,
+          lng: item.lng,
+        });
         //   }
         // }
       }
@@ -136,6 +167,7 @@ export default {
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer({
         map: this.map,
+        suppressMarkers: true,
       });
 
       // 創建一個 DirectionsRequest 物件
@@ -206,9 +238,9 @@ export default {
     },
 
     // API--------------------------------------
-    async GetTrashListApi() {
-      const response = await TrashcanListApi();
-      this.trashcanList = response;
+    async GetStaffTrashListApi() {
+      const response = await StaffTrashList("JohnCena01");
+      this.trashcanList = response.data;
     },
   },
 };

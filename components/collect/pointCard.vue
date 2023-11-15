@@ -2,16 +2,16 @@
 #PointCard
   div
     .coupon(v-if="!showDetail")
-      img(src="~/static/PENUP_20230623_161116.png", alt="logo")
+      img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo")
       .line
       .text-area
         .text-contant {{ "垃圾袋1卷" }}
         .text-date {{ "到期日 2023-12-31" }}
       .change-btn(@click="handleClick") {{ "點擊兌換" }}
 
-    .coupon-detail(v-if="showDetail" @click="handleClick")
+    .coupon-detail(v-if="showDetail", @click="handleClick")
       .title-area
-        img(src="~/static/PENUP_20230623_161116.png", alt="logo2")
+        img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo2")
         .text-area
           .title1 {{ "垃圾袋1卷" }}
           .title2 {{ "GarBoGo" }}
@@ -21,7 +21,7 @@
       p {{ "．每張兌換卷，限兌換一次" }}
       .line-detail
       .qr-area
-        img.qr-code(src="~/static/PENUP_20230623_161116.png", alt="logo3")
+        img.qr-code(src="~/static/qr_img 1.png", alt="logo3")
         .text-date {{ "到期日 2023-12-31" }}
 </template>
     
@@ -116,7 +116,7 @@ export default {
     letter-spacing: 0em;
     text-align: left;
   }
-  img {
+  .imgLogo {
     // background-color: rgba(170, 216, 105, 0.4);
     height: 70px;
     width: 70px;
@@ -197,6 +197,10 @@ export default {
       align-items: center;
       width: 100px;
       height: 100px;
+      height: 70px;
+      width: 70px;
+      padding: 6px;
+      text-align: center;
     }
     .text-date {
       font-family: Montserrat;

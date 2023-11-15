@@ -124,7 +124,7 @@ export default {
   margin: 10px 20px;
   .restCls {
     position: relative;
-    top: -10px;
+    top: -9px;
     width: 28px;
     height: 28px;
     display: inline-block;

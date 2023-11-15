@@ -151,7 +151,7 @@ export default {
         for (const itemPlace of item.streets) {
           for (const list in this.likeTrash) {
             if (itemPlace.tplace == this.likeTrash[list]) {
-              itemPlace.isLike = true;
+              itemPlace.isLike = 1;
             }
           }
         }

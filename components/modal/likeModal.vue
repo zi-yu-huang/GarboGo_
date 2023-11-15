@@ -61,7 +61,7 @@ export default {
         
         this.visible2=false;
         if(this.changeToLike.isLike === 1){
-          this.changeToLike.isLike = false
+          this.changeToLike.isLike = 0
           this.$emit("SaveModal",this.visible2,this.changeToLike)
         }
         else{ 

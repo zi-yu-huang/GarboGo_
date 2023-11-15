@@ -115,7 +115,7 @@ export default {
         marker.addListener("click", () => {
           // 建立 infowindow
           const infowindow = new google.maps.InfoWindow({
-            maxWidth: 200,
+            maxWidth: 400,
           });
 
           // 使用 GarbageModal 元件

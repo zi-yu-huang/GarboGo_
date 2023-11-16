@@ -12,10 +12,10 @@ export const EditUserApi = async (uid,uname, uemail, pwd) => {
   }
 }
 
-export const CreateUserApi = async (uid,uname, uemail, pwd) => {
+export const CreateUserApi = async (uname, uemail, pwd) => {
   const axios = (await import("axios")).default
   try {
-    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/updateuser/?uid=${uid}&uname=${uname}&email=${uemail}&pwd=${pwd}`)
+    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/updateuser/?uname=${uname}&email=${uemail}&pwd=${pwd}&status=register`)
     return response
 
   } catch {

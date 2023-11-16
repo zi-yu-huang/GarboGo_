@@ -87,6 +87,9 @@ export default {
           }
         });
       }
+      else{
+        this.$message.error('驗證碼錯誤')
+      }
     },
     OpenModal() {
       this.isVisible = true;

@@ -13,6 +13,7 @@
         )
       aFormModelItem
         aButton.btn-area(:disabled="btn_stauts" type="primary", @click="OnSubmit") {{ "下一步" }}
+    Loading(:loadingVisible="loadingVisible")
 </template>
 
 <script>
@@ -21,9 +22,13 @@ import { CreateUserNameApi } from "@/services/editUser";
 
 export default {
   name: "RegisterStep1",
+  components:{
+    Loading:()=>import("@/components/modal/loading.vue")
+  },
   data() {
     return {
       btn_stauts:false,
+      loadingVisible:false,
       memberForm: {
         memberName: "",
         memberEmail: "",
@@ -41,6 +46,7 @@ export default {
     async OnSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
+          this.loadingVisible=true
           const data = await this.GetCreateUserApi();
           if (data.status === "error") {
             this.$message.error(data.message);
@@ -54,6 +60,7 @@ export default {
           }
           this.memberForm.memberEmail = "";
           this.memberForm.memberName = "";
+          this.loadingVisible=false
         }
       });
     },

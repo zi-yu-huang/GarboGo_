@@ -18,6 +18,8 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
+  Loading(:loadingVisible="loadingVisible")
+
 </template>
 
 <script>
@@ -27,9 +29,11 @@ export default {
   name: "TrashList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
+    Loading:()=>import("@/components/modal/loading.vue")
   },
   data() {
     return {
+      loadingVisible:false,
       visible: false,
       uid:"",
       originalData: [],
@@ -56,9 +60,11 @@ export default {
   },
   methods: {
     async Init() {
+      this.loadingVisible=true
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeTrashApi();
+      this.loadingVisible=false
     },
     OpenModal(street) {
       console.log(street)

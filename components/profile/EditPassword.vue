@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 
@@ -80,6 +81,15 @@ export default {
   },
   mounted() {
     this.Init();
+    $(document).click((event) => {
+      if (this.visible === true) {
+        const target = $(event.target);
+        const menuIcon = $(".block-area");
+        if (!target.closest(menuIcon).length) {
+          this.visible = false;
+        }
+      }
+    });
   },
   methods: {
     async Init() {
@@ -157,8 +167,9 @@ export default {
     .form-area {
       display: flex;
       flex-direction: column;
-      height: 309px;
+      // height: 309px;
       justify-content: center;
+      padding: 20px 0;
     }
     .btn-area {
       width: -webkit-fill-available;

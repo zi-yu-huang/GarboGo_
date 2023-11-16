@@ -2,6 +2,7 @@
 //- 請填寫頁面👈
 #MapIndex
   #map.google-map(ref="mapRef")
+  Loading(:loadingVisible="loadingVisible")
 </template>
 
 
@@ -15,9 +16,11 @@ export default {
   name: "MapIndex",
   components: {
     GarbageModal: () => import("@/components/modal/garbageModal"),
+    Loading:()=>import("@/components/modal/loading.vue")
   },
   data() {
     return {
+      loadingVisible:false,
       marker: { position: { lat: 10, lng: 10 } },
       visible: false,
       map: null,
@@ -30,9 +33,11 @@ export default {
     };
   },
   async mounted() {
+    this.loadingVisible=true
     // 先取得當前位置資訊
     await this.getCurrentLocation();
     await this.Init();
+    this.loadingVisible=false
     this.initMap();
 
     const customIcon = require("@/style/icon/masculine-user.png")

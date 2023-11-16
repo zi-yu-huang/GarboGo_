@@ -1,6 +1,5 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-
 #TrashFavoriteList
   .list-area
     .region-area(v-for="item in likeList", :key="item.region")
@@ -44,6 +43,8 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
+  Loading(:loadingVisible="loadingVisible")
+
 </template>
 
 <script>
@@ -55,9 +56,11 @@ export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
+    Loading:()=>import("@/components/modal/loading.vue")
   },
   data() {
     return {
+      loadingVisible:false,
       notifyVisible: false,
       visible: false,
       isShow: false,
@@ -106,9 +109,11 @@ export default {
   },
   methods: {
     async Init() {
+      this.loadingVisible=true
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
+      this.loadingVisible=false
     },
     async OpenModal(street,event) {
       event = event || window.event;

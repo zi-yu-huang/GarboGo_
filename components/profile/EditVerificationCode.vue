@@ -22,6 +22,7 @@
     @SaveModal="SaveModal"
   )
     template(v-slot:article) {{ "確定要重新寄送驗證碼?" }}
+  Loading(:loadingVisible="loadingVisible")
 </template>
   
 <script>
@@ -29,6 +30,7 @@ import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
+    Loading:()=>import("@/components/modal/loading.vue")
   },
   name: "EditVerificationCode",
   props: {
@@ -40,9 +42,14 @@ export default {
       type: Number,
       default: "",
     },
+    getNewEmail:{
+      type:String,
+      default:""
+    }
   },
   data() {
     return {
+      loadingVisible:false,
       timer: null,
       time: 60,
       min: "",
@@ -95,11 +102,15 @@ export default {
     },
     OnSubmit() {
       if(this.memberForm.verificationCode === this.otpText ){
-
-        this.$refs.ruleForm.validate((valid) => {
+        this.loadingVisible=true
+        this.$refs.ruleForm.validate(async(valid) => {
           if (valid) {
+            // await this.GetSendEmailApi();
+            console.log("djsklf")
+            
             this.memberForm.verificationCode = "";
-            this.$emit("verifyDone", true);
+            this.$emit("verifyDone", true,this.getNewEmail);
+            this.loadingVisible=false
           }
         });
       }
@@ -121,7 +132,6 @@ export default {
     async SaveModal() {
       this.isVisible = false;
       this.tryAgain = true;
-      this.getOptId = await this.GetSendEmailApi();
       this.Init();
 
     },
@@ -145,13 +155,16 @@ export default {
       const response = await OtpTextApi(otpId);
       this.otpText = response
     },
-    async GetSendEmailApi(){
-      const uemail = this.GetCookieValue("email")
-      const response = await SendEmailApi(uemail);
+    // async GetSendEmailApi(){
+    //   console.log(this.getNewEmail)
       
-      return response.data.message      
+    //   const uemail = this.GetCookieValue("email")
+    //   const response = await SendEmailApi(this.getNewEmail);
+    //   console.log(response)
+      
+    //   return response.data.message      
 
-    }
+    // }
   },
   beforeDestroy() {
     clearInterval(this.timer);

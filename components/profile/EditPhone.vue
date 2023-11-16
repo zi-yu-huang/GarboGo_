@@ -15,11 +15,15 @@
            )
         aFormModelItem
           aButton.btn-area(:disabled="btn_stauts" type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
+  Loading(:loadingVisible="loadingVisible")
 </template>
 
 <script>
 import {SendEmailApi} from "@/services/sendEmail.js"
 export default {
+  components:{
+    Loading:()=>import("@/components/modal/loading.vue")
+  },
   name: "EditPhone",
   props:{
     visible:{
@@ -29,6 +33,7 @@ export default {
   },
   data () {
     return {
+      loadingVisible:false,
       btn_stauts:false,
       memberForm:{
         memberEmail: "",
@@ -46,9 +51,12 @@ export default {
     OnSubmit(){
       this.$refs.ruleForm.validate(async(valid) => {
         if (valid) {
+          this.loadingVisible=true
           this.btn_stauts=true
           const response = await this.GetSendEmailApi(this.memberForm.memberEmail)
-          this.$emit("getVerify",true,response)
+          this.$emit("getVerify",true,response,this.memberForm.memberEmail)
+          console.log(true,response,this.memberForm.memberEmail)
+          this.loadingVisible=false
           this.memberForm.memberEmail=""
         }
       })

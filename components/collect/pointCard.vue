@@ -127,7 +127,7 @@ export default {
 
   //detail
   .coupon-detail {
-    width: 300px;
+    width: 350px;
     height: 400px;
     // text-align: center;
     position: relative;
@@ -197,8 +197,6 @@ export default {
       align-items: center;
       width: 100px;
       height: 100px;
-      height: 70px;
-      width: 70px;
       padding: 6px;
       text-align: center;
     }

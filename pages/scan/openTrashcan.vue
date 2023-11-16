@@ -10,15 +10,20 @@
         .close-btn(@click="CloseBtn", :style="{ background: closeColor }") {{ "關閉" }}
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
+  Loading(:loadingVisible="loadingVisible")
 </template>
 
 <script>
 import { OpenTrashApi } from "../../services/openTrash";
 export default {
+  components:{
+    Loading:()=>import("@/components/modal/loading.vue")
+  },
   name: "OpenTrashcan",
   layout: "default",
   data() {
     return {
+      loadingVisible:false,
       openColor: "rgb(134 215 18)",
       closeColor: "rgb(234 207 207)",
     };
@@ -27,13 +32,18 @@ export default {
     async OpenBtn() {
       this.openColor = "rgb(205 231 169)";
       this.closeColor = "#e32e2e";
+      this.visible=true
       await this.GetOpenTrashApi("open");
+      this.visible=false
+
     },
     async CloseBtn() {
       this.openColor = "rgb(134 215 18)";
       this.closeColor = "rgb(234 207 207)";
-      await this.GetOpenTrashApi("close");
+      this.visible=true
+      const response = await this.GetOpenTrashApi("close");
       this.$router.push("/collect");
+      this.visible=false
     },
     //API--------
     async GetOpenTrashApi(stuts) {
@@ -131,5 +141,6 @@ export default {
 }
 // 元件
 #OpenTrashcan {
+
 }
 </style>

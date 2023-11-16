@@ -20,6 +20,7 @@
   EditVerify(
     :visible="getVerify",
     :getOptId="getOptId",
+    :getNewEmail="newEmail",
     @verifyDone="VerifyDone"
   )
   EditPassword(
@@ -44,7 +45,7 @@ export default {
   name: "MemberProfile",
   data() {
     return {
-      uid:"",
+      uid: "",
       getInit: false,
       dataPwd: "",
       dataEmail: "",
@@ -55,6 +56,7 @@ export default {
       openPassword: false,
       notEdit: true,
       editText: "",
+      newEmail: "",
     };
   },
   mounted() {
@@ -99,27 +101,32 @@ export default {
     OpenPhone(val) {
       this.openPhone = val;
     },
-    GetVerify(val, otpId) {
+    GetVerify(val, otpId, newEmail) {
       this.getVerify = val;
-
+      this.newEmail = newEmail;
       this.getOptId = otpId;
       this.openPhone = false;
     },
     VerifyDone() {
       this.getVerify = false;
-      this.ChangeEditBtn();
+      // this.ChangeEditBtn();
       this.getInit = true;
+
+      
+      this.GetUserEmailApi();
     },
     OpenPassword(val) {
       this.openPassword = val;
     },
     DonePassword(val) {
       this.openPassword = false;
-      this.dataPwd = val
-
-      this.ChangeEditBtn();
+      this.dataPwd = val;
+      console.log(    this.uid,
+        this.editName,
+        this.dataEmail,
+        this.dataPwd)
+      this.GetNewPwdApi();
       this.getInit = true;
-
     },
     EditName(val) {
       this.editName = val;
@@ -140,7 +147,7 @@ export default {
       const email = this.GetCookieValue("email");
       this.uid = this.GetCookieValue("id");
       const response = await LoginApi(email);
-      this.editName = response.uname
+      this.editName = response.uname;
       this.dataPwd = response.pwd;
       this.dataEmail = response.email;
     },
@@ -155,6 +162,36 @@ export default {
       );
       if (response.data.status === "success") {
         this.$message.success("變更成功");
+      }
+    },
+    async GetUserEmailApi() {
+      console.log(this.uid, this.editName, this.newEmail, this.dataPwd);
+
+      const response = await EditUserApi(
+        this.uid,
+        this.editName,
+        this.newEmail,
+        this.dataPwd
+      );
+      if (response.data.status === "success") {
+        this.$message.success("變更成功,請重新登入");
+        this.$nextTick(() => {
+          this.$router.push("/member/login");
+        });
+      }
+    },
+    async GetNewPwdApi() {
+      const response = await EditUserApi(
+        this.uid,
+        this.editName,
+        this.dataEmail,
+        this.dataPwd
+      );
+      if (response.data.status === "success") {
+        this.$message.success("變更成功,請重新登入");
+        this.$nextTick(() => {
+          this.$router.push("/member/login");
+        });
       }
     },
   },

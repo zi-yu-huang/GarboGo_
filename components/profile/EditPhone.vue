@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import {SendEmailApi} from "@/services/sendEmail.js"
 export default {
   components:{
@@ -47,6 +48,27 @@ export default {
       }
     };
   },
+  mounted(){
+    $(document).click((event) => {
+      if (this.visible === true) {
+        console.log("sdjfldf")
+        
+        const target = $(event.target);
+        const menuIcon = $(".content");
+        const menuArea = $(".email-area");
+        console.log(target)
+        
+        if (!target.closest(menuArea).length ) {
+          if (!target.closest(menuIcon).length ) {
+          console.log("jkjj")
+          
+          this.visible = false;
+          this.CloseEmailModal();
+          }
+        }
+      }
+    });
+  },
   methods:{
     OnSubmit(){
       this.$refs.ruleForm.validate(async(valid) => {
@@ -61,7 +83,10 @@ export default {
         }
       })
     },
-
+    CloseEmailModal(){
+      this.memberForm.memberEmail=""
+      this.$emit("CloseEmailModal")
+    },
 
     //API -----------
     async GetSendEmailApi(email){

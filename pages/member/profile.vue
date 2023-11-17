@@ -16,22 +16,22 @@
     .btn-content
       aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
-  EditPhone(:visible="openPhone", @getVerify="GetVerify")
+  EditPhone(:visible="openPhone", @getVerify="GetVerify" @CloseEmailModal="CloseEmailModal")
   EditVerify(
     :visible="getVerify",
     :getOptId="getOptId",
     :getNewEmail="newEmail",
     @verifyDone="VerifyDone"
+    @CloseVerifyModal="CloseVerifyModal"
   )
-  EditPassword(
+  EditPassword.edit-area(
     :visible="openPassword",
     @donePassword="DonePassword",
-    @CloseModal="DonePassword"
+    @ClosePwdModal="ClosePwdModal"
   )
 </template>
 
 <script>
-import $ from "jquery";
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
 export default {
@@ -60,17 +60,10 @@ export default {
     };
   },
   mounted() {
-    if (this.openPassword === true) {
-      $(document).click((event) => {
-        if (this.openPassword === true) {
-          const target = $(event.target);
-          const menuIcon = $(".block-area");
-          if (!target.closest(menuIcon).length) {
-            this.openPassword = false;
-          }
-        }
-      });
-    }
+    // if (this.openPassword === true) {
+      
+
+    // }
   },
   computed: {
     changeEdit() {
@@ -101,6 +94,9 @@ export default {
     OpenPhone(val) {
       this.openPhone = val;
     },
+    CloseEmailModal(){
+      this.openPhone=false
+    },
     GetVerify(val, otpId, newEmail) {
       this.getVerify = val;
       this.newEmail = newEmail;
@@ -110,13 +106,17 @@ export default {
     VerifyDone() {
       this.getVerify = false;
       // this.ChangeEditBtn();
-      this.getInit = true;
-
-      
+      this.getInit = true;      
       this.GetUserEmailApi();
+    },
+    CloseVerifyModal(){
+      this.getVerify=false;
     },
     OpenPassword(val) {
       this.openPassword = val;
+    },
+    ClosePwdModal(){
+      this.openPassword=false
     },
     DonePassword(val) {
       this.openPassword = false;

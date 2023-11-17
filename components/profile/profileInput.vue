@@ -13,7 +13,7 @@
       )
     .member-text {{ "信箱：" }}
     aFormModelItem(ref="memberEmail", prop="memberEmail")
-      aInput.input-font(
+      aInput.input-font.email-area(
         @click="EditPhone",
         :disabled="notEdit",
         v-model="memberForm.memberEmail",
@@ -22,7 +22,7 @@
       )
     .member-text {{ "密碼：" }}
     aFormModelItem(ref="memberPassword", prop="memberPassword")
-      aInput.input-font(
+      aInput.input-font.pwd-area(
         @click="EditPassword",
         type="password",
         :disabled="notEdit",
@@ -73,6 +73,7 @@ export default {
   },
   mounted() {
     this.Init();
+    
   },
   methods: {
     async Init() {

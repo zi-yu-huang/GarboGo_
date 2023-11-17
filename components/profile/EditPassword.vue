@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      uid:"",
+      uid: "",
       dataPwd: "",
       dataUname: "",
       dataEmail: "",
@@ -83,10 +83,20 @@ export default {
     this.Init();
     $(document).click((event) => {
       if (this.visible === true) {
+        console.log("sdjfldf");
+
         const target = $(event.target);
-        const menuIcon = $(".block-area");
-        if (!target.closest(menuIcon).length) {
-          this.visible = false;
+        const menuIcon = $(".content");
+        const menuArea = $(".pwd-area");
+        console.log(target);
+
+        if (!target.closest(menuArea).length) {
+          if (!target.closest(menuIcon).length) {
+            console.log("jkjj");
+
+            this.visible = false;
+            this.ClosePwdModal();
+          }
         }
       }
     });
@@ -100,18 +110,21 @@ export default {
         if (this.dataPwd === this.memberForm.oldPassword) {
           if (valid) {
             // await this.GetEditUserPwdApi();
-            this.$emit("donePassword",this.memberForm.newPassword);
-            this.memberForm.newPassword=""
-            this.memberForm.newPasswordAgain=""
-            this.memberForm.oldPassword=""
+            this.$emit("donePassword", this.memberForm.newPassword);
+            this.memberForm.newPassword = "";
+            this.memberForm.newPasswordAgain = "";
+            this.memberForm.oldPassword = "";
           }
         } else {
           this.$message.error("密碼錯誤");
         }
       });
     },
-    CloseModal() {
-      this.$emit("CloseModal");
+    ClosePwdModal() {
+      this.memberForm.newPassword = "";
+      this.memberForm.newPasswordAgain = "";
+      this.memberForm.oldPassword = "";
+      this.$emit("ClosePwdModal");
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -134,7 +147,6 @@ export default {
       this.dataEmail = response.email;
     },
     async GetEditUserPwdApi() {
-      
       const response = await EditUserApi(
         this.uid,
         this.dataUname,

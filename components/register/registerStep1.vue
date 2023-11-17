@@ -13,6 +13,7 @@
         )
       aFormModelItem
         aButton.btn-area(:disabled="btn_stauts" type="primary", @click="OnSubmit") {{ "下一步" }}
+        aButton.btn-area.btn-forget(:disabled="btn_stauts" type="primary", @click="ForgetPwd") {{ "忘記密碼" }}
     Loading(:loadingVisible="loadingVisible")
 </template>
 
@@ -63,6 +64,11 @@ export default {
           this.loadingVisible=false
         }
       });
+    },
+    ForgetPwd(){
+      
+      console.log("sdfhjk")
+      
     },
 
     // API ---------------
@@ -127,6 +133,9 @@ export default {
     margin-top: 12px;
     border-radius: 14px;
     height: 45px;
+  }
+  .btn-forget{
+    background-color:#C8CCC3 !important;
   }
   .input-font {
     height: 45px;

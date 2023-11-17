@@ -57,7 +57,7 @@ export default {
     background-color: #241f1f;
     text-align: center;
     font-family: Inter;
-    font-size: 24px;
+    font-size: 19px;
     font-weight: 600;
     /* line-height: 24px; */
     letter-spacing: 0em;

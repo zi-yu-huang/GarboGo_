@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 
 export default {
   name: "InfoComponents",
@@ -41,28 +40,7 @@ export default {
     return {};
   },
   //TODO
-  mounted() {
-    console.log(this.visible)
-    
-    if (this.visible === true) {
-      console.log("aaa");
 
-      $(document).click((event) => {
-        console.log("bbb");
-
-        if (this.visible === true) {
-          console.log("ccc");
-
-          const target = $(event.target);
-          const menuIcon = $(".icon-area");
-          if (!target.closest(menuIcon).length) {
-            this.visible = false;
-            console.log("ddd");
-          }
-        }
-      });
-    }
-  },
   methods: {
     InfoClose() {
       this.$emit("InfoClose", false);

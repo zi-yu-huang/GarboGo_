@@ -10,15 +10,15 @@
             div {{ "一般垃圾" }}
             div {{ "回收垃圾" }}
 
-            aIcon.trashIcon(
+            aIcon.trashIcon.icon-size(
               :type="'delete'",
               :theme="'filled'",
-              :style="{ color: trashColor(street.General.tcapacity) }"
+              :style="{ color: trashColor(street.General.tcapacity) ,fontSize:'18px'}"
             )
-            aIcon.trashIcon(
+            aIcon.trashIcon.icon-size(
               :type="'delete'",
               :theme="'filled'",
-              :style="{ color: trashColor(street.Recycle.tcapacity) }"
+              :style="{ color: trashColor(street.Recycle.tcapacity),fontSize:'18px' }"
             ) 
             aIcon.icon-area(
               slot="extra",

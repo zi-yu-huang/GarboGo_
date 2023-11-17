@@ -18,7 +18,7 @@
 
 <script>
 import { SendEmailApi } from "@/services/sendEmail";
-import { CreateUserNameApi } from "@/services/editUser";
+import { LoginApi } from "@/services/login.js";
 
 export default {
   name: "RegisterStep1",
@@ -48,8 +48,8 @@ export default {
         if (valid) {
           this.loadingVisible=true
           const data = await this.GetCreateUserApi();
-          if (data.status === "error") {
-            this.$message.error(data.message);
+          if (data.status !== 'error') {
+            this.$message.error("該 email 已被註冊");
           } else {
             this.btn_stauts=true
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
@@ -67,9 +67,12 @@ export default {
 
     // API ---------------
     async GetCreateUserApi() {
-      const response = await CreateUserNameApi(this.memberForm.memberName,this.memberForm.memberEmail
-      );
-      return response.data;
+      console.log(this.memberForm.memberEmail)
+      
+      const response = await LoginApi(this.memberForm.memberEmail);
+      console.log(response)
+      
+      return response;
     },
     async GetSendEmailApi(email) {
       const response = await SendEmailApi(email);

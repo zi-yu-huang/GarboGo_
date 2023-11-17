@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { CreateUserApi } from "@/services/editUser";
+import { CreateUserApi } from "@/services/editUser.js";
 export default {
   layout: "default",
   components: {
@@ -59,6 +59,8 @@ export default {
     async DoneStep3(val, data) {
       this.memberForm.memberPwd = data.Password;
       await this.GetCreateUserApi(this.memberForm);
+      console.log(this.memberForm)
+      
       this.doneStep3 = val;
     },
 

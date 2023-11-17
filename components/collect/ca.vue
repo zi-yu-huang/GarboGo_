@@ -86,8 +86,6 @@ export default {
       let listData;
 
       for (const item of this.dateList) {
-        console.log(isoDateString, item);
-        console.log(isoDateString.substring(0, 5), item.substring(5, 10));
 
         if (isoDateString.substring(0, 5) === item.substring(5, 10)) {
           listData = [{ content: "" }];

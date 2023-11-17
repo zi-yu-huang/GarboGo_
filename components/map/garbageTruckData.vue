@@ -42,7 +42,7 @@ export default {
       map: this.map,
       icon: {
         url: customIcon,
-        scaledSize: new google.maps.Size(30, 30),
+        scaledSize: new google.maps.Size(60, 60),
       },
     });
 

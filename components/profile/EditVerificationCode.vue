@@ -26,6 +26,7 @@
 </template>
   
 <script>
+import $ from "jquery";
 import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
 export default {
   components: {
@@ -82,11 +83,23 @@ export default {
       }
     },
   },
-  async mounted() {
-    // if(this.visible === true){
-    //   await this.Init();
-    // }
-    
+  mounted(){
+    $(document).click((event) => {
+      if (this.visible === true) {
+        console.log("sdjfldf")
+        
+        const target = $(event.target);
+        const menuIcon = $(".content");
+        // const menuArea = $(".block-area");
+        console.log(target)
+        
+        if (!target.closest(menuIcon).length ) {
+          console.log("jkjj")
+          this.visible = false;
+          this.CloseVerifyModal();
+        }
+      }
+    });
   },
   watch:{
     async visible(newValue, oldValue){
@@ -106,7 +119,6 @@ export default {
         this.$refs.ruleForm.validate(async(valid) => {
           if (valid) {
             // await this.GetSendEmailApi();
-            console.log("djsklf")
             
             this.memberForm.verificationCode = "";
             this.$emit("verifyDone", true,this.getNewEmail);
@@ -119,6 +131,10 @@ export default {
     OpenModal() {
       this.isVisible = true;
       this.tryAgain = true;
+    },
+    CloseVerifyModal(){
+      this.memberForm.verificationCode = "";
+      this.$emit("CloseVerifyModal")
     },
     countdown() {
       this.min = parseInt(this.time / 60);

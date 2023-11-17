@@ -253,6 +253,6 @@ export default {
   grid-template-columns: auto auto;
   justify-content: center;
   gap: 10px;
-  font-size: 18px;
+  font-size: 14px;
 }
 </style>

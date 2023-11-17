@@ -67,7 +67,8 @@ export default {
 
     // API ---------------
     async GetCreateUserApi() {
-      const response = await CreateUserNameApi(this.memberForm.memberName);
+      const response = await CreateUserNameApi(this.memberForm.memberName,this.memberForm.memberEmail
+      );
       return response.data;
     },
     async GetSendEmailApi(email) {

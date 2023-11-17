@@ -5,7 +5,7 @@
     .article 
         div {{ "-已成功註冊GarboGo-"}}
         div {{ "恭喜您! 終於可以丟垃圾了!" }}
-    aButton.btn-area(type="primary" @click="ToMap") {{ "回地圖" }}
+    aButton.btn-area(type="primary" @click="ToMap") {{ "去登入丟垃圾桶！GO！" }}
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
   },
   methods:{
     ToMap(){
-      this.$router.push('/map')
+      this.$router.push('/member/login')
     }
   }
 };

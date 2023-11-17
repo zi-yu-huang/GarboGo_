@@ -15,7 +15,11 @@
           div(
             style="margin-bottom: '10px'; text-align: center; padding-left: 35px"
           ) {{ selectedDate }}
-          aIcon(style="font-size: 22px", type="info-circle", @click="InfoOpen")
+          aIcon.info-area(
+            style="font-size: 22px",
+            type="info-circle",
+            @click="InfoOpen"
+          )
       .events(slot="dateCellRender", slot-scope="value")
         template(v-for="(item, index) in getListData(value)")
           span.restCls
@@ -29,6 +33,7 @@
   )
 </template>
 <script>
+import $ from "jquery";
 export default {
   name: "CA",
   components: {
@@ -66,7 +71,25 @@ export default {
       }
     },
   },
+  mounted() {
+    console.log(this.visible);
 
+    $(document).click((event) => {
+      if (this.visible === true) {
+        console.log("ccc");
+
+        const target = $(event.target);
+        const menuIcon = $(".bg-area");
+        const menuArea = $(".info-area");
+        if (!target.closest(menuIcon).length) {
+          if (!target.closest(menuArea).length) {
+            this.visible = false;
+            console.log("ddd");
+          }
+        }
+      }
+    });
+  },
   methods: {
     onPanelChange(value, mode) {},
     InfoOpen() {
@@ -86,7 +109,6 @@ export default {
       let listData;
 
       for (const item of this.dateList) {
-
         if (isoDateString.substring(0, 5) === item.substring(5, 10)) {
           listData = [{ content: "" }];
           console.log(listData);

@@ -13,8 +13,7 @@
       aFormModelItem
         Button.btn-area(type="primary", @click="OnSubmit") {{ "下一步 " }}
       .verify-text(@click="OpenModal") {{ "未收到驗證碼?" }}
-      div {{ timeClock }}
-        .timeClock-text {{ min + "’" + sec }}
+      .time-area {{ formatCountdownTime() }}
 
       DemoModal(
         :visible="isVisible",
@@ -25,7 +24,8 @@
 </template>
 
 <script>
-import { OtpTextApi } from "@/services/sendEmail";
+import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
+
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
@@ -35,15 +35,17 @@ export default {
       type: Number,
       default: "",
     },
+    memberEmail:{
+      type:String,
+      default:""
+    }
   },
   name: "RegisterStep2",
   data() {
     return {
       otpText: "",
+      countdown: 0,
       timer: null,
-      time: 600,
-      min: "",
-      sec: "",
       tryAgain: null,
       isVisible: false,
       memberForm: {
@@ -58,17 +60,7 @@ export default {
     };
   },
   computed: {
-    timeClock() {
-      if (this.visible === true && this.tryAgain === null) {
-        this.timer = setInterval(this.countdown, 1000);
-      }
-      if (this.tryAgain === true) {
-        this.time = 5;
-        this.timer = null;
-        this.timer = setInterval(this.countdown, 1000);
-        // this.tryAgain=false
-      }
-    },
+    timeClock() {}
   },
   mounted() {
     this.Init();
@@ -77,47 +69,72 @@ export default {
     async Init() {
       const response = await this.GetOtpTextApi(this.otpId);
       this.otpText = response;
+      this.startCountdown()
     },
     OnSubmit() {
-
       if (this.otpText === this.memberForm.memberVerify) {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.$emit("DoneStep2", true);
           }
         });
-      }
-      else{
-        this.$message.error('驗證碼錯誤')
+      } else {
+        this.$message.error("驗證碼錯誤");
       }
     },
     OpenModal() {
       this.isVisible = true;
       this.tryAgain = true;
     },
-    countdown() {
-      this.min = parseInt(this.time / 60);
-
-      this.sec = this.time % 60;
-      this.time--;
-      if (this.time < 0) {
-        clearInterval(this.timer);
-      }
-    },
-    SaveModal() {
+    async SaveModal() {
       this.isVisible = false;
       this.tryAgain = true;
+      await this.GetSendEmailApi();
+      const response = await this.GetOtpTextApi(this.otpId);
+      this.otpText = response;      
     },
     CloseModal() {
       this.isVisible = false;
     },
+
+    startCountdown() {
+      // 设置倒计时秒数，10分钟
+      const seconds = 600;
+
+      // 开始倒计时
+      this.countdown = seconds;
+      this.timer = setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+        } else {
+          // 倒计时结束，清除计时器
+          clearInterval(this.timer);
+        }
+      }, 1000);
+    },
+    formatCountdownTime() {
+      const minutes = Math.floor(this.countdown / 60);
+      const seconds = this.countdown % 60;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    },
+
     //API------------
     async GetOtpTextApi(id) {
       const response = await OtpTextApi(id);
+      console.log(response)
+      
       return response;
+    },
+    async GetSendEmailApi() {
+      console.log(this.memberEmail)
+      const response = await SendEmailApi(this.memberEmail);
+      console.log(response.data.message)
+      
+      this.otpId=response.data.message
     },
   },
   beforeDestroy() {
+    // 组件销毁时清除计时器，防止内存泄漏
     clearInterval(this.timer);
   },
 };
@@ -178,6 +195,10 @@ export default {
   .verify-text {
     color: white;
     text-align: right;
+  }
+  .time-area{
+    font-size: 22px;
+    color: white;
   }
 }
 </style>

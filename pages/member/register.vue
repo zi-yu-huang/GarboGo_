@@ -2,7 +2,7 @@
 //- 註冊頁面
 #MemberRegister
   RegisterStep1(v-if="current == 'page1'", @DoneStep1="DoneStep1")
-  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2" :otpId = "otpId")
+  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2" :otpId = "otpId" :memberEmail="memberForm.memberEmail")
   RegisterStep3(v-if="current == 'page3'", @DoneStep3="DoneStep3")
   DoneVerify(v-if="current == 'page4'")
 </template>

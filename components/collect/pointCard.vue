@@ -14,7 +14,7 @@
         img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo2")
         .text-area
           .title1 {{ "垃圾袋1卷" }}
-          .title2 {{ "GarBoGo" }}
+          .title2 {{ "GarboGo" }}
       .text-bold {{ "請至合作超商兌換獎品" }}
       p {{ "．XX牌垃圾袋一卷" }}
       p {{ "．合作店家：全家一中店、萊爾富永太店" }}

@@ -13,8 +13,8 @@
         aFormModelItem
           aButton.btn-area(type="primary", @click="OnSubmit") {{ "送出" }}
         .verify-text(@click="OpenModal") {{ "未收到驗證碼?" }}
-        div {{ timeClock }}
-          .timeClock-text {{ min + "’" + sec }}
+        .time-area {{ formatCountdownTime() }}
+
           //- .timeClock-text {{ time }}
   DemoModal(
     :visible="isVisible",
@@ -46,15 +46,17 @@ export default {
     getNewEmail:{
       type:String,
       default:""
+    },
+    memberEmail:{
+      type:String,
+      default:""
     }
   },
   data() {
     return {
       loadingVisible:false,
+      countdown: 0,
       timer: null,
-      time: 60,
-      min: "",
-      sec: "",
       // uemail:"",
       tryAgain: null,
       isVisible: false,
@@ -70,19 +72,6 @@ export default {
       },
     };
   },
-  computed: {
-    timeClock() {
-      if (this.visible === true && this.tryAgain === null) {
-        this.timer = setInterval(this.countdown, 1000);
-      }
-      if (this.tryAgain === true) {
-        this.time = 5;
-        this.timer = null;
-        this.timer = setInterval(this.countdown, 1000);
-        // this.tryAgain=false
-      }
-    },
-  },
   mounted(){
     $(document).click((event) => {
       if (this.visible === true) {
@@ -90,13 +79,16 @@ export default {
         
         const target = $(event.target);
         const menuIcon = $(".content");
-        // const menuArea = $(".block-area");
+        const menuArea = $(".block-area");
         console.log(target)
         
         if (!target.closest(menuIcon).length ) {
+          if (!target.closest(menuArea).length ) {
+
           console.log("jkjj")
-          this.visible = false;
-          this.CloseVerifyModal();
+          // this.visible = false;
+          // this.CloseVerifyModal();
+          }
         }
       }
     });
@@ -112,6 +104,7 @@ export default {
   methods: {
     async Init() {
       await this.GetOtpTextApi(this.getOptId);
+      this.startCountdown()
     },
     OnSubmit() {
       if(this.memberForm.verificationCode === this.otpText ){
@@ -130,29 +123,24 @@ export default {
     },
     OpenModal() {
       this.isVisible = true;
-      this.tryAgain = true;
+      // this.tryAgain = true;
     },
     CloseVerifyModal(){
       this.memberForm.verificationCode = "";
       this.$emit("CloseVerifyModal")
     },
-    countdown() {
-      this.min = parseInt(this.time / 60);
-
-      this.sec = this.time % 60;
-      this.time--;
-      if (this.time < 0) {
-        clearInterval(this.timer);
-      }
-    },
     async SaveModal() {
       this.isVisible = false;
-      this.tryAgain = true;
-      this.Init();
-
+      this.visible=true
+      // this.tryAgain = true;
+      await this.GetSendEmailApi();
+      const response = await this.GetOtpTextApi(this.otpId);
+      this.otpText = response;   
     },
     CloseModal() {
       this.isVisible = false;
+      // this.tryAgain = true;
+
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -165,24 +153,41 @@ export default {
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
 
+    startCountdown() {
+      // 设置倒计时秒数，10分钟
+      const seconds = 600;
 
+      // 开始倒计时
+      this.countdown = seconds;
+      this.timer = setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+        } else {
+          // 倒计时结束，清除计时器
+          clearInterval(this.timer);
+        }
+      }, 1000);
+    },
+    formatCountdownTime() {
+      const minutes = Math.floor(this.countdown / 60);
+      const seconds = this.countdown % 60;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    },
     // API ------------------
     async GetOtpTextApi(otpId) {
       const response = await OtpTextApi(otpId);
       this.otpText = response
     },
-    // async GetSendEmailApi(){
-    //   console.log(this.getNewEmail)
+    async GetSendEmailApi() {
+      console.log(this.memberEmail)
+      const response = await SendEmailApi(this.memberEmail);
+      console.log(response.data.message)
       
-    //   const uemail = this.GetCookieValue("email")
-    //   const response = await SendEmailApi(this.getNewEmail);
-    //   console.log(response)
-      
-    //   return response.data.message      
-
-    // }
+      this.otpId=response.data.message
+    },
   },
   beforeDestroy() {
+    // 组件销毁时清除计时器，防止内存泄漏
     clearInterval(this.timer);
   },
 };
@@ -255,7 +260,10 @@ export default {
     // margin-top: 10px;
     font-size: 18px;
   }
-
+  .time-area{
+    font-size: 22px;
+    color: white;
+  }
   .input-font {
     padding: 0 20px;
     height: 50px;

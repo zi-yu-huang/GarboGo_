@@ -1,8 +1,8 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#RegisterStep2
+#ForgetModalStep2
   .content-area
-    .title-content 註冊
+    .title-content 忘記密碼
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberVerify", prop="memberVerify")
         aInput.input-font(
@@ -11,9 +11,10 @@
           :maxLength="9"
         )
       aFormModelItem
-        Button.btn-area(type="primary", @click="OnSubmit") {{ "下一步 " }}
-      .verify-text(@click="OpenModal") {{ "未收到驗證碼?" }}
-      .time-area {{ formatCountdownTime() }}
+        aButton.btn-area(type="primary", @click="OnSubmit") {{ "送出" }}
+        .verify-text(@click="OpenModal") {{ "未收到驗證碼?" }}
+      div {{ timeClock }}
+        .timeClock-text {{ min + "’" + sec }}
 
       DemoModal(
         :visible="isVisible",
@@ -24,9 +25,9 @@
 </template>
 
 <script>
-import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
-
+import { OtpTextApi } from "@/services/sendEmail";
 export default {
+  name: "ForgetModalStep2",
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
   },
@@ -35,19 +36,16 @@ export default {
       type: Number,
       default: "",
     },
-    memberEmail:{
-      type:String,
-      default:""
-    }
   },
-  name: "RegisterStep2",
   data() {
     return {
-      otpText: "",
-      countdown: 0,
       timer: null,
-      tryAgain: null,
+      time: 600,
+      min: "",
+      sec: "",
       isVisible: false,
+      otpText: "",
+
       memberForm: {
         memberVerify: "",
       },
@@ -60,7 +58,17 @@ export default {
     };
   },
   computed: {
-    timeClock() {}
+    timeClock() {
+      if (this.visible === true && this.tryAgain === null) {
+        this.timer = setInterval(this.countdown, 1000);
+      }
+      if (this.tryAgain === true) {
+        this.time = 5;
+        this.timer = null;
+        this.timer = setInterval(this.countdown, 1000);
+        // this.tryAgain=false
+      }
+    },
   },
   mounted() {
     this.Init();
@@ -69,7 +77,6 @@ export default {
     async Init() {
       const response = await this.GetOtpTextApi(this.otpId);
       this.otpText = response;
-      this.startCountdown()
     },
     OnSubmit() {
       if (this.otpText === this.memberForm.memberVerify) {
@@ -86,55 +93,29 @@ export default {
       this.isVisible = true;
       this.tryAgain = true;
     },
-    async SaveModal() {
+    countdown() {
+      this.min = parseInt(this.time / 60);
+
+      this.sec = this.time % 60;
+      this.time--;
+      if (this.time < 0) {
+        clearInterval(this.timer);
+      }
+    },
+    SaveModal() {
       this.isVisible = false;
       this.tryAgain = true;
-      await this.GetSendEmailApi();
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response;      
     },
     CloseModal() {
       this.isVisible = false;
     },
-
-    startCountdown() {
-      // 设置倒计时秒数，10分钟
-      const seconds = 600;
-
-      // 开始倒计时
-      this.countdown = seconds;
-      this.timer = setInterval(() => {
-        if (this.countdown > 0) {
-          this.countdown--;
-        } else {
-          // 倒计时结束，清除计时器
-          clearInterval(this.timer);
-        }
-      }, 1000);
-    },
-    formatCountdownTime() {
-      const minutes = Math.floor(this.countdown / 60);
-      const seconds = this.countdown % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    },
-
     //API------------
     async GetOtpTextApi(id) {
       const response = await OtpTextApi(id);
-      console.log(response)
-      
       return response;
-    },
-    async GetSendEmailApi() {
-      console.log(this.memberEmail)
-      const response = await SendEmailApi(this.memberEmail);
-      console.log(response.data.message)
-      
-      this.otpId=response.data.message
     },
   },
   beforeDestroy() {
-    // 组件销毁时清除计时器，防止内存泄漏
     clearInterval(this.timer);
   },
 };
@@ -142,7 +123,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#RegisterStep2 {
+#ForgetModalStep2 {
   .content-area {
     padding: 50px;
     display: flex;
@@ -150,6 +131,7 @@ export default {
     text-align: center;
     height: 70vh;
     justify-content: center;
+    // align-items: center;
   }
   @media (min-width: 769px) {
     .content-area {
@@ -161,7 +143,7 @@ export default {
   }
 }
 // 元件
-#RegisterStep2 {
+#ForgetModalStep2 {
   .title-content {
     color: white;
     font-size: 35px;
@@ -169,7 +151,7 @@ export default {
     font-weight: 800;
     line-height: 42px;
     letter-spacing: 0em;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
   .btn-area {
     background-color: #241f1f;
@@ -181,24 +163,40 @@ export default {
     /* line-height: 24px; */
     letter-spacing: 0em;
     color: white;
-    border: 1px solid black;
     border-radius: 14px;
     height: 45px;
   }
 
+  .btn-forget {
+    background-color: #c8ccc3 !important;
+  }
   .input-font {
     height: 45px;
     border-radius: 14px;
     font-size: 20px;
     padding: 0 20px;
   }
+  .alert-area {
+    z-index: 999;
+    position: absolute;
+    width: 100vw;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .alert-text {
+    width: 169px;
+    height: 56px;
+    justify-content: flex-start;
+    background-color: white;
+    border: 1px solid white;
+    display: flex;
+  }
+
   .verify-text {
     color: white;
     text-align: right;
-  }
-  .time-area{
-    font-size: 22px;
-    color: white;
   }
 }
 </style>

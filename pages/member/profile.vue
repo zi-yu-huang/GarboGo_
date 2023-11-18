@@ -18,6 +18,7 @@
         aIcon(:type="changeEdit")
   EditPhone(:visible="openPhone", @getVerify="GetVerify" @CloseEmailModal="CloseEmailModal")
   EditVerify(
+    :memberEmail="dataEmail"
     :visible="getVerify",
     :getOptId="getOptId",
     :getNewEmail="newEmail",

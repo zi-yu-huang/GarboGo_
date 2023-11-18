@@ -1,44 +1,30 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#LoginModal
+#ForgetModalStep1
   .content-area
-    .title-content 登入
+    .title-content 忘記密碼
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
           placeholder="abcd@gmail.com",
           v-model="memberForm.memberEmail"
-        ) 
-      aFormModelItem(ref="memberPassword", prop="memberPassword")
-        aInput.input-font(
-          type="password",
-          placeholder="請輸入密碼",
-          v-model="memberForm.memberPassword"
         )
       aFormModelItem
-        aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
-        aButton.btn-area.btn-forget(:disabled="btn_stauts" type="primary", @click="ForgetPwd") {{ "忘記密碼" }}
-
+        aButton.btn-area(type="primary", @click="OnSubmit") {{ "發送驗證碼" }}
 </template>
 
 <script>
+import { SendEmailApi } from "@/services/sendEmail";
 import { LoginApi } from "@/services/login.js";
+
 export default {
-  name: "LoginModal",
+  name: "ForgetModalStep1",
   data() {
     return {
-      isNotPwd: false,
       memberForm: {
-        memberPassword: "333",
         memberEmail: "ziyuhuang1007@gmail.com",
       },
       rules: {
-        memberPassword: [
-          {
-            required: true,
-            message: "不可為空",
-          },
-        ],
         memberEmail: [
           { required: true, message: "不可為空" },
           { type: "email", message: "請輸入有效的信箱" },
@@ -48,35 +34,35 @@ export default {
   },
   methods: {
     async OnSubmit() {
-      const response = await this.GetLoginApi(this.memberForm.memberEmail);
-
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          if (response.pwd === this.memberForm.memberPassword) {
-            this.memberForm.memberPassword = "";
-            this.memberForm.memberEmail = "";
-            this.$router.push("/member/profile");
+          const data = await this.GetCreateUserApi();
+          if (data.status === "error") {
+            this.$message.error(data.message);
           } else {
-            if(response.message==="查無該 email"){
-              this.$message.error("此帳號尚未註冊");
-            }else this.$message.error("密碼錯誤");
-
+            this.btn_stauts = true;
+            const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
+            const otpId = otp.data.message;
+            console.log(otpId);
+            this.$emit("DoneStep1", this.memberForm, otpId);
           }
+          this.memberForm.memberEmail = "";
         }
       });
     },
-    ForgetPwd(){
-      this.$router.push("/member/forgetPwd")
-      console.log("sdfhjk")
-      
+
+    //API ------------------------
+    async GetCreateUserApi() {
+      console.log(this.memberForm.memberEmail);
+
+      const response = await LoginApi(this.memberForm.memberEmail);
+      console.log(response);
+
+      return response;
     },
+    async GetSendEmailApi(email) {
+      const response = await SendEmailApi(email);
 
-
-    //API---------------------------
-    async GetLoginApi(uemail) {
-      const response = await LoginApi(uemail);
-      document.cookie = `email=${response.email}`;
-      document.cookie = `id=${response.uid}`;
       return response;
     },
   },
@@ -85,7 +71,7 @@ export default {
 
 <style lang="scss" scoped>
 // 排版
-#LoginModal {
+#ForgetModalStep1 {
   .content-area {
     padding: 50px;
     display: flex;
@@ -105,7 +91,7 @@ export default {
   }
 }
 // 元件
-#LoginModal {
+#ForgetModalStep1 {
   .title-content {
     color: white;
     font-size: 35px;
@@ -129,9 +115,8 @@ export default {
     height: 45px;
   }
 
-  .btn-forget{
-    background-color:#C8CCC3 !important;
-    margin-top: 5px;
+  .btn-forget {
+    background-color: #c8ccc3 !important;
   }
   .input-font {
     height: 45px;

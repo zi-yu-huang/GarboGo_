@@ -42,6 +42,8 @@ export default {
     // 先取得當前位置資訊
     await this.getCurrentLocation();
     await this.Init();
+    this.loadingVisible = false;
+
     this.initMap();
 
     const customIcon = require("@/style/icon/garbage-truck.png");

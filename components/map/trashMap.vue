@@ -6,7 +6,7 @@
       .img-text {{ "沒有定位 沒有方向" }}
       img(src="~/static/connect.png", alt="logo")
 
-  Loading(v-if="!isNoMap" :loadingVisible="loadingVisible")
+  //- Loading(v-if="!isNoMap" :loadingVisible="loadingVisible")
 </template>
 
 

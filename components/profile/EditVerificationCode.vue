@@ -22,7 +22,7 @@
     @SaveModal="SaveModal"
   )
     template(v-slot:article) {{ "確定要重新寄送驗證碼?" }}
-  Loading(:loadingVisible="loadingVisible")
+  Loading(v-if="loadingVisible")
 </template>
   
 <script>

@@ -10,7 +10,7 @@
         .close-btn(@click="CloseBtn", :style="{ background: closeColor }") {{ "關閉" }}
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
-  Loading(:loadingVisible="loadingVisible")
+  Loading(v-if="loadingVisible")
 </template>
 
 <script>

@@ -15,7 +15,7 @@
            )
         aFormModelItem
           aButton.btn-area( type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
-  Loading(:loadingVisible="loadingVisible")
+    Loading(v-if="loadingVisible")
 </template>
 
 <script>

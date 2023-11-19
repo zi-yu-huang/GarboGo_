@@ -2,7 +2,11 @@
 //- 請填寫頁面👈
 #MapIndex
   #map.google-map(ref="mapRef")
-  Loading(:loadingVisible="loadingVisible")
+    .img-mask(v-if="isNoMap")
+      .img-text {{ "沒有定位 沒有方向" }}
+      img(src="~/static/connect.png", alt="logo")
+
+  Loading(v-if="!isNoMap" :loadingVisible="loadingVisible")
 </template>
 
 
@@ -16,11 +20,12 @@ export default {
   name: "MapIndex",
   components: {
     GarbageModal: () => import("@/components/modal/garbageModal"),
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading: () => import("@/components/modal/loading.vue"),
   },
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
+      isNoMap: false,
       marker: { position: { lat: 10, lng: 10 } },
       visible: false,
       map: null,
@@ -33,23 +38,23 @@ export default {
     };
   },
   async mounted() {
-    this.loadingVisible=true
+    this.loadingVisible = true;
     // 先取得當前位置資訊
     await this.getCurrentLocation();
     await this.Init();
-    this.loadingVisible=false
+    this.loadingVisible = false;
     this.initMap();
 
-    const customIcon = require("@/style/icon/masculine-user.png")
-    
+    const customIcon = require("@/style/icon/masculine-user.png");
+
     // 在当前位置上创建标记
     const currentLocationMarker = new google.maps.Marker({
       position: this.currentLocation,
       map: this.map,
       icon: {
-        url:customIcon,
+        url: customIcon,
         scaledSize: new google.maps.Size(50, 50),
-      }
+      },
     });
 
     // 取得餐廳假資料
@@ -126,7 +131,7 @@ export default {
         marker.addListener("click", () => {
           const infowindow = new google.maps.InfoWindow({
             maxWidth: 300,
-            minWidth: 180
+            minWidth: 180,
           });
 
           const startLocation = new google.maps.LatLng(
@@ -196,6 +201,7 @@ export default {
 
               geocoder.geocode({ location: latLng }, (results, status) => {
                 if (status === "OK" && results[0]) {
+                  this.isNoMap = false;
                   this.currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -205,17 +211,24 @@ export default {
                   resolve();
                 } else {
                   console.log("無法獲取當前位置");
+                  this.isNoMap = true;
+                  console.log("sdfjsl");
+
                   reject();
                 }
               });
             },
             (error) => {
               console.log("獲取位置失敗：", error);
+              this.isNoMap = true;
+              console.log("sdfjsl");
               reject();
             }
           );
         } else {
           console.log("瀏覽器不支援 Geolocation API");
+          this.isNoMap = true;
+
           reject();
         }
       });
@@ -231,10 +244,29 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 .google-map {
   width: 100%;
   height: 100vh;
+}
+.img-mask {
+  background-color: #343f3b;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+
+  .img-text {
+    font-size: 22px;
+    color: white;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>
 

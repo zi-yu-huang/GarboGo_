@@ -2,6 +2,11 @@
 //- 請填寫頁面👈
 #GarbageTruckData
   #mapStaff.google-map(ref="mapRef")
+    .img-mask(v-if="isNoMap")
+      .img-text {{ "沒有定位 沒有方向" }}
+      img(src="~/static/connect.png", alt="logo")
+
+  Loading(v-if="!isNoMap", :loadingVisible="loadingVisible")
 </template>
 
 
@@ -13,9 +18,12 @@ export default {
   name: "GarbageTruckData",
   components: {
     GarbageModal: () => import("@/components/modal/garbageModal"),
+    Loading: () => import("@/components/modal/loading.vue"),
   },
   data() {
     return {
+      loadingVisible: false,
+      isNoMap: false,
       dateTime: "",
       marker: { position: { lat: 10, lng: 10 } },
       visible: false,
@@ -29,6 +37,8 @@ export default {
     };
   },
   async mounted() {
+    this.loadingVisible = true;
+
     // 先取得當前位置資訊
     await this.getCurrentLocation();
     await this.Init();
@@ -221,17 +231,23 @@ export default {
                   resolve();
                 } else {
                   console.log("無法獲取當前位置");
+                  this.isNoMap = true;
+
                   reject();
                 }
               });
             },
             (error) => {
               console.log("獲取位置失敗：", error);
+              this.isNoMap = true;
+
               reject();
             }
           );
         } else {
           console.log("瀏覽器不支援 Geolocation API");
+          this.isNoMap = true;
+
           reject();
         }
       });
@@ -239,7 +255,7 @@ export default {
 
     // API--------------------------------------
     async GetStaffTrashListApi() {
-      const response = await StaffTrashList("JohnCena01");
+      const response = await StaffTrashList("西屯區清潔人員");
       this.trashcanList = response.data;
     },
   },
@@ -247,10 +263,29 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 .google-map {
   width: 100%;
   height: 100vh;
+}
+.img-mask {
+  background-color: #343f3b;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+
+  .img-text {
+    font-size: 22px;
+    color: white;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>
 

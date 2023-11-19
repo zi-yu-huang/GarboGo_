@@ -5,12 +5,12 @@
     .title-content 重設密碼
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="newPassword", prop="newPassword")
-            aInput.input-font(
-              type="password",
-              placeholder="請輸入密碼",
-              v-model="memberForm.newPassword",
-              :maxLength="9"
-            )
+        aInput.input-font(
+          type="password",
+          placeholder="請輸入密碼",
+          v-model="memberForm.newPassword",
+          :maxLength="9"
+        )
       aFormModelItem(ref="newPasswordAgain", prop="newPasswordAgain")
         aInput.input-font(
           type="password",
@@ -48,7 +48,7 @@ export default {
             },
             trigger: "blur",
           },
-        ]
+        ],
       },
     };
   },
@@ -56,7 +56,8 @@ export default {
     OnSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$emit("DoneStep3", true,this.memberForm);
+          this.$emit("DoneStep3", true, this.memberForm);
+          this.$message.success("成功重設密碼");
           this.memberForm.Password = "";
           this.memberForm.PasswordAgain = "";
         }

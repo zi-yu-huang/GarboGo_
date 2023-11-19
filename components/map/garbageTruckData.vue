@@ -18,7 +18,7 @@ export default {
   name: "GarbageTruckData",
   components: {
     GarbageModal: () => import("@/components/modal/garbageModal"),
-    Loading: () => import("@/components/modal/loading.vue"),
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   data() {
     return {

@@ -29,7 +29,7 @@ export default {
   name: "TrashList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   data() {
     return {

@@ -23,7 +23,7 @@ import $ from "jquery";
 import {SendEmailApi} from "@/services/sendEmail.js"
 export default {
   components:{
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   name: "EditPhone",
   props:{

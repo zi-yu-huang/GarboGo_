@@ -5,8 +5,8 @@
     .img-mask(v-if="isNoMap")
       .img-text {{ "沒有定位 沒有方向" }}
       img(src="~/static/connect.png", alt="logo")
-
-  //- Loading(v-if="!isNoMap", :loadingVisible="loadingVisible")
+  div(v-if="!isNoMap")
+    Loading(v-if="loadingVisible")
 </template>
 
 

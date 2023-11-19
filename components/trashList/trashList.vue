@@ -18,7 +18,7 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  Loading(:loadingVisible="loadingVisible")
+  Loading(v-if="loadingVisible")
 
 </template>
 

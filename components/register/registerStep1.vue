@@ -13,7 +13,7 @@
         )
       aFormModelItem
         aButton.btn-area( type="primary", @click="OnSubmit") {{ "下一步" }}
-    Loading(:loadingVisible="loadingVisible")
+  Loading(v-if="loadingVisible")
 </template>
 
 <script>

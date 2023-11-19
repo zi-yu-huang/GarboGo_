@@ -91,7 +91,10 @@ export default {
       this.tryAgain = true;
       await this.GetSendEmailApi();
       const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response;      
+      this.otpText = response; 
+      clearInterval(this.timer);
+      this.startCountdown();   
+      this.formatCountdownTime();  
     },
     CloseModal() {
       this.isVisible = false;

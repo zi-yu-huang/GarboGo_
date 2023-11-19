@@ -11,6 +11,8 @@
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "發送驗證碼" }}
+    Loading(:loadingVisible="loadingVisible")
+
 </template>
 
 <script>
@@ -19,8 +21,13 @@ import { LoginApi } from "@/services/login.js";
 
 export default {
   name: "ForgetModalStep1",
+  components: {
+    Loading:()=>import("@/components/modal/loading.vue")
+  },
   data() {
     return {
+      loadingVisible:false,
+
       memberForm: {
         memberEmail: "ziyuhuang1007@gmail.com",
       },
@@ -36,9 +43,10 @@ export default {
     async OnSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
+          this.loadingVisible=true
           const data = await this.GetCreateUserApi();
           if (data.status === "error") {
-            this.$message.error(data.message);
+            this.$message.error("此帳號尚未註冊");
           } else {
             this.btn_stauts = true;
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
@@ -46,6 +54,7 @@ export default {
             console.log(otpId);
             this.$emit("DoneStep1", this.memberForm, otpId);
           }
+          this.loadingVisible=false
           this.memberForm.memberEmail = "";
         }
       });

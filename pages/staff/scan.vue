@@ -1,7 +1,6 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #StaffScan
-  MenuList
   .sucess-mask(v-if="sucess")
     .sucess-text {{ "已成功連線至垃圾桶!" }}
   .alert-area(v-if="isError")
@@ -12,7 +11,6 @@
       .camera-mask
       qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
 
-  MenuFooter
 </template>
 
 <script>
@@ -21,8 +19,6 @@ export default {
   layout: "staff",
   components: {
     QrcodeStream,
-    MenuList: () => import("@/components/footer/menuList"),
-    MenuFooter: () => import("@/components/footer/MenuFooter"),
   },
   name: "StaffScan",
   data() {

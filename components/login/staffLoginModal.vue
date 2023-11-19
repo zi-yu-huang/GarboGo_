@@ -27,8 +27,8 @@ export default {
   data() {
     return {
       memberForm: {
-        memberPassword: "0000",
-        memberEmail: "cena01@gmail.com",
+        memberPassword: "0001",
+        memberEmail: "0001@gmail.com",
       },
       rules: {
         memberPassword: [{ required: true, message: "不可為空" }],

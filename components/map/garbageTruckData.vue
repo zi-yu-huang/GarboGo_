@@ -222,6 +222,8 @@ export default {
 
               geocoder.geocode({ location: latLng }, (results, status) => {
                 if (status === "OK" && results[0]) {
+                  this.isNoMap = false;
+
                   this.currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -270,7 +272,7 @@ export default {
 }
 .img-mask {
   background-color: #343f3b;
-  height: 100%;
+  height: 90%;
   display: flex;
   align-items: center;
   flex-direction: row;

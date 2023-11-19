@@ -17,7 +17,7 @@
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
-        aButton.btn-area.btn-forget(:disabled="btn_stauts" type="primary", @click="ForgetPwd") {{ "忘記密碼" }}
+        aButton.btn-area.btn-forget(type="primary", @click="ForgetPwd") {{ "忘記密碼" }}
 
 </template>
 

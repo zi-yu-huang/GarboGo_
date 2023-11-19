@@ -1,7 +1,7 @@
 <template lang="pug">
 //- 請填寫功能描述👈
-#Loading( v-if="loadingVisible")
-  .loading-mask
+#Loading
+  .loading-mask( v-if="loadingVisible")
     .block-area
       aSpin(size="large")
 </template>
@@ -10,7 +10,7 @@
 export default {
   props: {
     loadingVisible: {
-      type: "boolean",
+      type: Boolean,
       default: "",
     },
   },

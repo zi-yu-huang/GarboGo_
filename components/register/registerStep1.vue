@@ -12,7 +12,7 @@
           v-model="memberForm.memberEmail"
         )
       aFormModelItem
-        aButton.btn-area(:disabled="btn_stauts" type="primary", @click="OnSubmit") {{ "下一步" }}
+        aButton.btn-area( type="primary", @click="OnSubmit") {{ "下一步" }}
     Loading(:loadingVisible="loadingVisible")
 </template>
 
@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      btn_stauts:false,
       loadingVisible:false,
       memberForm: {
         memberName: "",
@@ -51,7 +50,6 @@ export default {
           if (data.status !== 'error') {
             this.$message.error("該 email 已被註冊");
           } else {
-            this.btn_stauts=true
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
             const otpId = otp.data.message
             console.log(otpId)

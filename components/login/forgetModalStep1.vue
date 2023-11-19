@@ -11,7 +11,7 @@
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "發送驗證碼" }}
-    Loading(:loadingVisible="loadingVisible")
+    //- Lading(:loadingVisible="loadingVisible")
 
 </template>
 

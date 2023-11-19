@@ -46,7 +46,7 @@ export default {
       default: "",
     },
     dateList: {
-      type: String,
+      type: Array,
       default: "",
     },
     isShowChange: {
@@ -64,7 +64,7 @@ export default {
     };
   },
   computed: {
-    isShowChange() {
+    shouldShowChange() {
       const date = new Date().toISOString().substring(0, 7);
       if (this.selectedDate !== date) {
         return true;

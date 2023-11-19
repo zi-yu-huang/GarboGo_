@@ -251,7 +251,7 @@ export default {
 }
 .img-mask {
   background-color: #343f3b;
-  height: 90%;
+  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: row;

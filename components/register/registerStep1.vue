@@ -23,7 +23,7 @@ import { LoginApi } from "@/services/login.js";
 export default {
   name: "RegisterStep1",
   components:{
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   data() {
     return {

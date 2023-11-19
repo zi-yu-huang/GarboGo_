@@ -17,7 +17,7 @@
 import { OpenTrashApi } from "../../services/openTrash";
 export default {
   components:{
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   name: "OpenTrashcan",
   layout: "default",

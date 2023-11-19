@@ -31,7 +31,7 @@ import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   name: "EditVerificationCode",
   props: {

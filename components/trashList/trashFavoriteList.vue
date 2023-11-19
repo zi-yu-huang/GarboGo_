@@ -43,7 +43,7 @@
     @CloseModal="CloseModal",
     @SaveModal="SaveModal"
   )
-  Loading(:loadingVisible="loadingVisible")
+  Loading(v-if="loadingVisible")
 
 </template>
 
@@ -56,7 +56,7 @@ export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    Loading:()=>import("@/components/modal/loading.vue")
+    Loading:()=>import("@/components/modal/loadingModal.vue")
   },
   data() {
     return {

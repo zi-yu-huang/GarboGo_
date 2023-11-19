@@ -5,7 +5,8 @@
     :columns="columns",
     :data-source="list",
     :pagination="false",
-    :rowClassName="rowClassName"
+    :rowClassName="rowClassName",
+    :row-key="rowKey"
   )
     template(slot="title", slot-scope="currentPageData") {{ title }}
     span(slot="General", slot-scope="General")
@@ -82,6 +83,10 @@ export default {
     async Init() {
       await this.GetStaffList();
       this.EditList();
+    },
+    rowKey(record) {
+
+      return record.General.tid;
     },
     EditList() {
       for (const item in this.originList) {

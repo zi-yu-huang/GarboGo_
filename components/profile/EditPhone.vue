@@ -14,7 +14,7 @@
             v-model="memberForm.memberEmail"
            )
         aFormModelItem
-          aButton.btn-area(:disabled="btn_stauts" type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
+          aButton.btn-area( type="primary" @click="OnSubmit") {{"接收驗證碼 "}}
   Loading(:loadingVisible="loadingVisible")
 </template>
 
@@ -35,7 +35,6 @@ export default {
   data () {
     return {
       loadingVisible:false,
-      btn_stauts:false,
       memberForm:{
         memberEmail: "",
       },
@@ -74,7 +73,6 @@ export default {
       this.$refs.ruleForm.validate(async(valid) => {
         if (valid) {
           this.loadingVisible=true
-          this.btn_stauts=true
           const response = await this.GetSendEmailApi(this.memberForm.memberEmail)
           this.$emit("getVerify",true,response,this.memberForm.memberEmail)
           console.log(true,response,this.memberForm.memberEmail)

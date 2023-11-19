@@ -268,11 +268,11 @@ export default {
 <style lang="scss" scoped>
 .google-map {
   width: 100%;
-  height: 100vh;
+  height: 70vh;
 }
 .img-mask {
   background-color: #343f3b;
-  height: 85%;
+  height: 70vh;
   display: flex;
   align-items: center;
   flex-direction: row;

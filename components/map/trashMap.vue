@@ -3,7 +3,8 @@
 #MapIndex
   #map.google-map(ref="mapRef")
     .img-mask(v-if="isNoMap")
-      .img-text {{ "沒有定位 沒有方向" }}
+      .img-text-big {{ "沒有定位 沒有方向" }}
+      .img-text {{ "*請開啟定位，並重整畫面*" }}
       img(src="~/static/connect.png", alt="logo")
   div(v-if="!isNoMap")
     Loading(v-if="loadingVisible")
@@ -261,6 +262,10 @@ export default {
 
   .img-text {
     font-size: 22px;
+    color: white;
+  }
+  .img-text-big {
+    font-size: 30px;
     color: white;
   }
   img {

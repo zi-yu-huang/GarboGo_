@@ -86,6 +86,10 @@ export default {
       } else this.$router.push("/member");
     },
     GoBack() {
+    //  const isLogin =  document.cookie === "" || document.cookie === undefined;
+    //  if (isLogin){
+    //   this.$router
+    //  }
       this.$router.go(-1);
     },
     GetCookieValue(cookieName) {

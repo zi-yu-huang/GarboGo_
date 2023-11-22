@@ -164,6 +164,8 @@ export default {
                     props: {
                       general: location.General,
                       recycle: location.Recycle,
+                      lat:location.lat,
+                      lng:location.lng
                     },
                   }),
               });

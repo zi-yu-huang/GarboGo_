@@ -1,13 +1,13 @@
 <template lang="pug">
 #PointCard
   div
-    .coupon(v-if="!showDetail")
+    .coupon(v-if="!showDetail" @click="handleClick")
       img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo")
       .line
       .text-area
         .text-contant {{ "垃圾袋1卷" }}
         .text-date {{ "到期日 2023-12-31" }}
-      .change-btn(@click="handleClick") {{ "點擊兌換" }}
+      .change-btn {{ "點擊兌換" }}
 
     .coupon-detail(v-if="showDetail", @click="handleClick")
       .title-area

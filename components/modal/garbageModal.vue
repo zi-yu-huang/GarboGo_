@@ -1,20 +1,22 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #GarbageModal
-  .trash-area
-    p {{ "一般垃圾" }}
-    aIcon.trashIcon(
-      :type="'delete'",
-      :theme="'filled'",
-      :style="{ color: trashColor(general.tcapacity) }"
-    ) 
-  .trash-area
-    p {{ "回收垃圾" }}
-    aIcon.trashIcon(
-      :type="'delete'",
-      :theme="'filled'",
-      :style="{ color: trashColor(recycle.tcapacity) }"
-    ) 
+  .trash-flex
+    .trash-area
+      p {{ "一般垃圾" }}
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(general.tcapacity) }"
+      ) 
+    .trash-area
+      p {{ "回收垃圾" }}
+      aIcon.trashIcon(
+        :type="'delete'",
+        :theme="'filled'",
+        :style="{ color: trashColor(recycle.tcapacity) }"
+      ) 
+  a.map-link(@click="toGoogleMap") {{ "在google地圖上顯示" }}
 </template>
 
 <script>
@@ -25,14 +27,21 @@ export default {
       type: Object,
       default: null,
     },
-    recycle:{
-      type:Object,
-      default:null
-    }
+    recycle: {
+      type: Object,
+      default: null,
+    },
+    lat: {
+      type: Number,
+      default: null,
+    },
+    lng: {
+      type: Number,
+      default: null,
+    },
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     trashColor() {
@@ -54,27 +63,44 @@ export default {
       };
     },
   },
+  methods: {
+    toGoogleMap() {
+      console.log(typeof this.lat, this.lng);
+
+      window.open(
+        `https://www.google.com/maps/dir/?api=1&destination=${this.lat},${this.lng}`,
+        "_blank"
+      );
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
 #GarbageModal {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  font-size: 12px;
-  font-weight: 800;
-  .trash-area {
-    // align-content: center;
+  .trash-flex {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    .trash-area {
+      // align-content: center;
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 // 元件
 #GarbageModal {
   .trashIcon {
     font-size: 25px;
+  }
+  .map-link {
+    color: #1a73e8;
+    text-align: center;
+    padding-left: 20px;
   }
 }
 </style>

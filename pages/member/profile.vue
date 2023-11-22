@@ -79,6 +79,11 @@ export default {
   },
   mounted() {
     this.Init();
+    console.log(window.location.pathname)
+    console.log(window.location.pathname.toLowerCase().includes("login"))
+    if (window.location.pathname.toLowerCase().includes("login")){
+      window.location.href = "/member"
+    }
   },
   methods: {
     async Init() {

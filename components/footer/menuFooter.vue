@@ -59,6 +59,7 @@ export default {
       const cookie = this.GetCookieValue("email")
       if(cookie){
         this.$router.push("/map");
+        
       }
       else this.$router.push("/member")
     },

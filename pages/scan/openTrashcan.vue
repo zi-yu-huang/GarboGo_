@@ -23,7 +23,7 @@ export default {
   layout: "default",
   data() {
     return {
-      loadingVisible:true,
+      loadingVisible:false,
       openColor: "rgb(134 215 18)",
       closeColor: "rgb(234 207 207)",
     };

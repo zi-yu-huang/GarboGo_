@@ -13,12 +13,12 @@
             aIcon.trashIcon.icon-size(
               :type="'delete'",
               :theme="'filled'",
-              :style="{ color: trashColor(street.General.tcapacity) ,fontSize:'18px'}"
+              :style="{ color: trashColor(street.General.tcapacity) ,fontSize:'22px'}"
             )
             aIcon.trashIcon.icon-size(
               :type="'delete'",
               :theme="'filled'",
-              :style="{ color: trashColor(street.Recycle.tcapacity),fontSize:'18px' }"
+              :style="{ color: trashColor(street.Recycle.tcapacity),fontSize:'22px' }"
             ) 
             aIcon.icon-area(
               slot="extra",
@@ -254,5 +254,7 @@ export default {
   justify-content: center;
   gap: 10px;
   font-size: 14px;
+  border: 1px solid black;
+  border-radius: 18px;
 }
 </style>

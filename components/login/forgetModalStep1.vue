@@ -11,7 +11,7 @@
         )
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "發送驗證碼" }}
-    Lading(:loadingVisible="loadingVisible")
+    Loading(v-if="loadingVisible")
 </template>
 
 <script>
@@ -47,11 +47,11 @@ export default {
           if (data.status === "error") {
             this.$message.error("此帳號尚未註冊");
           } else {
-            this.btn_stauts = true;
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
             const otpId = otp.data.message;
             console.log(otpId);
-            this.$emit("DoneStep1", this.memberForm, otpId);
+            
+            this.$emit("DoneStep1", data, otpId);
           }
           this.loadingVisible = false;
           this.memberForm.memberEmail = "";

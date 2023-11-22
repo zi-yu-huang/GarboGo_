@@ -134,7 +134,13 @@ export default {
           const garbageModalComponent = new Vue({
             render: (h) =>
               h(GarbageModal, {
-                props: { general: location.General, recycle: location.Recycle },
+                props: {
+                  general: location.General,
+                  recycle: location.Recycle,
+                  lat: location.lat,
+                  lng: location.lng,
+                  tname: location.tname,
+                },
               }),
           });
 

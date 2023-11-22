@@ -23,12 +23,20 @@
 </template>
 
 <script>
+import {EditUserApi} from '@/services/editUser.js'
 export default {
   name: "ForgetModalStep3",
+  props:{
+    memberProfile:{
+      type:Object,
+      default:""
+    }
+  },
   data() {
     return {
       memberForm: {
-        oldPassword: "ziyuhuang1007@gmail.com",
+        newPassword: "",
+        newPasswordAgain:""
       },
       rules: {
         newPassword: [
@@ -54,15 +62,24 @@ export default {
   },
   methods: {
     OnSubmit() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(async(valid) => {
         if (valid) {
-          this.$emit("DoneStep3", true, this.memberForm);
+          await this.GetApiEditUserApi(this.memberProfile)
+          this.$emit("DoneStep3", true);
           this.$message.success("成功重設密碼");
           this.memberForm.Password = "";
           this.memberForm.PasswordAgain = "";
         }
       });
     },
+
+    //API --------
+    async GetApiEditUserApi(data){
+      console.log(this.memberProfile)
+      console.log(data.uid,data.uname,data.email,this.memberForm.newPassword)
+      
+      const response = await EditUserApi(data.uid,data.uname,data.email,this.memberForm.newPassword)
+    }
   },
 };
 </script>

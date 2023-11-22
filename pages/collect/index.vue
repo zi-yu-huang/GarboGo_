@@ -8,14 +8,22 @@
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
           div(v-for="item of dateList")
-            CA(:selectedDate="item.title", :dateList="item.list",:isShowChange="item.isShowChange")
+            CA(
+              :selectedDate="item.title",
+              :dateList="item.list",
+              :isShowChange="item.isShowChange"
+            )
       aTabPane(key="2", tab="兌換卷")
-        .point-area
-          PointCard
+          div(v-for="index of this.totalT1")
+            .point-area
+              PointCard(:value="`卷`")
+          div(v-for="index of this.totalT0")
+            .point-area
+              PointCard(:value="`包`")
 </template>
 
 <script>
-import { PointApi, InsertPointApi, UpdataPointApi } from "@/services/point";
+import { UserTotalPointApi,TicketNumApi } from "@/services/point";
 export default {
   layout: "default",
   components: {
@@ -28,14 +36,14 @@ export default {
     return {
       point: 0,
       card: 0,
+      uid: "",
+      totalT0:"",//t0:包,t1:卷
+      totalT1:"",
       dateList: [
-        { title: "2023-10", list: ["2023-10-02", "2023-10-05", "2023-10-08"],isShowChange:true },
-        { title: "2023-11", list: ["2023-11-04", "2023-11-10", "2023-11-13"],isShowChange:false },
       ],
       lastPoint: 0,
       exchange_ticket: 0,
       userPointList: [],
-      userId: null,
     };
   },
   mounted() {
@@ -43,12 +51,12 @@ export default {
   },
   methods: {
     async Init() {
-      // await this.GetPointApi();
-      const id = this.GetCookieValue("id");
-      this.userId = parseInt(id);
+      this.uid = this.GetCookieValue("id");
+      await this.GetUserTotalPointApi(this.uid);
+      await this.GetTicketNumApi(this.uid);
     },
     callback(key) {
-      console.log(key);
+      // console.log(key);
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -78,26 +86,23 @@ export default {
       return months;
     },
     onPanelChange(value, mode) {
-      console.log(value, mode);
+      // console.log(value, mode);
     },
-    //API------------------
-    // async GetPointApi() {
-    //   const response = await PointApi();
-    //   this.userPointList = response.data;
-    // },
-    // async GetInsertPointApi(uid) {
-    //   const insert = await InsertPointApi(uid);
-    //   if (insert.data.status === "success") {
-    //     this.$message.success("兌換成功");
-    //     await this.GetUpdatePointApi(uid, -10);
-    //     this.$nextTick(() => {
-    //       this.Init();
-    //     });
-    //   }
-    // },
-    // async GetUpdatePointApi(uid, point) {
-    //   const update = await UpdataPointApi(uid, point);
-    // },
+
+    //API-----
+    async GetUserTotalPointApi(id) {
+      console.log(id);
+
+      const response = await UserTotalPointApi(id);
+      this.dateList=response.data[0].dateList
+      console.log(response.data[0].dateList);
+    },
+    async GetTicketNumApi(uid) {
+      const response = await TicketNumApi(uid);
+      this.totalT0=response.data.t0
+      this.totalT1=response.data.t1
+      console.log(this.totalT0)
+    },
   },
 };
 </script>
@@ -135,7 +140,7 @@ export default {
       text-align: left;
     }
   }
-  .point-area{
+  .point-area {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -169,7 +174,7 @@ export default {
       justify-content: center;
     }
   }
-  .cal-area{
+  .cal-area {
     margin: 20px 20px;
     border-radius: 10px;
   }
@@ -185,12 +190,14 @@ export default {
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
   width: 118%;
 }
-::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value{
+::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value,
+.ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
   color: rgba(0, 0, 0, 0.65);
   background: white;
 }
 
-::v-deep .ant-tabs .ant-tabs-top-content, .ant-tabs .ant-tabs-bottom-content {
+::v-deep .ant-tabs .ant-tabs-top-content,
+.ant-tabs .ant-tabs-bottom-content {
   margin-bottom: 110px;
   background-color: #a1cd7b;
 }

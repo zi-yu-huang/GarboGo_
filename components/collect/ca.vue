@@ -34,6 +34,7 @@
 </template>
 <script>
 import $ from "jquery";
+import { AddTicketApi } from "../../services/point";
 export default {
   name: "CA",
   components: {
@@ -111,7 +112,6 @@ export default {
       for (const item of this.dateList) {
         if (isoDateString.substring(0, 5) === item.substring(5, 10)) {
           listData = [{ content: "" }];
-          console.log(listData);
           break;
         }
       }
@@ -123,9 +123,36 @@ export default {
     CloseModal() {
       this.visibleModal = false;
     },
-    SaveModal() {
+    async SaveModal() {
+      const listLength = this.dateList.length;
+      console.log(listLength);
+      if (listLength >= 5 &&  listLength<10) {
+        await this.GetAddTicketApi(1) //0:包(三卷),1:卷
+      } else if(listLength>=10){
+        await this.GetAddTicketApi(0) //0:包(三卷),1:卷
+
+      }
       this.visibleModal = false;
     },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+  },
+
+  //API-------
+  async GetAddTicketApi(value) {
+    const uid = this.GetCookieValue("id");
+
+    const res = await AddTicketApi(uid, value);
+    console.log(res);
+    return res;
   },
 };
 </script>

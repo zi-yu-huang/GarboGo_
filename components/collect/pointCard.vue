@@ -5,7 +5,7 @@
       img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo")
       .line
       .text-area
-        .text-contant {{ "垃圾袋1卷" }}
+        .text-contant {{ "垃圾袋1"+value }}
         .text-date {{ "到期日 2023-12-31" }}
       .change-btn {{ "點擊兌換" }}
 
@@ -13,10 +13,10 @@
       .title-area
         img.imgLogo(src="~/static/PENUP_20230623_161116.png", alt="logo2")
         .text-area
-          .title1 {{ "垃圾袋1卷" }}
+          .title1 {{ "垃圾袋1"+value}}
           .title2 {{ "GarboGo" }}
       .text-bold {{ "請至合作超商兌換獎品" }}
-      p {{ "．XX牌垃圾袋一卷" }}
+      p {{ "．XX牌垃圾袋一"+value }}
       p {{ "．合作店家：全家一中店、萊爾富永太店" }}
       p {{ "．每張兌換卷，限兌換一次" }}
       .line-detail
@@ -26,18 +26,45 @@
 </template>
     
   <script>
+import { TicketNumApi } from '../../services/point';
+
 export default {
   name: "PointCard",
+  props:{
+    value:{
+      type:String,
+      default:""
+    }
+  },
   data() {
     return {
       showDetail: false,
+      uid:"",
+
     };
   },
+  computed:{
+    // nameValue(){
+      // return this.value;
+    // }
+  },
   methods: {
-    // ChangeCard() {},
     handleClick() {
       this.showDetail = !this.showDetail;
     },
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
+
+
   },
 };
 </script>

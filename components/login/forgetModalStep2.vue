@@ -36,7 +36,7 @@ export default {
       type: Number,
       default: "",
     },
-    memberEmail:{
+    memberProfile:{
       type:String,
       default:""
     }
@@ -145,8 +145,8 @@ export default {
       return response;
     },
     async GetSendEmailApi() {
-      console.log(this.memberEmail)
-      const response = await SendEmailApi(this.memberEmail);
+      console.log(this.memberProfile)
+      const response = await SendEmailApi(this.memberProfile.email);
       console.log(response.data.message)
       
       this.otpId=response.data.message

@@ -21,6 +21,7 @@
     :visible="getVerify",
     :getOptId="getOptId",
     @verifyDone="VerifyDone"
+    @ChangeVerify="ChangeVerify"
   )
   EditPassword(
     :visible="openPassword",
@@ -100,6 +101,8 @@ export default {
       this.openPhone = val;
     },
     GetVerify(val, otpId) {
+      console.log(val,otpId)
+      
       this.getVerify = val;
 
       this.getOptId = otpId;
@@ -110,6 +113,11 @@ export default {
       this.ChangeEditBtn();
       this.getInit = true;
     },
+    ChangeVerify(otpText){
+      console.log(otpText)
+      
+    },
+
     OpenPassword(val) {
       this.openPassword = val;
     },

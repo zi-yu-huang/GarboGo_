@@ -77,7 +77,11 @@ export default {
       const response = await LoginApi(uemail);
       document.cookie = `email=${response.email}`;
       document.cookie = `id=${response.uid}`;
+      document.cookie = `uname=${response.uname}`;
+
+      console.log(response)
       return response;
+      
     },
   },
 };

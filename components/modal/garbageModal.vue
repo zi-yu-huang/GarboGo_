@@ -1,6 +1,7 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #GarbageModal
+  p.title {{ tname }}
   .trash-flex
     .trash-area
       p {{ "一般垃圾" }}
@@ -16,7 +17,7 @@
         :theme="'filled'",
         :style="{ color: trashColor(recycle.tcapacity) }"
       ) 
-  a.map-link(@click="toGoogleMap") {{ "在google地圖上顯示" }}
+  a.map-link(@click="toGoogleMap") {{ "在Google 地圖上查看" }}
 </template>
 
 <script>
@@ -39,6 +40,10 @@ export default {
       type: Number,
       default: null,
     },
+    tname:{
+      type:String,
+      default:null
+    }
   },
   data() {
     return {};
@@ -79,12 +84,18 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #GarbageModal {
+  .title{
+    font-weight: 800;
+
+  }
   .trash-flex {
     display: flex;
     justify-content: center;
     gap: 14px;
     font-size: 12px;
     font-weight: 800;
+    margin-bottom: 5px;
+
     .trash-area {
       // align-content: center;
       display: flex;

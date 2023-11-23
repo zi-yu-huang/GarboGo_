@@ -15,40 +15,78 @@
 
 <script>
 import { OpenTrashApi } from "../../services/openTrash";
+import { AddPointApi } from "../../services/point";
 export default {
-  components:{
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+  components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   name: "OpenTrashcan",
   layout: "default",
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
       openColor: "rgb(134 215 18)",
       closeColor: "rgb(234 207 207)",
+      isOpen: false,
     };
   },
   methods: {
     async OpenBtn() {
+      this.isOpen = true;
       this.openColor = "rgb(205 231 169)";
       this.closeColor = "#e32e2e";
-      this.visible=true
+      this.loadingVisible = true;
       await this.GetOpenTrashApi("open");
-      this.visible=false
+      this.loadingVisible = false;
+      if (this.isOpen === true) {
+        let elapsedTime = 0; // Initialize a counter for elapsed time
 
+        const timer = setInterval(() => {
+          elapsedTime += 1; // Increment the elapsed time counter every second
+          console.log(elapsedTime);
+
+          if (elapsedTime > 10) {
+            clearInterval(timer); // Stop the interval when 15 seconds have passed
+        //TODO
+            this.$message.error("請關閉垃圾桶");
+          }
+        }, 1000);
+      }
     },
     async CloseBtn() {
+      
+      this.isOpen=false
       this.openColor = "rgb(134 215 18)";
       this.closeColor = "rgb(234 207 207)";
-      this.visible=true
+      this.loadingVisible = true;
       const response = await this.GetOpenTrashApi("close");
+      this.GetAddPointApi();
       this.$router.push("/collect");
-      this.visible=false
+      this.loadingVisible = false;
     },
+
+    GetCookieValue(cookieName) {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+          return decodeURIComponent(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+
     //API--------
     async GetOpenTrashApi(stuts) {
       const res = await OpenTrashApi(stuts, 0);
     },
+    async GetAddPointApi(){
+      const uid = this.GetCookieValue("id");
+      const res = await AddPointApi(uid);
+      console.log(res)
+      
+      return res
+    }
   },
 };
 </script>
@@ -141,6 +179,5 @@ export default {
 }
 // 元件
 #OpenTrashcan {
-
 }
 </style>

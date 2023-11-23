@@ -2,8 +2,8 @@
 //- 請填寫頁面👈
 #ForgetPwd
   ForgetModalStep1(v-if="isShowDoneStep1", @DoneStep1="DoneStep1")
-  ForgetModalStep2(v-if="isShowDoneStep2", @DoneStep2="DoneStep2" :otpId="otpId" :memberEmail="memberEmail")
-  ForgetModalStep3(v-if="isShowDoneStep3", @DoneStep3="DoneStep3")
+  ForgetModalStep2(v-if="isShowDoneStep2", @DoneStep2="DoneStep2" :otpId="otpId" :memberProfile="memberProfile")
+  ForgetModalStep3(v-if="isShowDoneStep3", @DoneStep3="DoneStep3" :memberProfile="memberProfile")
 </template>
 
 <script>
@@ -22,14 +22,14 @@ export default {
       isShowDoneStep2: false,
       isShowDoneStep3:false,
       otpId:"",
-      memberEmail:""
+      memberProfile:""
     };
   },
 
   methods: {
     DoneStep1(form,val) {
       console.log(form,val)
-      this.memberEmail=form.memberEmail
+      this.memberProfile=form
       this.isShowDoneStep1 = false;
       this.isShowDoneStep2 = true;
       this.otpId=val

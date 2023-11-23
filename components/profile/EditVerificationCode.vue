@@ -75,12 +75,10 @@ export default {
   mounted(){
     $(document).click((event) => {
       if (this.visible === true) {
-        console.log("sdjfldf")
         
         const target = $(event.target);
         const menuIcon = $(".content");
         const menuArea = $(".block-area");
-        console.log(target)
         
         if (!target.closest(menuIcon).length ) {
           if (!target.closest(menuArea).length ) {
@@ -134,8 +132,14 @@ export default {
       this.visible=true
       // this.tryAgain = true;
       await this.GetSendEmailApi();
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response;   
+      console.log(this.otpId)
+      
+     await this.GetOtpTextApi(this.otpId);
+      
+      console.log(this.otpText)
+       
+      //TODO
+      this.$emit("ChangeVerify",this.otpText)
     },
     CloseModal() {
       this.isVisible = false;

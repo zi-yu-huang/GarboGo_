@@ -11,6 +11,7 @@
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
   Loading(v-if="loadingVisible")
+  NotCloseAlert(v-if="alert" @CloseAlert="CloseAlert")
 </template>
 
 <script>
@@ -19,15 +20,19 @@ import { AddPointApi } from "../../services/point";
 export default {
   components: {
     Loading: () => import("@/components/modal/loadingModal.vue"),
+    NotCloseAlert: ()=> import("@/components/modal/notCloseAlert.vue")
   },
   name: "OpenTrashcan",
   layout: "default",
   data() {
     return {
+      elapsedTime: 0,
       loadingVisible: false,
       openColor: "rgb(134 215 18)",
       closeColor: "rgb(234 207 207)",
       isOpen: false,
+      alert:false,
+      timer: null,
     };
   },
   methods: {
@@ -36,33 +41,39 @@ export default {
       this.openColor = "rgb(205 231 169)";
       this.closeColor = "#e32e2e";
       this.loadingVisible = true;
-      await this.GetOpenTrashApi("open");
+  //BEFIX
+      // await this.GetOpenTrashApi("open");
       this.loadingVisible = false;
       if (this.isOpen === true) {
-        let elapsedTime = 0; // Initialize a counter for elapsed time
+        this.elapsedTime = 0; // Initialize a counter for elapsed time
 
-        const timer = setInterval(() => {
-          elapsedTime += 1; // Increment the elapsed time counter every second
-          console.log(elapsedTime);
+        this.timer = setInterval(() => {
+          this.elapsedTime += 1; // Increment the elapsed time counter every second
+          console.log(this.elapsedTime);
 
-          if (elapsedTime > 10) {
-            clearInterval(timer); // Stop the interval when 15 seconds have passed
+          if (this.elapsedTime > 10) {
+            clearInterval(this.timer); // Stop the interval when 15 seconds have passed
         //TODO
-            this.$message.error("請關閉垃圾桶");
+            this.alert=true
           }
         }, 1000);
       }
     },
     async CloseBtn() {
-      
+      this.elapsedTime = 0; 
       this.isOpen=false
       this.openColor = "rgb(134 215 18)";
       this.closeColor = "rgb(234 207 207)";
       this.loadingVisible = true;
-      const response = await this.GetOpenTrashApi("close");
+  //BEFIX
+      // const response = await this.GetOpenTrashApi("close");
       this.GetAddPointApi();
       this.$router.push("/collect");
       this.loadingVisible = false;
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null; // 將 timer 設置為 null，以便 OpenBtn 函數可以重新創建計時器
+      }
     },
 
     GetCookieValue(cookieName) {
@@ -74,6 +85,9 @@ export default {
         }
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
+    },
+    CloseAlert(){
+      this.alert=false
     },
 
     //API--------

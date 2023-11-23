@@ -126,11 +126,10 @@ export default {
     async SaveModal() {
       const listLength = this.dateList.length;
       console.log(listLength);
-      if (listLength >= 5 &&  listLength<10) {
-        await this.GetAddTicketApi(1) //0:包(三卷),1:卷
-      } else if(listLength>=10){
-        await this.GetAddTicketApi(0) //0:包(三卷),1:卷
-
+      if (listLength >= 5 && listLength < 10) {
+        await this.GetAddTicketApi(1); //0:包(三卷),1:卷
+      } else if (listLength >= 10) {
+        await this.GetAddTicketApi(0); //0:包(三卷),1:卷
       }
       this.visibleModal = false;
     },
@@ -144,16 +143,16 @@ export default {
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
+    async GetAddTicketApi(value) {
+      const uid = this.GetCookieValue("id");
+
+      const res = await AddTicketApi(uid, value);
+      console.log(res);
+      return res;
+    },
   },
 
   //API-------
-  async GetAddTicketApi(value) {
-    const uid = this.GetCookieValue("id");
-
-    const res = await AddTicketApi(uid, value);
-    console.log(res);
-    return res;
-  },
 };
 </script>
 <style lang="scss" scoped>

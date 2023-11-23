@@ -6,7 +6,7 @@
       .line
       .text-area
         .text-contant {{ "垃圾袋1"+value }}
-        .text-date {{ "到期日 2023-12-31" }}
+        .text-date {{ "到期日 2024-01-31" }}
       .change-btn {{ "點擊兌換" }}
 
     .coupon-detail(v-if="showDetail", @click="handleClick")
@@ -22,7 +22,7 @@
       .line-detail
       .qr-area
         img.qr-code(src="~/static/qr_img 1.png", alt="logo3")
-        .text-date {{ "到期日 2023-12-31" }}
+        .text-date {{ "到期日 2024-01-31" }}
 </template>
     
   <script>

@@ -39,7 +39,6 @@ export default {
   data() {
     return {};
   },
-  //TODO
 
   methods: {
     InfoClose() {

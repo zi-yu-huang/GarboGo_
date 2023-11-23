@@ -31,7 +31,6 @@ export default {
   // max-height: -webkit-fill-available;
 
   .article {
-    //TODO
     height: 90vh;
     padding: 40px 30px 90px 30px;
     text-align: center;

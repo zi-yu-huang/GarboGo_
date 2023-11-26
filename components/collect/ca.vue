@@ -131,6 +131,7 @@ export default {
       } else if (listLength >= 10) {
         await this.GetAddTicketApi(0); //0:包(三卷),1:卷
       }
+      this.$emit("ChangeTab");
       this.visibleModal = false;
     },
     GetCookieValue(cookieName) {
@@ -143,6 +144,8 @@ export default {
       }
       return null; // 如果找不到对应的 Cookie，则返回 null
     },
+
+    //API-------
     async GetAddTicketApi(value) {
       const uid = this.GetCookieValue("id");
 
@@ -151,8 +154,6 @@ export default {
       return res;
     },
   },
-
-  //API-------
 };
 </script>
 <style lang="scss" scoped>

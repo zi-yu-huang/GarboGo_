@@ -43,7 +43,6 @@ export default {
 #SettingIndex {
   background-color: rgba(170, 216, 105, 0.8);
   .article {
-    //TODO
     // height: 85vh;
     padding: 40px 30px 80px 30px;
     // height: 100vh;

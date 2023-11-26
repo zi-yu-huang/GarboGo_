@@ -128,8 +128,7 @@ export default {
       position: fixed; /* 子元素使用绝对定位 */
       left: 50%; /* 将子元素的左侧定位到父元素中心 */
       transform: translate(-50%, -50%); /* 使用 transform 居中子元素 */
-      // TODO
-      // bottom: 50px;
+
       width: 700px;
       border-radius: 30px;
     }

@@ -4,7 +4,7 @@
   .article
     .title-size {{ "印花集章" }}
   .tab-article
-    aTabs.tabs-area(type="card", @change="callback")
+    aTabs.tabs-area(v-model="activeKey" type="card", @change="callback")
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
           div(v-for="item of dateList")
@@ -12,6 +12,7 @@
               :selectedDate="item.title",
               :dateList="item.list",
               :isShowChange="item.isShowChange"
+              @ChangeTab="ChangeTab"
             )
       aTabPane(key="2", tab="兌換卷")
           div(v-for="index of this.totalT1")
@@ -44,6 +45,7 @@ export default {
       lastPoint: 0,
       exchange_ticket: 0,
       userPointList: [],
+      activeKey:'1'
     };
   },
   mounted() {
@@ -56,7 +58,7 @@ export default {
       await this.GetTicketNumApi(this.uid);
     },
     callback(key) {
-      // console.log(key);
+      console.log(key, this.activeKey);
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -87,6 +89,9 @@ export default {
     },
     onPanelChange(value, mode) {
       // console.log(value, mode);
+    },
+    ChangeTab(){
+      this.activeKey='2'
     },
 
     //API-----

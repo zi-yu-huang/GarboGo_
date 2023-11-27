@@ -130,7 +130,7 @@ export default {
   .tab-article {
     text-align: justify;
     height: 100vh;
-    background-color: #a1cd7b;
+    // background-color: #a1cd7b;
   }
   .tabs-area {
     margin-top: 20px !important;
@@ -208,5 +208,9 @@ export default {
 .ant-tabs .ant-tabs-bottom-content {
   margin-bottom: 110px;
   background-color: #a1cd7b;
+}
+
+::v-deep .ant-tabs-bar{
+  margin: 0px 0px !important;
 }
 </style>

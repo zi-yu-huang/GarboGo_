@@ -21,6 +21,8 @@
         :theme="'filled'",
         :style="{ color: trashColor(Recycle.tcapacity) }"
       ) 
+
+  Loading(v-if="loadingVisible")
 </template>
 
 <script>
@@ -47,12 +49,16 @@ const columns = [
 
 export default {
   name: "StaffList",
+  components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
+  },
   data() {
     return {
       columns,
       list: [],
       title: "",
       originList: {},
+      loadingVisible: false,
     };
   },
 
@@ -77,15 +83,18 @@ export default {
     },
   },
   mounted() {
+    this.loadingVisible = true;
+
     this.Init();
   },
   methods: {
     async Init() {
+
       await this.GetStaffList();
       this.EditList();
+      this.loadingVisible = false;
     },
     rowKey(record) {
-
       return record.General.tid;
     },
     EditList() {

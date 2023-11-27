@@ -23,8 +23,9 @@
       .events(slot="dateCellRender", slot-scope="value")
         template(v-for="(item, index) in getListData(value)")
           span.restCls
-    .btn-area(v-if="isShowChange")
-      aButton.btn-area(@click="ChangeCard") {{ "快給我兌換卷！" }}
+    .btn-area(v-if="shouldShowChange")
+      aButton.btn-area(@click="ChangeCard" :disabled="btnStyle") {{ btnText }}
+      //- "快給我兌換卷！"
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
   CollectModal(
     :visibleModal="visibleModal",
@@ -59,17 +60,40 @@ export default {
     return {
       visibleModal: false,
       visible: false,
+      btnText: "",
+      btnStyle:false
       // title: "2023-10",
       // selectedDate: "2023-09",
       // dateList: ["2023-10-02", "2023-10-05", "2023-10-08"],
     };
   },
   computed: {
+    // shouldShowChange() {
+    //   const date = new Date().toISOString().substring(0, 7);
+    //   if (this.selectedDate !== date) {
+    //     return true;
+    //   }
+    // },
     shouldShowChange() {
-      const date = new Date().toISOString().substring(0, 7);
-      if (this.selectedDate !== date) {
+      const originalDate = new Date();
+      console.log(originalDate);
+      // 取得年份和月份
+      const year = originalDate.getFullYear();
+      const month = (originalDate.getMonth() + 1).toString().padStart(2, "0"); // +1 是因為 getMonth 返回的是 0 到 11
+      // 組合成 YYYY-MM 格式
+      const formattedDate = `${year}-${month}`;
+      if (!this.isShowChange && this.selectedDate !== formattedDate) {
+        console.log("a");
+        this.btnStyle=true
+        this.btnText = "兌換完畢";
+
         return true;
-      }
+      } else if (this.isShowChange && this.selectedDate !== formattedDate) {
+        console.log("b");
+        this.btnText = "快給我兌換卷！";
+
+        return true;
+      } else return false;
     },
   },
   mounted() {

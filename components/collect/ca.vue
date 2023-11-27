@@ -24,9 +24,14 @@
         template(v-for="(item, index) in getListData(value)")
           span.restCls
     .btn-area(v-if="shouldShowChange")
-      aButton.btn-area(@click="ChangeCard" :disabled="btnDis" :style="btnStyle") {{ btnText }}
+      aButton.btn-area(
+        @click="ChangeCard",
+        :disabled="btnDis",
+        :style="btnStyle"
+      ) {{ btnText }}
       //- "快給我兌換卷！"
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
+  Loading(v-if="loadingVisible")
   CollectModal(
     :visibleModal="visibleModal",
     @CloseModal="CloseModal",
@@ -39,6 +44,7 @@ import { AddTicketApi } from "../../services/point";
 export default {
   name: "CA",
   components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
     InfoComponents: () => import("@/components/info/info"),
     CollectModal: () => import("@/components/modal/collectModal.vue"),
   },
@@ -61,8 +67,9 @@ export default {
       visibleModal: false,
       visible: false,
       btnText: "",
-      btnDis:false,
-      btnStyle:""
+      btnDis: false,
+      btnStyle: "",
+      loadingVisible: false,
       // title: "2023-10",
       // selectedDate: "2023-09",
       // dateList: ["2023-10-02", "2023-10-05", "2023-10-08"],
@@ -85,8 +92,8 @@ export default {
       const formattedDate = `${year}-${month}`;
       if (!this.isShowChange && this.selectedDate !== formattedDate) {
         console.log("a");
-        this.btnDis=true
-        this.btnStyle="background-color: #c3c3c3 !important;"
+        this.btnDis = true;
+        this.btnStyle = "background-color: #c3c3c3 !important;";
         this.btnText = "兌換完畢";
 
         return true;
@@ -144,9 +151,6 @@ export default {
       return listData || [];
     },
     ChangeCard() {
-      this.btnText = "兌換完畢"
-      this.btnDis=true
-      this.btnStyle="background-color: #c3c3c3 !important;"
       this.visibleModal = true;
     },
     CloseModal() {
@@ -154,14 +158,20 @@ export default {
     },
     async SaveModal() {
       const listLength = this.dateList.length;
-      console.log(listLength);
       if (listLength >= 5 && listLength < 10) {
         await this.GetAddTicketApi(1); //0:包(三卷),1:卷
       } else if (listLength >= 10) {
         await this.GetAddTicketApi(0); //0:包(三卷),1:卷
       }
-      this.$emit("ChangeTab");
       this.visibleModal = false;
+      this.loadingVisible = true;
+      setTimeout(() => {
+        this.btnText = "兌換完畢";
+        this.btnDis = true;
+        this.btnStyle = "background-color: #c3c3c3 !important;";
+        this.$emit("ChangeTab");
+        this.loadingVisible = false;
+      }, 1000);
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");

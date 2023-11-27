@@ -21,6 +21,7 @@
         div(v-for="index of this.totalT0")
           .point-area
             PointCard(:value="`包`")
+  Loading(v-if="loadingVisible")
 </template>
 
 <script>
@@ -31,6 +32,7 @@ export default {
     CollectTable: () => import("@/components/collect/collectTable"),
     PointCard: () => import("@/components/collect/pointCard"),
     CA: () => import("@/components/collect/ca"),
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   name: "CollectIndex",
   data() {
@@ -45,6 +47,7 @@ export default {
       exchange_ticket: 0,
       userPointList: [],
       activeKey: "1",
+      loadingVisible: false,
     };
   },
   mounted() {
@@ -53,8 +56,10 @@ export default {
   methods: {
     async Init() {
       this.uid = this.GetCookieValue("id");
+      this.loadingVisible = true;
       await this.GetUserTotalPointApi(this.uid);
       await this.GetTicketNumApi(this.uid);
+      this.loadingVisible = false;
     },
     callback(key) {
       console.log(key, this.activeKey);
@@ -196,7 +201,7 @@ export default {
   box-shadow: 1px 2px 5px 0px;
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  width: 100%;
+  // width: 100%;
 }
 ::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value,
 .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
@@ -210,7 +215,17 @@ export default {
   background-color: #a1cd7b;
 }
 
-::v-deep .ant-tabs-bar{
+::v-deep .ant-tabs-bar {
   margin: 0px 0px !important;
+}
+
+::v-deep .ant-tabs-nav {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+}
+::v-deep .ant-tabs-tab {
+  // width: 100%;
 }
 </style>

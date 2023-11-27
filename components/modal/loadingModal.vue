@@ -12,8 +12,10 @@ export default {
 
 <style lang="scss" scoped>
 #LoadingModal {
+  z-index: 1001;
+
   .loading-mask {
-    z-index: 1000;
+    z-index: 1001;
     position: fixed;
     top: 0;
     bottom: 0;

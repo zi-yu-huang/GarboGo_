@@ -24,7 +24,7 @@
         template(v-for="(item, index) in getListData(value)")
           span.restCls
     .btn-area(v-if="shouldShowChange")
-      aButton.btn-area(@click="ChangeCard" :disabled="btnStyle") {{ btnText }}
+      aButton.btn-area(@click="ChangeCard" :disabled="btnDis" :style="btnStyle") {{ btnText }}
       //- "快給我兌換卷！"
   InfoComponents(:visible="visible", @InfoClose="InfoClose")
   CollectModal(
@@ -61,7 +61,8 @@ export default {
       visibleModal: false,
       visible: false,
       btnText: "",
-      btnStyle:false
+      btnDis:false,
+      btnStyle:""
       // title: "2023-10",
       // selectedDate: "2023-09",
       // dateList: ["2023-10-02", "2023-10-05", "2023-10-08"],
@@ -84,7 +85,8 @@ export default {
       const formattedDate = `${year}-${month}`;
       if (!this.isShowChange && this.selectedDate !== formattedDate) {
         console.log("a");
-        this.btnStyle=true
+        this.btnDis=true
+        this.btnStyle="background-color: #c3c3c3 !important;"
         this.btnText = "兌換完畢";
 
         return true;
@@ -142,6 +144,9 @@ export default {
       return listData || [];
     },
     ChangeCard() {
+      this.btnText = "兌換完畢"
+      this.btnDis=true
+      this.btnStyle="background-color: #c3c3c3 !important;"
       this.visibleModal = true;
     },
     CloseModal() {

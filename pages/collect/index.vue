@@ -90,6 +90,7 @@ export default {
       // console.log(value, mode);
     },
     ChangeTab() {
+      this.totalT1 += 1;
       this.activeKey = "2";
     },
 
@@ -103,8 +104,11 @@ export default {
     },
     async GetTicketNumApi(uid) {
       const response = await TicketNumApi(uid);
-      this.totalT0 = response.data.t0;
-      this.totalT1 = response.data.t1;
+      console.log(response.t0);
+      this.totalT0 = response.t0;
+      this.totalT1 = response.t1;
+      // this.totalT0 = response.data.t0;
+      // this.totalT1 = response.data.t1;
       console.log(this.totalT0);
     },
   },
@@ -189,10 +193,10 @@ export default {
   color: black;
   background: #a1cd7b;
   border-color: #a1cd7b;
-  box-shadow: 0px -3px 5px 0px;
+  box-shadow: 1px 2px 5px 0px;
 }
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  width: 118%;
+  width: 100%;
 }
 ::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value,
 .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {

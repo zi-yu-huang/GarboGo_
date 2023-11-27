@@ -220,12 +220,12 @@ export default {
 }
 
 ::v-deep .ant-tabs-nav {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  width: 100%;
+  // justify-content: center;
+  // align-items: center;
+  // display: flex;
+  // width: 100%;
 }
 ::v-deep .ant-tabs-tab {
-  // width: 100%;
+  width: 100%;
 }
 </style>

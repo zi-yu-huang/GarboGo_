@@ -4,27 +4,27 @@
   .article
     .title-size {{ "印花集章" }}
   .tab-article
-    aTabs.tabs-area(v-model="activeKey" type="card", @change="callback")
+    aTabs.tabs-area(v-model="activeKey", type="card", @change="callback")
       aTabPane.tab1-block(key="1", tab="集章紀錄")
         .calendar-area
           div(v-for="item of dateList")
             CA(
               :selectedDate="item.title",
               :dateList="item.list",
-              :isShowChange="item.isShowChange"
+              :isShowChange="item.isShowChange",
               @ChangeTab="ChangeTab"
             )
       aTabPane(key="2", tab="兌換卷")
-          div(v-for="index of this.totalT1")
-            .point-area
-              PointCard(:value="`卷`")
-          div(v-for="index of this.totalT0")
-            .point-area
-              PointCard(:value="`包`")
+        div(v-for="index of this.totalT1")
+          .point-area
+            PointCard(:value="`卷`")
+        div(v-for="index of this.totalT0")
+          .point-area
+            PointCard(:value="`包`")
 </template>
 
 <script>
-import { UserTotalPointApi,TicketNumApi } from "@/services/point";
+import { UserTotalPointApi, TicketNumApi } from "@/services/point";
 export default {
   layout: "default",
   components: {
@@ -38,14 +38,13 @@ export default {
       point: 0,
       card: 0,
       uid: "",
-      totalT0:"",//t0:包,t1:卷
-      totalT1:"",
-      dateList: [
-      ],
+      totalT0: "", //t0:包,t1:卷
+      totalT1: "",
+      dateList: [],
       lastPoint: 0,
       exchange_ticket: 0,
       userPointList: [],
-      activeKey:'1'
+      activeKey: "1",
     };
   },
   mounted() {
@@ -90,8 +89,8 @@ export default {
     onPanelChange(value, mode) {
       // console.log(value, mode);
     },
-    ChangeTab(){
-      this.activeKey='2'
+    ChangeTab() {
+      this.activeKey = "2";
     },
 
     //API-----
@@ -99,14 +98,14 @@ export default {
       console.log(id);
 
       const response = await UserTotalPointApi(id);
-      this.dateList=response.data[0].dateList
+      this.dateList = response.data[0].dateList;
       console.log(response.data[0].dateList);
     },
     async GetTicketNumApi(uid) {
       const response = await TicketNumApi(uid);
-      this.totalT0=response.data.t0
-      this.totalT1=response.data.t1
-      console.log(this.totalT0)
+      this.totalT0 = response.data.t0;
+      this.totalT1 = response.data.t1;
+      console.log(this.totalT0);
     },
   },
 };

@@ -91,6 +91,10 @@ export default {
       // 組合成 YYYY-MM 格式
       const formattedDate = `${year}-${month}`;
       if (!this.isShowChange && this.selectedDate !== formattedDate) {
+        if(!this.dateList.length){
+          return false
+          
+        }
         console.log("a");
         this.btnDis = true;
         this.btnStyle = "background-color: #c3c3c3 !important;";
@@ -166,6 +170,9 @@ export default {
       this.visibleModal = false;
       this.loadingVisible = true;
       setTimeout(() => {
+
+        console.log("End");
+
         this.btnText = "兌換完畢";
         this.btnDis = true;
         this.btnStyle = "background-color: #c3c3c3 !important;";

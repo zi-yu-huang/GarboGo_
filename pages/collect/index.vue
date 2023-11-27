@@ -58,8 +58,8 @@ export default {
       this.uid = this.GetCookieValue("id");
       this.loadingVisible = true;
       await this.GetUserTotalPointApi(this.uid);
-      await this.GetTicketNumApi(this.uid);
       this.loadingVisible = false;
+      await this.GetTicketNumApi(this.uid);
     },
     callback(key) {
       console.log(key, this.activeKey);
@@ -109,11 +109,11 @@ export default {
     },
     async GetTicketNumApi(uid) {
       const response = await TicketNumApi(uid);
-      console.log(response.t0);
-      this.totalT0 = response.t0;
-      this.totalT1 = response.t1;
-      // this.totalT0 = response.data.t0;
-      // this.totalT1 = response.data.t1;
+      console.log(response.data.t0);
+      // this.totalT0 = response.t0;
+      // this.totalT1 = response.t1;
+      this.totalT0 = response.data.t0;
+      this.totalT1 = response.data.t1;
       console.log(this.totalT0);
     },
   },
@@ -200,9 +200,6 @@ export default {
   border-color: #a1cd7b;
   box-shadow: 1px 2px 5px 0px;
 }
-::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  // width: 100%;
-}
 ::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value,
 .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
   color: rgba(0, 0, 0, 0.65);
@@ -219,12 +216,6 @@ export default {
   margin: 0px 0px !important;
 }
 
-::v-deep .ant-tabs-nav {
-  // justify-content: center;
-  // align-items: center;
-  // display: flex;
-  // width: 100%;
-}
 ::v-deep .ant-tabs-tab {
   width: 100%;
 }

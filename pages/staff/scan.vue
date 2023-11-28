@@ -1,24 +1,31 @@
 <template lang="pug">
 //- 請填寫頁面👈
 #StaffScan
-  .sucess-mask(v-if="sucess")
-    .sucess-text {{ "已成功連線至垃圾桶!" }}
+  .alert-area(v-if="sucess")
+    aAlert.alert-text(
+      message="已成功連線至垃圾桶!",
+      type="success",
+      description=" ",
+      show-icon
+    ) 
   .alert-area(v-if="isError")
     aAlert.alert-text(message="連線失敗", type="error", description=" ", show-icon) 
-  //- div(v-if="!sucess")
+    //- div(v-if="sucess")
   .scan-mask
   .saoma
     .camera-mask
     qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
-
 </template>
-
-<script>
+  
+  <script>
 import { QrcodeStream } from "vue-qrcode-reader";
 export default {
   layout: "staff",
   components: {
     QrcodeStream,
+
+    MenuList: () => import("@/components/footer/menuList"),
+    MenuFooter: () => import("@/components/footer/MenuFooter"),
   },
   name: "StaffScan",
   data() {
@@ -31,6 +38,8 @@ export default {
   },
   methods: {
     OnDecode(result) {
+      console.log(result);
+
       if (
         result === "https://key-skink-urgently.ngrok-free.app/scan/openTrashcan"
       ) {
@@ -79,8 +88,8 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
+  
+  <style lang="scss" scoped>
 // 排版
 #StaffScan {
   .scan-mask {
@@ -94,13 +103,13 @@ export default {
   }
   .saoma {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .camera-mask {
-    z-index: 999;
+    z-index: 998;
     position: absolute;
     height: 300px;
     width: 300px;
@@ -108,7 +117,7 @@ export default {
       57% 75%,
       transparent 0px,
       transparent 100%,
-      white 100%
+      rgb(0, 0, 0) 100%
     );
     border-image-slice: 1;
     border-width: 10px;
@@ -155,7 +164,7 @@ export default {
 // 元件
 #StaffScan {
   .alert-text {
-    width: 169px;
+    width: auto;
     height: 56px;
     justify-content: flex-start;
     background-color: white;
@@ -168,5 +177,5 @@ export default {
   color: #d30606 !important;
 }
 </style>
-  
-  
+    
+    

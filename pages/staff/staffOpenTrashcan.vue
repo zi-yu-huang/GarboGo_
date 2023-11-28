@@ -28,7 +28,7 @@ export default {
     NotCloseAlert: () => import("@/components/modal/notCloseAlert.vue"),
   },
   name: "StaffOpenTrashcan",
-  layout: "default",
+  layout: "staff",
   data() {
     return {
       elapsedTime: 0,
@@ -96,8 +96,6 @@ export default {
       this.alert = false;
       if ((this.checkAlert === true)) {
         this.checkAlert = false;
-
-        this.$router.push("/collect");
       }
     },
 

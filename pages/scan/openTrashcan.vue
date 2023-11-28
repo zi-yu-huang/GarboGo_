@@ -90,7 +90,8 @@ export default {
     },
     CloseAlert(){
       this.alert=false
-      if(this.checkAlert=true){
+
+      if(this.checkAlert===true){
         this.checkAlert=false
 
         this.$router.push("/collect");

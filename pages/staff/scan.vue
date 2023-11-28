@@ -5,11 +5,11 @@
     .sucess-text {{ "已成功連線至垃圾桶!" }}
   .alert-area(v-if="isError")
     aAlert.alert-text(message="連線失敗", type="error", description=" ", show-icon) 
-  div(v-if="!sucess")
-    .scan-mask
-    .saoma
-      .camera-mask
-      qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
+  //- div(v-if="!sucess")
+  .scan-mask
+  .saoma
+    .camera-mask
+    qrcode-stream.QrcodeStream(@decode="OnDecode", @init="OnInit")
 
 </template>
 

@@ -5,20 +5,37 @@
     .alert-modal(@click="CloseAlert")
       .alert-modal-2
         .title-area
-          .title-font 請確實關閉
-          .title-font 並鎖上垃圾桶
-        .content-font 點擊關閉警示
+          .title-font {{titleText}}
+          .title-font(v-if=`this.status==='notClose'`) {{"並鎖上垃圾桶"}}
+        .content-font 點我關閉警示
 </template>
 
 <script>
 export default {
   name: "NotCloseAlert",
+  props:{
+    status:{
+      type:String,
+      default:""
+    }
+  },
   data() {
     return {};
+  },
+  computed:{
+    titleText(){
+      if(this.status==='notClose'){
+        return '請確實關閉'
+      }
+      else return "已成功關閉垃圾桶"
+    }
+    
   },
   methods:{
     CloseAlert(){
       this.$emit("CloseAlert")
+      console.log(this.status)
+      
     }
   }
 };
@@ -48,7 +65,7 @@ export default {
     padding: 20px 10px 0px 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     animation: blink 1s infinite;
     &::before,

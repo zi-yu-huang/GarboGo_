@@ -11,7 +11,8 @@
       .icon-area
         img(src="~/static/PENUP_20230623_161116.png", alt="logo")
   Loading(v-if="loadingVisible")
-  NotCloseAlert(v-if="alert" @CloseAlert="CloseAlert")
+  NotCloseAlert(v-if="alert" @CloseAlert="CloseAlert" :status="`notClose`")
+  NotCloseAlert(v-if="checkAlert" @CloseAlert="CloseAlert" :status="`isClose`")
 </template>
 
 <script>
@@ -32,6 +33,7 @@ export default {
       closeColor: "rgb(234 207 207)",
       isOpen: false,
       alert:false,
+      checkAlert:false,
       timer: null,
     };
   },
@@ -65,10 +67,10 @@ export default {
       this.openColor = "rgb(134 215 18)";
       this.closeColor = "rgb(234 207 207)";
       this.loadingVisible = true;
+      this.checkAlert=true
   //BEFIX
       // const response = await this.GetOpenTrashApi("close");
       this.GetAddPointApi();
-      this.$router.push("/collect");
       this.loadingVisible = false;
       if (this.timer) {
         clearInterval(this.timer);
@@ -88,6 +90,12 @@ export default {
     },
     CloseAlert(){
       this.alert=false
+      if(this.checkAlert=true){
+        this.checkAlert=false
+
+        this.$router.push("/collect");
+
+      }
     },
 
     //API--------

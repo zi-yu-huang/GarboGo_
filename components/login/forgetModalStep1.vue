@@ -28,7 +28,7 @@ export default {
       loadingVisible: false,
 
       memberForm: {
-        memberEmail: "ziyuhuang1007@gmail.com",
+        memberEmail: "",
       },
       rules: {
         memberEmail: [

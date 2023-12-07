@@ -44,7 +44,7 @@ export default {
       this.closeColor = "#e32e2e";
       this.loadingVisible = true;
   //BEFIX
-      // await this.GetOpenTrashApi("open");
+      await this.GetOpenTrashApi("open");
       this.loadingVisible = false;
       if (this.isOpen === true) {
         this.elapsedTime = 0; // Initialize a counter for elapsed time
@@ -69,7 +69,7 @@ export default {
       this.loadingVisible = true;
       this.checkAlert=true
   //BEFIX
-      // const response = await this.GetOpenTrashApi("close");
+      const response = await this.GetOpenTrashApi("close");
       this.GetAddPointApi();
       this.loadingVisible = false;
       if (this.timer) {

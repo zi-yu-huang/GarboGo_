@@ -37,7 +37,17 @@ export default {
       timer: null,
     };
   },
+  mounted(){
+    this.Init()
+  },
   methods: {
+    Init(){
+      const cookie = this.GetCookieValue("email")
+      if(cookie){
+        this.$router.push("/staff/staffOpenTrashcan");
+      }
+      else this.$router.push("/member")
+    },
     async OpenBtn() {
       this.isOpen = true;
       this.openColor = "rgb(205 231 169)";

@@ -42,11 +42,7 @@ export default {
   },
   methods: {
     Init(){
-      const cookie = this.GetCookieValue("email")
-      if(cookie){
-        this.$router.push("/staff/staffOpenTrashcan");
-      }
-      else this.$router.push("/member")
+
     },
     async OpenBtn() {
       this.isOpen = true;

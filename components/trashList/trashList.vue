@@ -29,18 +29,18 @@ export default {
   name: "TrashList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
       visible: false,
-      uid:"",
+      uid: "",
       originalData: [],
       changeToLike: {
         tplace: "",
         isLike: "",
-        tname:""
+        tname: "",
       },
       likeTrash: {},
       likeList: [],
@@ -60,15 +60,17 @@ export default {
   },
   methods: {
     async Init() {
-      this.loadingVisible=true
+      this.loadingVisible = true;
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
       await this.GetLikeTrashApi();
-      this.loadingVisible=false
+      this.loadingVisible = false;
     },
     OpenModal(street) {
-      console.log(street)
-      
+      console.log(street);
+
+      console.log(this.changeToLike,"fjskdl");
+
       this.changeToLike.tplace = street.tplace;
       this.changeToLike.tname = street.tname;
       this.changeToLike.isLike = street.isLike;
@@ -78,16 +80,14 @@ export default {
       this.visible = val;
     },
     async SaveModal(visible, changeToLike) {
-
       for (let i = 0; i < this.likeList.length; i++) {
         const streets = this.likeList[i].streets;
-      for (let j = 0; j < streets.length; j++) {
-      if (streets[j].tplace === changeToLike.tplace) {
-        streets[j].isLike = changeToLike.isLike;
+        for (let j = 0; j < streets.length; j++) {
+          if (streets[j].tplace === changeToLike.tplace) {
+            streets[j].isLike = changeToLike.isLike;
+          }
         }
       }
-      }
-      console.log(this.changeToLike);
 
       this.visible = false;
       this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
@@ -168,8 +168,7 @@ export default {
     async GetCreateFavoriteApi(uid, tname) {
       try {
         const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
-      } catch (error) {
-      }
+      } catch (error) {}
     },
   },
 };
@@ -178,12 +177,12 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #TrashList {
-  .list-area {
+  // .list-area {
     // display: flex;
     // flex-direction: column;
     // justify-content: center;
     // align-items: center;
-  }
+  // }
   .region-area {
     width: 100%;
     display: flex;
@@ -215,6 +214,5 @@ export default {
     font-weight: 800;
     line-height: 19px;
   }
-
 }
 </style>

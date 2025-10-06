@@ -3,7 +3,8 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyCts8rcKuPCUuLcU5pTj7YLiYRHQnEDY5Q',
+    key: 'AIzaSyCsZGzHWmtJDj2WWp7BIOJiD3XSc7IIu3U',
+    // AIzaSyCts8rcKuPCUuLcU5pTj7YLiYRHQnEDY5Q
     libraries: 'places' // 可选的libraries参数
   }
 })

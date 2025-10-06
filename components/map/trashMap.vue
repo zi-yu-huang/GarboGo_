@@ -10,7 +10,6 @@
     Loading(v-if="loadingVisible")
 </template>
 
-
 <script>
 import { trashIcon } from "@/style/icon/delete.png";
 import { TrashcanListApi } from "@/services/trashcanList.js";
@@ -165,9 +164,9 @@ export default {
                     props: {
                       general: location.General,
                       recycle: location.Recycle,
-                      lat:location.lat,
-                      lng:location.lng,
-                      tname:location.tname
+                      lat: location.lat,
+                      lng: location.lng,
+                      tname: location.tname,
                     },
                   }),
               });
@@ -247,7 +246,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 .google-map {
   width: 100%;
@@ -277,4 +275,3 @@ export default {
   }
 }
 </style>
-

@@ -171,6 +171,7 @@ export default {
                   }),
               });
 
+
               // 將 GarbageModal 元件的 HTML 內容放入 infowindow
               infowindow.setContent(garbageModalComponent.$mount().$el);
 

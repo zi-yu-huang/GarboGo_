@@ -1,7 +1,7 @@
 <template lang="pug">
 //- 請填寫功能描述👈
 #GarbageModal
-  p.title {{ tname }}
+  p.gm-style-iw-ch {{ tname }}
   .trash-flex
     .trash-area
       p {{ "一般垃圾" }}

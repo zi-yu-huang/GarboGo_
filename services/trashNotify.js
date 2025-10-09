@@ -6,11 +6,11 @@ export const TrashNotifyApi = async (tid,uid,trashClear,dontTrash) => {
 
   } catch {
     return {
-      "email": "John0817@gmail.com",
+      "email": "Febe@gmail.com",
       "point": 10,
-      "pwd": "4C5WE",
+      "pwd": "aaa",
       "uid": 1,
-      "uname": "John"
+      "uname": "Febe"
     }
   }
 }

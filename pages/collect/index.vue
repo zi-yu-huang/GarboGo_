@@ -101,11 +101,9 @@ export default {
 
     //API-----
     async GetUserTotalPointApi(id) {
-      console.log(id);
-
       const response = await UserTotalPointApi(id);
-      this.dateList = response.data[0].dateList;
-      console.log(response.data[0].dateList);
+      this.dateList = response.dateList;
+      console.log(response);
     },
     async GetTicketNumApi(uid) {
       const response = await TicketNumApi(uid);

@@ -50,16 +50,13 @@ export default {
   mounted(){
     $(document).click((event) => {
       if (this.visible === true) {
-        console.log("sdjfldf")
         
         const target = $(event.target);
         const menuIcon = $(".content");
         const menuArea = $(".email-area");
-        console.log(target)
         
         if (!target.closest(menuArea).length ) {
           if (!target.closest(menuIcon).length ) {
-          console.log("jkjj")
           
           this.visible = false;
           this.CloseEmailModal();
@@ -74,8 +71,8 @@ export default {
         if (valid) {
           this.loadingVisible=true
           const response = await this.GetSendEmailApi(this.memberForm.memberEmail)
-          this.$emit("getVerify",true,response,this.memberForm.memberEmail)
-          console.log(true,response,this.memberForm.memberEmail)
+          this.$emit("getVerify",true,this.memberForm.memberEmail)
+          // console.log(true,response,this.memberForm.memberEmail)
           this.loadingVisible=false
           this.memberForm.memberEmail=""
         }

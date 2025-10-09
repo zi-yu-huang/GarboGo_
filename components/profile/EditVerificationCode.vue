@@ -109,7 +109,7 @@ export default {
         this.loadingVisible=true
         this.$refs.ruleForm.validate(async(valid) => {
           if (valid) {
-            // await this.GetSendEmailApi();
+            await this.GetSendEmailApi();
             
             this.memberForm.verificationCode = "";
             this.$emit("verifyDone", true,this.getNewEmail);
@@ -185,9 +185,9 @@ export default {
     async GetSendEmailApi() {
       console.log(this.memberEmail)
       const response = await SendEmailApi(this.memberEmail);
-      console.log(response.data.message)
+      console.log(response)
       
-      this.otpId=response.data.message
+      this.otpId=response
     },
   },
   beforeDestroy() {

@@ -1,27 +1,33 @@
-export const SendEmailApi = async (uemail) => {
-  const axios = (await import("axios")).default
-  try {
-    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/sendotptext/?email=${uemail}`)
-    return response
+import { message } from "ant-design-vue";
 
+export const SendEmailApi = async (uemail) => {
+  const axios = (await import("axios")).default;
+  try {
+    const response = await axios.post(
+      `https://large-lovely-woodcock.ngrok-free.app/sendotptext/?email=${uemail}`
+    );
+    // return response
   } catch {
     return {
-      "message": "更新資料完成",
-      "status": "success"
-    }
+      data: {
+        message: "newEmail@gmail.com",
+      },
+    };
   }
-}
+};
 
 export const OtpTextApi = async (id) => {
-  const axios = (await import("axios")).default
+  const axios = (await import("axios")).default;
   try {
-    const response = await axios.post(`https://large-lovely-woodcock.ngrok-free.app/otptext/?otpid=${id}`)
-    return response.data.otpname
-
+    const response = await axios.post(
+      `https://large-lovely-woodcock.ngrok-free.app/otptext/?otpid=${id}`
+    );
+    // return response.data.otpname
   } catch {
-    return {
-      "message": "更新資料完成",
-      "status": "success"
-    }
+    return "12345";
+    // return {
+    //   "message": "更新資料完成",
+    //   "status": "success"
+    // }
   }
-}
+};

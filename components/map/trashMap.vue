@@ -171,7 +171,12 @@ export default {
                   }),
               });
 
+              // const elements =
+              //   document.getElementsByClassName("gm-style-iw-ch");
+              // elements.textContent = "Hello, world!";
+              // console.log(elements);
 
+    
               // 將 GarbageModal 元件的 HTML 內容放入 infowindow
               infowindow.setContent(garbageModalComponent.$mount().$el);
 

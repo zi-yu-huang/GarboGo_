@@ -6,13 +6,13 @@
     aFormModel.form-area(ref="ruleForm", :model="memberForm", :rules="rules")
       aFormModelItem(ref="memberEmail", prop="memberEmail")
         aInput.input-font(
-          placeholder="abcd@gmail.com",
+          placeholder="Febe@gmail.com",
           v-model="memberForm.memberEmail"
         ) 
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
           type="password",
-          placeholder="請輸入密碼",
+          placeholder="aaaa",
           v-model="memberForm.memberPassword"
         )
       aFormModelItem

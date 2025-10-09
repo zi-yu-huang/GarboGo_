@@ -1,5 +1,10 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  router: {
+    base: '/GarboGo_/'
+  },
+  target: 'static', // 確保會輸出靜態檔案
+  ssr: false, // GitHub Pages 不支援 server-side rendering
   env: {
     TEST_MODE: process.env.TEST_MODE || "T", // 測試模式
   },

@@ -30,6 +30,7 @@ export default {
       memberForm: {
         memberEmail: "",
       },
+      memberName: "",
       rules: {
         memberEmail: [
           { required: true, message: "不可為空" },
@@ -50,7 +51,7 @@ export default {
             const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
             const otpId = otp.data.message;
             console.log(otpId);
-            
+
             this.$emit("DoneStep1", data, otpId);
           }
           this.loadingVisible = false;
@@ -61,15 +62,18 @@ export default {
 
     //API ------------------------
     async GetCreateUserApi() {
-      console.log(this.memberForm.memberEmail);
 
       const response = await LoginApi(this.memberForm.memberEmail);
-      console.log(response);
+      const memberName = response.uname;
 
       return response;
     },
-    async GetSendEmailApi(email) {
-      const response = await SendEmailApi(email);
+    async GetSendEmailApi() {
+      const data = {
+        email: this.memberForm.memberEmail,
+        uname: this.memberName,
+      };
+      const response = await SendEmailApi(data);
 
       return response;
     },

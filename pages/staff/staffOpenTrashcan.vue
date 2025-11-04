@@ -55,7 +55,6 @@ export default {
 
         this.timer = setInterval(() => {
           this.elapsedTime += 1; // Increment the elapsed time counter every second
-          console.log(this.elapsedTime);
 
           if (this.elapsedTime > 10) {
             clearInterval(this.timer); // Stop the interval when 15 seconds have passed
@@ -106,7 +105,6 @@ export default {
     async GetAddPointApi() {
       const uid = this.GetCookieValue("id");
       const res = await AddPointApi(uid);
-      console.log(res);
 
       return res;
     },

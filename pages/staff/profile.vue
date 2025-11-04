@@ -19,7 +19,6 @@
   EditPhone(:visible="openPhone", @getVerify="GetVerify")
   EditVerify(
     :visible="getVerify",
-    :getOptId="getOptId",
     @verifyDone="VerifyDone"
     @ChangeVerify="ChangeVerify"
   )
@@ -29,8 +28,8 @@
     @CloseModal="DonePassword"
   )
 </template>
-  
-  <script>
+
+<script>
 import $ from "jquery";
 import { LoginApi } from "@/services/login.js";
 import { EditUserApi } from "@/services/editUser.js";
@@ -51,7 +50,6 @@ export default {
       dataEmail: "",
       editName: "",
       getVerify: false,
-      getOptId: null,
       openPhone: false,
       openPassword: false,
       notEdit: true,
@@ -101,11 +99,7 @@ export default {
       this.openPhone = val;
     },
     GetVerify(val, otpId) {
-      console.log(val,otpId)
-      
       this.getVerify = val;
-
-      this.getOptId = otpId;
       this.openPhone = false;
     },
     VerifyDone() {
@@ -113,9 +107,7 @@ export default {
       this.ChangeEditBtn();
       this.getInit = true;
     },
-    ChangeVerify(otpText){
-      console.log(otpText)
-      
+    ChangeVerify(otpText) {
     },
 
     OpenPassword(val) {
@@ -123,8 +115,8 @@ export default {
     },
     DonePassword(val) {
       this.openPassword = false;
-      this.dataPwd = val
-      
+      this.dataPwd = val;
+
       this.ChangeEditBtn();
       this.getInit = true;
     },
@@ -154,7 +146,6 @@ export default {
 
     // API----------
     async GetUserNameApi() {
-
       const response = await EditUserApi(
         this.uid,
         this.editName,
@@ -168,8 +159,8 @@ export default {
   },
 };
 </script>
-  
-  <style lang="scss" scoped>
+
+<style lang="scss" scoped>
 // 排版
 #StaffProfile {
   background-color: white;
@@ -234,4 +225,3 @@ export default {
   }
 }
 </style>
-  

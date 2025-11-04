@@ -5,7 +5,7 @@
     .region-area(v-for="item in likeList", :key="item.region")
       .region-text {{ item.region }}
       .street-area(v-for="street in item.streets", :key="street.street")
-        .street-text {{ street.street }}
+        .street-text {{ street.tname }}
         aIcon.icon-area(
           type="heart",
           :theme="isLike(street.isLike)",
@@ -24,7 +24,8 @@
 
 <script>
 import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
-import { LikeTrashApi } from "@/services/likeTrash";
+import { favoriteApi,LikeListApi } from "@/services/likeList.js";
+
 export default {
   name: "TrashList",
   components: {
@@ -42,7 +43,6 @@ export default {
         isLike: "",
         tname: "",
       },
-      likeTrash: {},
       likeList: [],
     };
   },
@@ -63,14 +63,9 @@ export default {
       this.loadingVisible = true;
       this.uid = this.GetCookieValue("id");
       await this.GetTrashListApi();
-      await this.GetLikeTrashApi();
       this.loadingVisible = false;
     },
     OpenModal(street) {
-      console.log(street);
-
-      console.log(this.changeToLike,"fjskdl");
-
       this.changeToLike.tplace = street.tplace;
       this.changeToLike.tname = street.tname;
       this.changeToLike.isLike = street.isLike;
@@ -88,13 +83,13 @@ export default {
           }
         }
       }
-
       this.visible = false;
-      this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
+      await this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
       this.$nextTick(() => {
         this.Init();
       });
-      // await this.GetTrashListApi();
+      await this.GetTrashListApi()
+      console.log("reloaded");
     },
 
     GetCookieValue(cookieName) {
@@ -110,64 +105,17 @@ export default {
     },
     //API----------------------------------------------
     async GetTrashListApi() {
-      const response = await TrashcanListApi();
-      this.originalData = response;
+      const likeTrashList = await LikeListApi(this.uid);
+      this.likeList = likeTrashList.likeList;
     },
-    async GetLikeTrashApi() {
-      const likeTrashList = await LikeTrashApi(this.uid);
-      this.likeTrash = likeTrashList;
-      this.GetList();
-    },
-    GetList() {
-      const newList = [];
-      const originData = this.originalData.trashcan;
-
-      for (const currentItem of originData) {
-        // 查找newList中是否已有对应区域的数据
-        const regionEntry = newList.find(
-          (entry) => entry.region === currentItem.region
-        );
-
-        if (!regionEntry) {
-          // 如果没有找到对应区域的数据，则创建一个新的区域对象
-          newList.push({
-            region: currentItem.region,
-            streets: [
-              {
-                street: currentItem.street,
-                isLike: currentItem.isLike,
-                tplace: currentItem.tplace,
-                tname: currentItem.tname,
-                // 添加其他属性
-              },
-            ],
-          });
-        } else {
-          // 如果找到了对应区域的数据，则将街道信息添加到该区域对象的streets数组中
-          regionEntry.streets.push({
-            street: currentItem.street,
-            isLike: currentItem.isLike,
-            tplace: currentItem.tplace,
-            tname: currentItem.tname,
-            // 添加其他属性
-          });
-        }
-      }
-      for (const item of newList) {
-        for (const itemPlace of item.streets) {
-          for (const list in this.likeTrash) {
-            if (itemPlace.tplace == this.likeTrash[list]) {
-              itemPlace.isLike = 1;
-            }
-          }
-        }
-      }
-      // if(this.likeTrash ==)
-      this.likeList = newList;
-    },
+   
     async GetCreateFavoriteApi(uid, tname) {
+      const data = {
+        uid: uid,
+        tname: tname,
+      };
       try {
-        const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
+        const responseData = await favoriteApi(data); // 传递需要发送的数据
       } catch (error) {}
     },
   },

@@ -53,17 +53,7 @@ export default {
   methods: {
     OpenMenu() {
       this.visible = this.visible === true ? false : true;
-      // $(document).ready(() => {
-      //   if (this.visible === true) {
-      //     console.log("sdfjlks");
 
-      //     $("body").click(() => {
-      //       console.log("body");
-
-      //       this.visible = false;
-      //     });
-      //   }
-      // });
     },
     MenuToUser() {
       const uemail = this.GetCookieValue("email");

@@ -57,7 +57,6 @@ export default {
         this.$emit("CloseModal",this.visible2)
       },
       SaveModal(){
-        console.log(this.visible2)
         
         this.visible2=false;
         if(this.changeToLike.isLike === false){

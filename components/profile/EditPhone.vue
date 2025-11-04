@@ -20,83 +20,90 @@
 
 <script>
 import $ from "jquery";
-import {SendEmailApi} from "@/services/sendEmail.js"
+import { SendEmailApi } from "@/services/sendEmail";
+import { LoginApi } from "@/services/login.js";
+
 export default {
-  components:{
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+  components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   name: "EditPhone",
-  props:{
-    visible:{
-      type:Boolean,
-      default:""
-    }
+  props: {
+    visible: {
+      type: Boolean,
+      default: "",
+    },
+    memberName: {
+      type: String,
+      default: "",
+    },
   },
-  data () {
+  data() {
     return {
-      loadingVisible:false,
-      memberForm:{
+      loadingVisible: false,
+      memberForm: {
         memberEmail: "",
       },
       rules: {
         memberEmail: [
-          { required: true,message: "不可為空"},          
-          {type: 'email',message: '請輸入有效的信箱'}
-
-        ]
-      }
+          { required: true, message: "不可為空" },
+          { type: "email", message: "請輸入有效的信箱" },
+        ],
+      },
     };
   },
-  mounted(){
+  mounted() {
     $(document).click((event) => {
       if (this.visible === true) {
-        
         const target = $(event.target);
         const menuIcon = $(".content");
         const menuArea = $(".email-area");
-        
-        if (!target.closest(menuArea).length ) {
-          if (!target.closest(menuIcon).length ) {
-          
-          this.visible = false;
-          this.CloseEmailModal();
+
+        if (!target.closest(menuArea).length) {
+          if (!target.closest(menuIcon).length) {
+            this.visible = false;
+            this.CloseEmailModal();
           }
         }
       }
     });
   },
-  methods:{
-    OnSubmit(){
-      this.$refs.ruleForm.validate(async(valid) => {
+  methods: {
+    OnSubmit() {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          this.loadingVisible=true
-          const response = await this.GetSendEmailApi(this.memberForm.memberEmail)
-          this.$emit("getVerify",true,this.memberForm.memberEmail)
-          // console.log(true,response,this.memberForm.memberEmail)
-          this.loadingVisible=false
-          this.memberForm.memberEmail=""
+          this.loadingVisible = true;
+          await this.GetSendEmailApi();
+          this.$emit("getVerify", true, this.memberForm.memberEmail);
+          this.loadingVisible = false;
+          this.memberForm.memberEmail = "";
         }
-      })
+      });
     },
-    CloseEmailModal(){
-      this.memberForm.memberEmail=""
-      this.$emit("CloseEmailModal")
+    CloseEmailModal() {
+      this.memberForm.memberEmail = "";
+      this.$emit("CloseEmailModal");
     },
 
     //API -----------
-    async GetSendEmailApi(email){
-      const response = await SendEmailApi(email);
-      return response.data.message      
 
-    }
-  }
+    async GetSendEmailApi() {
+      const data = {
+        email: this.memberForm.memberEmail,
+        uname: this.memberName,
+      };
+      const response = await SendEmailApi(data);
+      return response.data.message;
+    },
+
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 // 排版
 #EditPhone {
-  .block-area{
+  .block-area {
     z-index: 999;
     position: fixed;
     top: 0;
@@ -108,19 +115,19 @@ export default {
     flex-direction: column;
     justify-content: center;
   }
-  .content{
+  .content {
     text-align: center;
-    justify-content: center; 
-      .form-area{
-        display: flex;
-        flex-direction: column;
-        height: 309px;
-        justify-content: center;
+    justify-content: center;
+    .form-area {
+      display: flex;
+      flex-direction: column;
+      height: 309px;
+      justify-content: center;
     }
-    .btn-area{
+    .btn-area {
       width: -webkit-fill-available;
       text-align: center;
-      background-color:  #8DDA1E;
+      background-color: #8dda1e;
       width: -webkit-fill-available;
       text-align: center;
       font-family: Inter;
@@ -137,10 +144,10 @@ export default {
 }
 // 元件
 #EditPhone {
-  .ant-row{
+  .ant-row {
     margin: 0 !important;
   }
-  .content{
+  .content {
     background: black;
     // opacity:80%;
     margin: 0px 21px;
@@ -149,21 +156,19 @@ export default {
     border-radius: 24px;
     padding: 0px 27px;
 
-    .input-font{
-    height: 50px;
-    border-radius: 14px;
-    font-size: 20px;
-    padding: 0 20px;
-
-  }
+    .input-font {
+      height: 50px;
+      border-radius: 14px;
+      font-size: 20px;
+      padding: 0 20px;
+    }
   }
   @media (min-width: 769px) {
-    .block-area{
-          align-items: center;
-
+    .block-area {
+      align-items: center;
     }
-    .content{
-      width:600px
+    .content {
+      width: 600px;
     }
   }
 }

@@ -126,7 +126,6 @@ export default {
             scaledSize: new google.maps.Size(32, 32),
           },
         });
-        console.log(this.trashcan);
 
         marker.addListener("click", () => {
           const infowindow = new google.maps.InfoWindow({
@@ -171,10 +170,6 @@ export default {
                   }),
               });
 
-              // const elements =
-              //   document.getElementsByClassName("gm-style-iw-ch");
-              // elements.textContent = "Hello, world!";
-              // console.log(elements);
 
     
               // 將 GarbageModal 元件的 HTML 內容放入 infowindow
@@ -219,23 +214,18 @@ export default {
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
-                  console.log("無法獲取當前位置");
                   this.isNoMap = true;
-                  console.log("sdfjsl");
 
                   reject();
                 }
               });
             },
             (error) => {
-              console.log("獲取位置失敗：", error);
               this.isNoMap = true;
-              console.log("sdfjsl");
               reject();
             }
           );
         } else {
-          console.log("瀏覽器不支援 Geolocation API");
           this.isNoMap = true;
 
           reject();

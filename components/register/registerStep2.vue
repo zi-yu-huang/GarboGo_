@@ -24,26 +24,25 @@
 </template>
 
 <script>
-import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
+import { VerifyEmail, SendEmailApi } from "@/services/sendEmail";
 
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
   },
   props: {
-    otpId: {
-      type: Number,
+    memberEmail: {
+      type: String,
       default: "",
     },
-    memberEmail:{
-      type:String,
-      default:""
-    }
+    memberName: {
+      type: String,
+      default: "",
+    },
   },
   name: "RegisterStep2",
   data() {
     return {
-      otpText: "",
       countdown: 0,
       timer: null,
       tryAgain: null,
@@ -60,26 +59,25 @@ export default {
     };
   },
   computed: {
-    timeClock() {}
+    timeClock() {},
   },
   mounted() {
     this.Init();
   },
   methods: {
-    async Init() {
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response;
-      this.startCountdown()
+    Init() {
+      this.startCountdown();
     },
-    OnSubmit() {
-      if (this.otpText === this.memberForm.memberVerify) {
+    async OnSubmit() {
+      const res = await this.GetVerifyEmail();
+      if (res.status === "error") {
+        this.$message.error("驗證碼錯誤");
+      } else {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.$emit("DoneStep2", true);
           }
         });
-      } else {
-        this.$message.error("驗證碼錯誤");
       }
     },
     OpenModal() {
@@ -90,11 +88,10 @@ export default {
       this.isVisible = false;
       this.tryAgain = true;
       await this.GetSendEmailApi();
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response; 
+      await this.GetVerifyEmail();
       clearInterval(this.timer);
-      this.startCountdown();   
-      this.formatCountdownTime();  
+      this.startCountdown();
+      this.formatCountdownTime();
     },
     CloseModal() {
       this.isVisible = false;
@@ -118,22 +115,27 @@ export default {
     formatCountdownTime() {
       const minutes = Math.floor(this.countdown / 60);
       const seconds = this.countdown % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     },
 
     //API------------
-    async GetOtpTextApi(id) {
-      const response = await OtpTextApi(id);
-      console.log(response)
-      
-      return response;
+    async GetVerifyEmail() {
+      const data = {
+        email: this.memberEmail,
+        code: this.memberForm.memberVerify,
+      };
+      const response = await VerifyEmail(data);
+
+      return response.data;
     },
     async GetSendEmailApi() {
-      console.log(this.memberEmail)
-      const response = await SendEmailApi(this.memberEmail);
-      console.log(response.data.message)
-      
-      this.otpId=response.data.message
+      const data = {
+        email: this.memberEmail,
+        uname: this.memberName,
+      };
+      const response = await SendEmailApi(data);
+
+      return response;
     },
   },
   beforeDestroy() {
@@ -199,7 +201,7 @@ export default {
     color: white;
     text-align: right;
   }
-  .time-area{
+  .time-area {
     font-size: 22px;
     color: white;
   }

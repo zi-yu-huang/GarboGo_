@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     OnDecode(result) {
-      console.log(result);
 
       if (
         result === "https://key-skink-urgently.ngrok-free.app/scan/openTrashcan"

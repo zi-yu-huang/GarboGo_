@@ -12,7 +12,7 @@
       aFormModelItem(ref="memberPassword", prop="memberPassword")
         aInput.input-font(
           type="password",
-          placeholder="aaaa",
+          placeholder="請輸入密碼",
           v-model="memberForm.memberPassword"
         )
       aFormModelItem
@@ -67,8 +67,7 @@ export default {
     },
     ForgetPwd(){
       this.$router.push("/member/forgetPwd")
-      console.log("sdfhjk")
-      
+     
     },
 
 
@@ -76,10 +75,9 @@ export default {
     async GetLoginApi(uemail) {
       const response = await LoginApi(uemail);
       document.cookie = `email=${response.email}`;
-      document.cookie = `id=${response.uid}`;
+      document.cookie = `id=${response.id}`;
       document.cookie = `uname=${response.uname}`;
 
-      console.log(response)
       return response;
       
     },

@@ -23,20 +23,22 @@
 </template>
 
 <script>
-import {EditUserApi} from '@/services/editUser.js'
+import { CreateUserApi } from "@/services/editUser.js";
+import { LoginApi } from "@/services/login.js";
+
 export default {
   name: "ForgetModalStep3",
-  props:{
-    memberProfile:{
-      type:Object,
-      default:""
-    }
+  props: {
+    memberProfile: {
+      type: Object,
+      default: "",
+    },
   },
   data() {
     return {
       memberForm: {
         newPassword: "",
-        newPasswordAgain:""
+        newPasswordAgain: "",
       },
       rules: {
         newPassword: [
@@ -62,24 +64,32 @@ export default {
   },
   methods: {
     OnSubmit() {
-      this.$refs.ruleForm.validate(async(valid) => {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          await this.GetApiEditUserApi(this.memberProfile)
+          await this.GetCreateUserApi(this.memberForm);
           this.$emit("DoneStep3", true);
           this.$message.success("成功重設密碼");
-          this.memberForm.Password = "";
-          this.memberForm.PasswordAgain = "";
+          this.memberForm.newPassword = "";
+          this.memberForm.newPasswordAgain = "";
         }
       });
     },
 
     //API --------
-    async GetApiEditUserApi(data){
-      console.log(this.memberProfile)
-      console.log(data.uid,data.uname,data.email,this.memberForm.newPassword)
-      
-      const response = await EditUserApi(data.uid,data.uname,data.email,this.memberForm.newPassword)
-    }
+    async GetCreateUserApi() {
+      const response = await LoginApi(this.memberForm.memberEmail);
+      return response;
+    },
+
+    async GetCreateUserApi(memberForm) {
+      const data = {
+        uname: this.memberProfile.uname,
+        email: this.memberProfile.email,
+        pwd: memberForm.newPassword,
+      };
+      const response = await CreateUserApi(data);
+      return response;
+    },
   },
 };
 </script>

@@ -3,7 +3,7 @@ export const AddPointApi = async (uid) => {
   try {
     //
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/addpoint/?uid=${uid}`
+      `https://garbogo-backend.onrender.com/api/addStamp`,uid
     );
     return response;
   } catch {
@@ -39,11 +39,11 @@ export const AddPointApi = async (uid) => {
   }
 };
 
-export const AddTicketApi = async (uid, value) => {
+export const AddTicketApi = async (data) => {
   const axios = (await import("axios")).default;
   try {
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/addticket?uid=${uid}&value=${value}`
+      `https://garbogo-backend.onrender.com/api/addTicket`,data
     );
     return response;
   } catch {
@@ -56,7 +56,7 @@ export const TicketNumApi = async (uid) => {
   try {
     //
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/ticketnum/?uid=${uid}`
+      `https://garbogo-backend.onrender.com/api/getTicket`,uid
     );
     return response;
   } catch {
@@ -74,7 +74,7 @@ export const UserTotalPointApi = async (uid) => {
   const axios = (await import("axios")).default;
   try {
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/usersstotalpoint/?uid=${uid}`
+      `https://garbogo-backend.onrender.com/api/getStamp`,uid
     );
     return response;
   } catch {

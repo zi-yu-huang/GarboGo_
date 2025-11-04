@@ -84,7 +84,6 @@ export default {
     // },
     shouldShowChange() {
       const originalDate = new Date();
-      console.log(originalDate);
       // 取得年份和月份
       const year = originalDate.getFullYear();
       const month = (originalDate.getMonth() + 1).toString().padStart(2, "0"); // +1 是因為 getMonth 返回的是 0 到 11
@@ -95,14 +94,12 @@ export default {
           return false
           
         }
-        console.log("a");
         this.btnDis = true;
         this.btnStyle = "background-color: #c3c3c3 !important;";
         this.btnText = "兌換完畢";
 
         return true;
       } else if (this.isShowChange && this.selectedDate !== formattedDate) {
-        console.log("b");
         this.btnText = "快給我兌換卷！";
 
         return true;
@@ -110,11 +107,9 @@ export default {
     },
   },
   mounted() {
-    console.log(this.visible);
 
     $(document).click((event) => {
       if (this.visible === true) {
-        console.log("ccc");
 
         const target = $(event.target);
         const menuIcon = $(".bg-area");
@@ -122,7 +117,6 @@ export default {
         if (!target.closest(menuIcon).length) {
           if (!target.closest(menuArea).length) {
             this.visible = false;
-            console.log("ddd");
           }
         }
       }
@@ -194,8 +188,11 @@ export default {
     //API-------
     async GetAddTicketApi(value) {
       const uid = this.GetCookieValue("id");
-
-      const res = await AddTicketApi(uid, value);
+      const data = {
+        uid: uid,
+        value: value,
+      };
+      const res = await AddTicketApi(data);
       console.log(res);
       return res;
     },

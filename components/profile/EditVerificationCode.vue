@@ -24,14 +24,16 @@
     template(v-slot:article) {{ "確定要重新寄送驗證碼?" }}
   Loading(v-if="loadingVisible")
 </template>
-  
+
 <script>
 import $ from "jquery";
-import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
+import { VerifyEmail, SendEmailApi } from "@/services/sendEmail";
+import { CreateUserApi } from "@/services/editUser.js";
+
 export default {
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   name: "EditVerificationCode",
   props: {
@@ -39,28 +41,28 @@ export default {
       type: Boolean,
       default: "",
     },
-    getOptId: {
-      type: Number,
+    getNewEmail: {
+      type: String,
       default: "",
     },
-    getNewEmail:{
-      type:String,
-      default:""
+    memberEmail: {
+      type: String,
+      default: "",
     },
-    memberEmail:{
-      type:String,
-      default:""
-    }
+    memberName: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
       countdown: 0,
       timer: null,
       // uemail:"",
       tryAgain: null,
       isVisible: false,
-      otpText:"",
+      otpText: "",
       memberForm: {
         verificationCode: "",
       },
@@ -72,79 +74,67 @@ export default {
       },
     };
   },
-  mounted(){
+  mounted() {
     $(document).click((event) => {
       if (this.visible === true) {
-        
         const target = $(event.target);
         const menuIcon = $(".content");
         const menuArea = $(".block-area");
-        
-        if (!target.closest(menuIcon).length ) {
-          if (!target.closest(menuArea).length ) {
 
-          console.log("jkjj")
-          // this.visible = false;
-          // this.CloseVerifyModal();
+        if (!target.closest(menuIcon).length) {
+          if (!target.closest(menuArea).length) {
+
           }
         }
       }
     });
   },
-  watch:{
-    async visible(newValue, oldValue){
+  watch: {
+    async visible(newValue, oldValue) {
       if (newValue === true) {
         await this.Init();
-        // console.log(this.getOptId, "fdisj");
       }
-    }
+    },
   },
   methods: {
-    async Init() {
-      await this.GetOtpTextApi(this.getOptId);
-      this.startCountdown()
+    Init() {
+      this.startCountdown();
     },
     OnSubmit() {
-      if(this.memberForm.verificationCode === this.otpText ){
-        this.loadingVisible=true
-        this.$refs.ruleForm.validate(async(valid) => {
-          if (valid) {
-            await this.GetSendEmailApi();
-            
-            this.memberForm.verificationCode = "";
-            this.$emit("verifyDone", true,this.getNewEmail);
-            this.loadingVisible=false
-          }
-        });
-      }
-      else this.$message.error("驗證碼錯誤");
+      this.loadingVisible = true;
+      this.$refs.ruleForm.validate(async (valid) => {
+        const res = await this.GetVerifyEmail();
+        if (res.status === "error") {
+          this.$message.error("驗證碼錯誤");
+        } else {
+          await this.CreateUserApi()
+          this.memberForm.verificationCode = "";
+          this.$emit("verifyDone", true, this.getNewEmail);
+          this.loadingVisible = false;
+        }
+      });
     },
     OpenModal() {
       this.isVisible = true;
       // this.tryAgain = true;
     },
-    CloseVerifyModal(){
+    CloseVerifyModal() {
       this.memberForm.verificationCode = "";
-      this.$emit("CloseVerifyModal")
+      this.$emit("CloseVerifyModal");
     },
     async SaveModal() {
       this.isVisible = false;
-      this.visible=true
+      this.visible = true;
       // this.tryAgain = true;
       await this.GetSendEmailApi();
-      console.log(this.otpId)
-      
-     await this.GetOtpTextApi(this.otpId);
-      
-      console.log(this.otpText)
-       
+
+
       //TODO
-      this.$emit("ChangeVerify",this.otpText)
+      this.$emit("ChangeVerify", this.otpText);
     },
     CloseModal() {
       this.isVisible = false;
       // this.tryAgain = true;
-
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -175,19 +165,30 @@ export default {
     formatCountdownTime() {
       const minutes = Math.floor(this.countdown / 60);
       const seconds = this.countdown % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     },
     // API ------------------
-    async GetOtpTextApi(otpId) {
-      const response = await OtpTextApi(otpId);
-      this.otpText = response
+    async GetVerifyEmail() {
+      const data = {
+        email: this.memberEmail,
+        code: this.memberForm.verificationCode,
+      };
+      const response = await VerifyEmail(data);
+      return response;
     },
     async GetSendEmailApi() {
-      console.log(this.memberEmail)
-      const response = await SendEmailApi(this.memberEmail);
-      console.log(response)
-      
-      this.otpId=response
+      const data = {
+        email: this.memberEmail,
+        uname: this.memberName,
+      };
+      const response = await SendEmailApi(data);
+    },
+    async CreateUserApi() {
+      const data = {
+        id: this.GetCookieValue("id"),
+        email: this.getNewEmail,
+      };
+      const response = await CreateUserApi(data);
     },
   },
   beforeDestroy() {
@@ -264,7 +265,7 @@ export default {
     // margin-top: 10px;
     font-size: 18px;
   }
-  .time-area{
+  .time-area {
     font-size: 22px;
     color: white;
   }

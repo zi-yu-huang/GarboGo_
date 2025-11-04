@@ -2,7 +2,7 @@
 //- 註冊頁面
 #MemberRegister
   RegisterStep1(v-if="current == 'page1'", @DoneStep1="DoneStep1")
-  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2" :otpId = "otpId" :memberEmail="memberForm.memberEmail")
+  RegisterStep2(v-if="current == 'page2'", @DoneStep2="DoneStep2"  :memberEmail="memberForm.memberEmail" :memberName="memberForm.memberName")
   RegisterStep3(v-if="current == 'page3'", @DoneStep3="DoneStep3")
   DoneVerify(v-if="current == 'page4'")
 </template>
@@ -46,10 +46,9 @@ export default {
     },
   },
   methods: {
-    DoneStep1(val, data,otpId) {
+    DoneStep1(val, data) {
       this.memberForm.memberEmail = data.memberEmail;
       this.memberForm.memberName = data.memberName;
-      this.otpId = otpId
 
       this.doneStep1 = val;
     },
@@ -59,15 +58,19 @@ export default {
     async DoneStep3(val, data) {
       this.memberForm.memberPwd = data.Password;
       await this.GetCreateUserApi(this.memberForm);
-      console.log(this.memberForm)
       
       this.doneStep3 = val;
     },
 
 
     //API--------------------
-    async GetCreateUserApi(data){
-      const response = await CreateUserApi(data.memberName,data.memberEmail,data.memberPwd)
+    async GetCreateUserApi(memberForm){
+      const data={
+        uname:memberForm.memberName,
+        email:memberForm.memberEmail,
+        pwd:memberForm.memberPwd
+      }
+      const response = await CreateUserApi(data)
       return response
       
     }

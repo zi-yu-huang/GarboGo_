@@ -34,7 +34,6 @@ export default {
   methods:{
     CloseAlert(){
       this.$emit("CloseAlert")
-      console.log(this.status)
       
     }
   }

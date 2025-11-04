@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     toGoogleMap() {
-      console.log(typeof this.lat, this.lng);
 
       window.open(
         `https://www.google.com/maps/dir/?api=1&destination=${this.lat},${this.lng}`,

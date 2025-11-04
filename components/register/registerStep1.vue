@@ -22,12 +22,12 @@ import { LoginApi } from "@/services/login.js";
 
 export default {
   name: "RegisterStep1",
-  components:{
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+  components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
       memberForm: {
         memberName: "",
         memberEmail: "",
@@ -45,36 +45,33 @@ export default {
     async OnSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          this.loadingVisible=true
-          const data = await this.GetCreateUserApi();
-          if (data.status !== 'error') {
-            this.$message.error("該 email 已被註冊");
+          this.loadingVisible = true;
+          const res = await this.GetCreateUserApi();
+          if (res.status === "error") {
+            await this.GetSendEmailApi(this.memberForm);
+            this.$emit("DoneStep1", true, this.memberForm);
           } else {
-            const otp = await this.GetSendEmailApi(this.memberForm.memberEmail);
-            const otpId = otp.data.message
-            console.log(otpId)
-            this.$emit("DoneStep1", true, this.memberForm,otpId);
-            
+            this.$message.error("該 email 已被註冊");
           }
           this.memberForm.memberEmail = "";
           this.memberForm.memberName = "";
-          this.loadingVisible=false
+          this.loadingVisible = false;
         }
       });
     },
 
     // API ---------------
     async GetCreateUserApi() {
-      console.log(this.memberForm.memberEmail)
-      
       const response = await LoginApi(this.memberForm.memberEmail);
-      console.log(response)
-      
       return response;
     },
-    async GetSendEmailApi(email) {
-      const response = await SendEmailApi(email);
-      
+    async GetSendEmailApi(memberForm) {
+      const data = {
+        email: memberForm.memberEmail,
+        uname: memberForm.memberName,
+      };
+      const response = await SendEmailApi(data);
+
       return response;
     },
   },

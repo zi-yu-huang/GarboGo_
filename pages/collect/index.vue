@@ -62,7 +62,6 @@ export default {
       await this.GetTicketNumApi(this.uid);
     },
     callback(key) {
-      console.log(key, this.activeKey);
     },
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
@@ -101,18 +100,13 @@ export default {
 
     //API-----
     async GetUserTotalPointApi(id) {
-      const response = await UserTotalPointApi(id);
-      this.dateList = response.dateList;
-      console.log(response);
+      const response = await UserTotalPointApi({uid:id});
+      this.dateList = response.data.data;
     },
     async GetTicketNumApi(uid) {
-      const response = await TicketNumApi(uid);
-      console.log(response.data.t0);
-      // this.totalT0 = response.t0;
-      // this.totalT1 = response.t1;
-      this.totalT0 = response.data.t0;
-      this.totalT1 = response.data.t1;
-      console.log(this.totalT0);
+      const response = await TicketNumApi({uid:uid});
+      this.totalT0 = response.data.data.t0;
+      this.totalT1 = response.data.data.t1;
     },
   },
 };

@@ -25,28 +25,23 @@
 </template>
 
 <script>
-import { OtpTextApi, SendEmailApi } from "@/services/sendEmail";
+import { SendEmailApi,VerifyEmail } from "@/services/sendEmail";
 export default {
   name: "ForgetModalStep2",
   components: {
     DemoModal: () => import("@/components/modal/demoModal"),
   },
   props: {
-    otpId: {
-      type: Number,
+    memberProfile: {
+      type: String,
       default: "",
     },
-    memberProfile:{
-      type:String,
-      default:""
-    }
   },
   data() {
     return {
       countdown: 0,
       timer: null,
       isVisible: false,
-      otpText: "",
 
       memberForm: {
         memberVerify: "",
@@ -77,19 +72,18 @@ export default {
   },
   methods: {
     async Init() {
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response;
-      this.startCountdown()
+      this.startCountdown();
     },
-    OnSubmit() {
-      if (this.otpText === this.memberForm.memberVerify) {
+    async OnSubmit() {
+      const res = await this.GetVerifyEmail();
+      if (res.status === "error") {
+        this.$message.error("驗證碼錯誤");
+      } else {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.$emit("DoneStep2", true);
           }
         });
-      } else {
-        this.$message.error("驗證碼錯誤");
       }
     },
     OpenModal() {
@@ -109,11 +103,10 @@ export default {
       this.isVisible = false;
       this.tryAgain = true;
       await this.GetSendEmailApi();
-      const response = await this.GetOtpTextApi(this.otpId);
-      this.otpText = response; 
+      await this.GetVerifyEmail();
       clearInterval(this.timer);
-      this.startCountdown();   
-      this.formatCountdownTime();  
+      this.startCountdown();
+      this.formatCountdownTime();
     },
     CloseModal() {
       this.isVisible = false;
@@ -136,20 +129,26 @@ export default {
     formatCountdownTime() {
       const minutes = Math.floor(this.countdown / 60);
       const seconds = this.countdown % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     },
 
     //API------------
-    async GetOtpTextApi(id) {
-      const response = await OtpTextApi(id);
-      return response;
+    async GetVerifyEmail() {
+      const data = {
+        email: this.memberProfile.email,
+        code: this.memberForm.memberVerify,
+      };
+      const response = await VerifyEmail(data);
+      return response.data;
     },
     async GetSendEmailApi() {
-      console.log(this.memberProfile)
-      const response = await SendEmailApi(this.memberProfile.email);
-      console.log(response.data.message)
-      
-      this.otpId=response.data.message
+      const data = {
+        email: this.memberProfile.email,
+        uname: this.memberProfile.uname,
+      };
+      const response = await SendEmailApi(data);
+
+      return response;
     },
   },
   beforeDestroy() {
@@ -235,7 +234,7 @@ export default {
     color: white;
     text-align: right;
   }
-  .time-area{
+  .time-area {
     font-size: 22px;
     color: white;
   }

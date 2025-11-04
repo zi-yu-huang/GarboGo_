@@ -62,7 +62,6 @@ export default {
     },
     setMarker() {
       this.trashcan.forEach((location) => {
-        console.log(location.General);
         
         // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
         // 為每間餐廳都建立地標、訊息視窗、事件監聽
@@ -138,18 +137,15 @@ export default {
                   // this.center = this.currentLocation;
                   resolve();
                 } else {
-                  console.log("無法獲取當前位置");
                   reject();
                 }
               });
             },
             (error) => {
-              console.log("獲取位置失敗：", error);
               reject();
             }
           );
         } else {
-          console.log("瀏覽器不支援 Geolocation API");
           reject();
         }
       });

@@ -83,16 +83,13 @@ export default {
     this.Init();
     $(document).click((event) => {
       if (this.visible === true) {
-        console.log("sdjfldf");
 
         const target = $(event.target);
         const menuIcon = $(".content");
         const menuArea = $(".pwd-area");
-        console.log(target);
 
         if (!target.closest(menuArea).length) {
           if (!target.closest(menuIcon).length) {
-            console.log("jkjj");
 
             this.visible = false;
             this.ClosePwdModal();

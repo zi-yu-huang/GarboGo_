@@ -16,11 +16,12 @@
     .btn-content
       aButton.btn-area(type=primary, @click="ChangeEditBtn") {{ editText }}
         aIcon(:type="changeEdit")
-  EditPhone(:visible="openPhone", @getVerify="GetVerify" @CloseEmailModal="CloseEmailModal")
+  EditPhone(:visible="openPhone",    :memberName="editName"
+ @getVerify="GetVerify" @CloseEmailModal="CloseEmailModal")
   EditVerify(
     :memberEmail="dataEmail"
+    :memberName="editName"
     :visible="getVerify",
-    :getOptId="getOptId",
     :getNewEmail="newEmail",
     @verifyDone="VerifyDone"
     @CloseVerifyModal="CloseVerifyModal"
@@ -34,7 +35,8 @@
 
 <script>
 import { LoginApi } from "@/services/login.js";
-import { EditUserApi } from "@/services/editUser.js";
+import { SendEmailApi } from "@/services/sendEmail";
+import { CreateUserApi } from "@/services/editUser.js";
 export default {
   layout: "default",
   components: {
@@ -52,7 +54,6 @@ export default {
       dataEmail: "",
       editName: "",
       getVerify: false,
-      getOptId: null,
       openPhone: false,
       openPassword: false,
       notEdit: true,
@@ -62,8 +63,6 @@ export default {
   },
   mounted() {
     // if (this.openPassword === true) {
-      
-
     // }
   },
   computed: {
@@ -79,10 +78,8 @@ export default {
   },
   mounted() {
     this.Init();
-    console.log(window.location.pathname)
-    console.log(window.location.pathname.toLowerCase().includes("login"))
-    if (window.location.pathname.toLowerCase().includes("login")){
-      window.location.href = "/member"
+    if (window.location.pathname.toLowerCase().includes("login")) {
+      window.location.href = "/member";
     }
   },
   methods: {
@@ -100,37 +97,31 @@ export default {
     OpenPhone(val) {
       this.openPhone = val;
     },
-    CloseEmailModal(){
-      this.openPhone=false
+    CloseEmailModal() {
+      this.openPhone = false;
     },
-    GetVerify(val, otpId, newEmail) {
+    GetVerify(val, newEmail) {
       this.getVerify = val;
       this.newEmail = newEmail;
-      this.getOptId = otpId;
       this.openPhone = false;
     },
     VerifyDone() {
       this.getVerify = false;
       // this.ChangeEditBtn();
-      this.getInit = true;      
-      this.GetUserEmailApi();
+      this.getInit = true;
     },
-    CloseVerifyModal(){
-      this.getVerify=false;
+    CloseVerifyModal() {
+      this.getVerify = false;
     },
     OpenPassword(val) {
       this.openPassword = val;
     },
-    ClosePwdModal(){
-      this.openPassword=false
+    ClosePwdModal() {
+      this.openPassword = false;
     },
     DonePassword(val) {
       this.openPassword = false;
       this.dataPwd = val;
-      console.log(    this.uid,
-        this.editName,
-        this.dataEmail,
-        this.dataPwd)
       this.GetNewPwdApi();
       this.getInit = true;
     },
@@ -160,31 +151,25 @@ export default {
 
     // API----------
     async GetUserNameApi() {
-      const response = await EditUserApi(
-        this.uid,
-        this.editName,
-        this.dataEmail,
-        this.dataPwd
-      );
-      if (response.data.status === "success") {
+      const data = {
+        uname: this.editName,
+        email: this.dataEmail,
+        pwd: this.dataPwd,
+      };
+      const response = await CreateUserApi(data);
+      if (response.data.success === true) {
         this.$message.success("變更成功");
       }
     },
-    async GetUserEmailApi() {
-      console.log(this.uid, this.editName, this.newEmail, this.dataPwd);
 
-      const response = await EditUserApi(
-        this.uid,
-        this.editName,
-        this.newEmail,
-        this.dataPwd
-      );
-      if (response.data.status === "success") {
-        this.$message.success("變更成功,請重新登入");
-        this.$nextTick(() => {
-          this.$router.push("/member/login");
-        });
-      }
+    async GetSendEmailApi() {
+      const data = {
+        email: this.dataEmail,
+        uname: this.editName,
+      };
+      const response = await SendEmailApi(data);
+
+      return response;
     },
     async GetNewPwdApi() {
       const response = await EditUserApi(

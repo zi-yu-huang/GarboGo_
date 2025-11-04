@@ -28,7 +28,6 @@ export default {
 
   methods: {
     DoneStep1(form,val) {
-      console.log(form,val)
       this.memberProfile=form
       this.isShowDoneStep1 = false;
       this.isShowDoneStep2 = true;

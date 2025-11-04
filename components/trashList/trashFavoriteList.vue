@@ -6,7 +6,7 @@
       .region-text(v-if="item.streets.length > 0") {{ item.region }}
       .street-area(v-for="street in item.streets", :key="street.street")
         <a-collapse accordion :bordered="false">
-          <a-collapse-panel :show-arrow="false" :key=street.street :header=street.street  :style="customStyle">
+          <a-collapse-panel :show-arrow="false" :key=street.tname :header=street.tname  :style="customStyle">
             div {{ "一般垃圾" }}
             div {{ "回收垃圾" }}
 
@@ -50,17 +50,17 @@
 <script>
 import { TrashNotifyApi } from "@/services/trashNotify.js";
 import { TrashcanListApi, TrashcanCreateApi } from "@/services/trashcanList.js";
-import { LikeListApi } from "@/services/likeList.js";
+import { favoriteApi, LikeListApi } from "@/services/likeList.js";
 // import { LikeTrashApi } from "../../services/likeTrash";
 export default {
   name: "TrashFavoriteList",
   components: {
     LikeModal: () => import("@/components/modal/likeModal"),
-    Loading:()=>import("@/components/modal/loadingModal.vue")
+    Loading: () => import("@/components/modal/loadingModal.vue"),
   },
   data() {
     return {
-      loadingVisible:false,
+      loadingVisible: false,
       notifyVisible: false,
       visible: false,
       isShow: false,
@@ -109,15 +109,13 @@ export default {
   },
   methods: {
     async Init() {
-      this.loadingVisible=true
+      this.loadingVisible = true;
       this.uid = this.GetCookieValue("id");
-      await this.GetTrashListApi();
       await this.GetLikeListApi(this.uid);
-      this.loadingVisible=false
+      this.loadingVisible = false;
     },
-    async OpenModal(street,event) {
+    async OpenModal(street, event) {
       event = event || window.event;
-      console.log(street);
       this.changeToLike.id = street.id;
       this.changeToLike.isLike = street.isLike;
       this.changeToLike.tname = street.tname;
@@ -132,13 +130,11 @@ export default {
       this.visible = val;
     },
     ShowTrash(id) {
-      console.log(id);
 
       this.isShow = !this.isShow;
     },
     async SaveModal(visible, changeToLike) {
       this.visible = visible;
-      console.log(visible, changeToLike);
 
       await this.GetCreateFavoriteApi(this.uid, changeToLike.tname);
 
@@ -159,15 +155,37 @@ export default {
     },
 
     //API---------------------
-    async GetTrashListApi() {
-      const response = await TrashcanListApi();
-      this.originalData = response;
-    },
-    async GetLikeListApi(uid) {
-      const response = await LikeListApi(uid);
-      console.log(response);
 
-      this.likeList = response.likeList;
+    async GetLikeListApi(uid) {
+      try {
+        const response = await LikeListApi(uid);
+        // 假設 API 回傳的列表在 response.groupedList 中
+        const groupedData = response.likeList || [];
+
+        // 2. ⚡️ 簡化篩選邏輯：使用 map 和 filter 轉換結構
+        const onlyLikedData = groupedData
+          .map((regionGroup) => {
+            // 對每個地區的 streets 陣列進行篩選
+            const likedStreets = regionGroup.streets.filter((streetItem) => {
+              // 篩選條件：只保留 isLike 為 true 的項目
+              return streetItem.isLike === true;
+            });
+
+            // 回傳新的地區物件，包含篩選後的 streets
+            return {
+              ...regionGroup,
+              streets: likedStreets,
+            };
+          })
+          // 3. 最終過濾：移除所有街道清單為空的地區（可選，但推薦保持清單整潔）
+          .filter((regionGroup) => regionGroup.streets.length > 0);
+
+        // 4. 賦值給 data 屬性
+        this.likeList = onlyLikedData;
+      } catch (error) {
+        console.error("呼叫 LikeListApi 失敗:", error);
+        this.likeList = []; // 失敗時清空或保持空陣列
+      }
     },
     async GetCreateFavoriteApi(uid, tname) {
       const responseData = await TrashcanCreateApi(uid, tname); // 传递需要发送的数据
@@ -244,7 +262,7 @@ export default {
   grid-template-columns: 35px 35px;
 }
 ::v-deep
-.ant-collapse-borderless
+  .ant-collapse-borderless
   > .ant-collapse-item
   > .ant-collapse-content
   > .ant-collapse-content-box {

@@ -1,12 +1,12 @@
 import { message } from "ant-design-vue";
 
-export const SendEmailApi = async (uemail) => {
+export const SendEmailApi = async (data) => {
   const axios = (await import("axios")).default;
   try {
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/sendotptext/?email=${uemail}`
+      `https://garbogo-backend.onrender.com/api/register`,data
     );
-    // return response
+    return response
   } catch {
     return {
       data: {
@@ -16,18 +16,17 @@ export const SendEmailApi = async (uemail) => {
   }
 };
 
-export const OtpTextApi = async (id) => {
+export const VerifyEmail = async (data) => {
   const axios = (await import("axios")).default;
   try {
     const response = await axios.post(
-      `https://large-lovely-woodcock.ngrok-free.app/otptext/?otpid=${id}`
+      `https://garbogo-backend.onrender.com/api/verifyEmail`,data
     );
-    // return response.data.otpname
+    return response
   } catch {
-    return "12345";
-    // return {
-    //   "message": "更新資料完成",
-    //   "status": "success"
-    // }
+    return {
+      "message": "更新資料完成",
+      "status": "success"
+    }
   }
 };

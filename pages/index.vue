@@ -10,22 +10,30 @@
 </template>
 
 <script>
+import { TrashcanListApi } from "@/services/trashcanList.js";
+
 export default {
-  layout:'home',
-  components:{
-  },
+  layout: "home",
+  components: {},
   name: "IdentityIndex",
-  data () {
+  data() {
     return {};
   },
+  async mounted() {
+    await this.GetTrashListApi();
+  },
   methods: {
-    MemberLogin(){
-      this.$router.push("member")
+    MemberLogin() {
+      this.$router.push("member");
     },
-    MemberStaff(){
-      this.$router.push("staff/login")
-    }
-  }
+    MemberStaff() {
+      this.$router.push("staff/login");
+    },
+    async GetTrashListApi() {
+      const response = await TrashcanListApi();
+      console.log(response);
+    },
+  },
 };
 </script>
 
@@ -41,14 +49,14 @@ export default {
     text-align: center;
     margin-bottom: 35px;
   }
-  .article{
+  .article {
     padding: 150px 80px;
     justify-content: flex-start;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .btn-area{
+  .btn-area {
     display: grid;
     gap: 15px;
     justify-content: center;
@@ -56,7 +64,7 @@ export default {
 }
 // 元件
 #IdentityIndex {
-  .btn-text{
+  .btn-text {
     padding-block: 20px;
     font-family: Inter;
     font-size: 22px;
@@ -69,13 +77,12 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 25px;
-    
   }
   @media (min-width: 769px) {
-    .btn-area{
+    .btn-area {
       display: flex;
     }
-    .btn-text{
+    .btn-text {
       height: 100px;
     }
   }

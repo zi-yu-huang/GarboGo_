@@ -6,8 +6,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "deploy": "gh-pages -d dist",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^2.0.0",
@@ -38,8 +38,8 @@
     "gh-pages": "^6.3.0",
     "less": "^3.13.1",
     "less-loader": "^7.3.0",
-    "node-sass": "^8.0.0",
     "raw-loader": "^4.0.2",
+    "sass": "^1.95.1",
     "sass-loader": "^10.4.1"
   }
 }

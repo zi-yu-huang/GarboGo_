@@ -18,6 +18,7 @@
       aFormModelItem
         aButton.btn-area(type="primary", @click="OnSubmit") {{ "下一步" }}
         aButton.btn-area.btn-forget(type="primary", @click="ForgetPwd") {{ "忘記密碼" }}
+  Loading(v-if="loadingVisible")
 
 </template>
 
@@ -25,8 +26,13 @@
 import { LoginApi } from "@/services/login.js";
 export default {
   name: "LoginModal",
+  components: {
+    Loading: () => import("@/components/modal/loadingModal.vue"),
+  },
   data() {
     return {
+      loadingVisible: false,
+
       isNotPwd: false,
       memberForm: {
         memberPassword: "",
@@ -52,24 +58,24 @@ export default {
 
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
+          this.$message.info("初次使用請等待幾秒鐘");
+          this.loadingVisible = true;
           if (response.pwd === this.memberForm.memberPassword) {
             this.memberForm.memberPassword = "";
             this.memberForm.memberEmail = "";
             this.$router.push("/member/profile");
           } else {
-            if(response.message==="查無該 email"){
+            if (response.message === "查無該 email") {
               this.$message.error("此帳號尚未註冊");
-            }else this.$message.error("密碼錯誤");
-
+            } else this.$message.error("密碼錯誤");
           }
+          this.loadingVisible = false;
         }
       });
     },
-    ForgetPwd(){
-      this.$router.push("/member/forgetPwd")
-     
+    ForgetPwd() {
+      this.$router.push("/member/forgetPwd");
     },
-
 
     //API---------------------------
     async GetLoginApi(uemail) {
@@ -79,7 +85,6 @@ export default {
       document.cookie = `uname=${response.uname}`;
 
       return response;
-      
     },
   },
 };
@@ -131,8 +136,8 @@ export default {
     height: 45px;
   }
 
-  .btn-forget{
-    background-color:#C8CCC3 !important;
+  .btn-forget {
+    background-color: #c8ccc3 !important;
     margin-top: 5px;
   }
   .input-font {

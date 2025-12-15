@@ -45,6 +45,7 @@ export default {
     async OnSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
+          this.$message.info("初次使用請等待幾秒鐘");
           this.loadingVisible = true;
           const res = await this.GetCreateUserApi();
           if (res.status === "error") {

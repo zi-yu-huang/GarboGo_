@@ -54,11 +54,10 @@ export default {
   },
   methods: {
     async OnSubmit() {
+      this.$message.info("初次使用請稍等");
       const response = await this.GetLoginApi(this.memberForm.memberEmail);
-
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          this.$message.info("初次使用請等待幾秒鐘");
           this.loadingVisible = true;
           if (response.pwd === this.memberForm.memberPassword) {
             this.memberForm.memberPassword = "";

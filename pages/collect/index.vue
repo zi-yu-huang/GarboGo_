@@ -17,10 +17,10 @@
       aTabPane(key="2", tab="兌換卷")
         div(v-for="index of this.totalT1")
           .point-area
-            PointCard(:value="`卷`")
+            PointCard(:value="`包`")
         div(v-for="index of this.totalT0")
           .point-area
-            PointCard(:value="`包`")
+            PointCard(:value="`卷`")
   Loading(v-if="loadingVisible")
 </template>
 
@@ -61,8 +61,7 @@ export default {
       this.loadingVisible = false;
       await this.GetTicketNumApi(this.uid);
     },
-    callback(key) {
-    },
+    callback(key) {},
     GetCookieValue(cookieName) {
       const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
@@ -100,11 +99,11 @@ export default {
 
     //API-----
     async GetUserTotalPointApi(id) {
-      const response = await UserTotalPointApi({uid:id});
+      const response = await UserTotalPointApi({ uid: id });
       this.dateList = response.data.data;
     },
     async GetTicketNumApi(uid) {
-      const response = await TicketNumApi({uid:uid});
+      const response = await TicketNumApi({ uid: uid });
       this.totalT0 = response.data.data.t0;
       this.totalT1 = response.data.data.t1;
     },
@@ -115,7 +114,7 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #CollectIndex {
-  background-color: rgba(170, 216, 105, 0.8);
+  background-color: rgba(170, 216, 105);
   height: 90vh;
   height: fill;
   .article {
@@ -127,14 +126,15 @@ export default {
   .tab-article {
     text-align: justify;
     height: 100vh;
-    // background-color: #a1cd7b;
+    // background-color: #rgba(170, 216, 105);
   }
   .tabs-area {
     margin-top: 20px !important;
+    grid-template-columns: 1fr 1fr;
   }
   .tab1-block {
     width: 100% !important;
-    background-color: #a1cd7b;
+    background-color: rgba(170, 216, 105);
 
     .tab1-area {
       font-family: Inter;
@@ -187,10 +187,9 @@ export default {
 ::v-deep .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
   height: 60px;
   margin: 1px 1px;
-  color: black;
-  background: #a1cd7b;
-  border-color: #a1cd7b;
-  box-shadow: 1px 2px 5px 0px;
+  color: #3C4B25;
+  background: rgba(170, 216, 105);
+  border-color: rgb(120, 171, 49);
 }
 ::v-deep .ant-fullcalendar-selected-day .ant-fullcalendar-value,
 .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
@@ -200,15 +199,17 @@ export default {
 
 ::v-deep .ant-tabs .ant-tabs-top-content,
 .ant-tabs .ant-tabs-bottom-content {
-  margin-bottom: 110px;
-  background-color: #a1cd7b;
+  padding-bottom: 80px;
+  background-color: rgba(170, 216, 105);
 }
 
-::v-deep .ant-tabs-bar {
-  margin: 0px 0px !important;
-}
-
-::v-deep .ant-tabs-tab {
+::v-deep .ant-tabs-nav {
   width: 100%;
+}
+
+::v-deep .ant-tabs-nav > div {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  width: 100%; /* 確保寬度撐滿 */
 }
 </style>

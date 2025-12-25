@@ -76,12 +76,7 @@ export default {
     };
   },
   computed: {
-    // shouldShowChange() {
-    //   const date = new Date().toISOString().substring(0, 7);
-    //   if (this.selectedDate !== date) {
-    //     return true;
-    //   }
-    // },
+
     shouldShowChange() {
       const originalDate = new Date();
       // 取得年份和月份
@@ -90,9 +85,8 @@ export default {
       // 組合成 YYYY-MM 格式
       const formattedDate = `${year}-${month}`;
       if (!this.isShowChange && this.selectedDate !== formattedDate) {
-        if(!this.dateList.length){
-          return false
-          
+        if (!this.dateList.length || this.dateList.length < 5) {
+          return false;
         }
         this.btnDis = true;
         this.btnStyle = "background-color: #c3c3c3 !important;";
@@ -107,10 +101,8 @@ export default {
     },
   },
   mounted() {
-
     $(document).click((event) => {
       if (this.visible === true) {
-
         const target = $(event.target);
         const menuIcon = $(".bg-area");
         const menuArea = $(".info-area");
@@ -157,14 +149,13 @@ export default {
     async SaveModal() {
       const listLength = this.dateList.length;
       if (listLength >= 5 && listLength < 10) {
-        await this.GetAddTicketApi(1); //0:包(三卷),1:卷
+        await this.GetAddTicketApi(1,this.selectedDate); //0:包(三卷),1:卷
       } else if (listLength >= 10) {
-        await this.GetAddTicketApi(0); //0:包(三卷),1:卷
+        await this.GetAddTicketApi(0,this.selectedDate); //0:包(三卷),1:卷
       }
       this.visibleModal = false;
       this.loadingVisible = true;
       setTimeout(() => {
-
         console.log("End");
 
         this.btnText = "兌換完畢";
@@ -186,11 +177,12 @@ export default {
     },
 
     //API-------
-    async GetAddTicketApi(value) {
+    async GetAddTicketApi(value,title) {
       const uid = this.GetCookieValue("id");
       const data = {
         uid: uid,
         value: value,
+        title:title
       };
       const res = await AddTicketApi(data);
       console.log(res);

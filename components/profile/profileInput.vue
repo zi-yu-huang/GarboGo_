@@ -14,8 +14,8 @@
     .member-text {{ "信箱：" }}
     aFormModelItem(ref="memberEmail", prop="memberEmail")
       aInput.input-font.email-area(
+        disabled
         @click="EditPhone",
-        :disabled="notEdit",
         v-model="memberForm.memberEmail",
         :maxLength="9",
         readOnly
@@ -45,10 +45,10 @@ export default {
       type: Boolean,
       default: "",
     },
-    getInit:{
-      type:Boolean,
-      default:""
-    }
+    getInit: {
+      type: Boolean,
+      default: "",
+    },
   },
   data() {
     return {
@@ -62,18 +62,15 @@ export default {
       },
     };
   },
-  computed:{
-    initialized(){
-      
-      if(this.getInit ===true){
+  computed: {
+    initialized() {
+      if (this.getInit === true) {
         this.Init();
-        
       }
-    }
+    },
   },
   mounted() {
     this.Init();
-    
   },
   methods: {
     async Init() {
@@ -85,15 +82,15 @@ export default {
       this.memberForm.memberPassword = data.pwd;
     },
     EditName() {
-      this.$emit("EditName",this.memberForm.memberName)
+      this.$emit("EditName", this.memberForm.memberName);
     },
     LogOut() {
       this.delCookie("id");
       this.delCookie("email");
-        this.$router.push("/");
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
+      this.$router.push("/");
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     },
     EditPhone() {
       this.$emit("openPhone", true);
@@ -130,7 +127,7 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #ProfileInput {
-  background-color: rgba(115, 170, 36, 0.8);
+  background-color: rgba(170, 216, 105);
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -174,7 +171,7 @@ export default {
     margin-bottom: 0 !important;
   }
   @media (min-width: 769px) {
-    border-radius:  0;
+    border-radius: 0;
 
     .form-grid {
       width: 600px;

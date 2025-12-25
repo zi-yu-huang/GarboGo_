@@ -29,7 +29,7 @@ export default {
 <style lang="scss" scoped>
 // 排版
 #StaffList {
-  background-color: rgba(170, 216, 105, 0.8);
+  background-color: rgba(170, 216, 105);
   .article {
     height: 90vh;
 

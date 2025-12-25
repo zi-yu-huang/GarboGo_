@@ -11,11 +11,9 @@
 </template>
 
 <script>
-import { trashIcon } from "@/style/icon/delete.png";
 import { TrashcanListApi } from "@/services/trashcanList.js";
 import Vue from "vue";
 import GarbageModal from "@/components/modal/GarbageModal";
-// import dummytrashcan from "@/components/map/map.json";
 export default {
   name: "MapIndex",
   components: {

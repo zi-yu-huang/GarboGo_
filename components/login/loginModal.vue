@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     async OnSubmit() {
+      this.loadingVisible = true;
       this.$message.info("初次使用請稍等");
       const response = await this.GetLoginApi(this.memberForm.memberEmail);
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          this.loadingVisible = true;
           if (response.pwd === this.memberForm.memberPassword) {
             this.memberForm.memberPassword = "";
             this.memberForm.memberEmail = "";
